@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một món trong kết quả Khám phá: ảnh nhỏ, tên, "loại · thời gian",
+     bên phải là nhãn "Đã lưu" (nếu đã có trong sổ) hoặc dấu + (nếu chưa lưu). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardRecipe"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="10dp">
+
+        <!-- Ảnh giữ chỗ: nền màu (backgroundTint đặt trong adapter) + icon bát -->
+        <FrameLayout
+            android:id="@+id/layoutThumb"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_rounded_light"
+            android:backgroundTint="@color/dish_tint_1">
+
+            <ImageView
+                android:id="@+id/imageThumb"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_dish"
+                app:tint="@color/dish_ink_1" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitle"
+                style="@style/Text.SoBep.BodyBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="Canh trứng cà chua" />
+
+            <TextView
+                android:id="@+id/textMeta"
+                style="@style/Text.SoBep.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="Canh · 15 phút" />
+        </LinearLayout>
+
+        <!-- Đã lưu -->
+        <TextView
+            android:id="@+id/textSaved"
+            style="@style/Text.SoBep.Tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/be_vietnam_pro_bold"
+            android:text="@string/badge_saved"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <!-- Chưa lưu -->
+        <ImageView
+            android:id="@+id/imageAdd"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_circle_light"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:src="@drawable/ic_add"
+            app:tint="@color/green_primary" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

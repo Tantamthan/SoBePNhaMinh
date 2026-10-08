@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một ô gợi ý nguyên liệu ở màn Khám phá (Gà, Trứng, Thịt heo…).
+     Adapter đặt màu nền / màu chữ theo từng ô (colors tile_*_bg, tile_*_fg);
+     ô đang chọn: viền đổi sang green_primary, ô chưa chọn: viền trùng màu nền. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardTile"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_margin="5dp"
+    android:checkable="false"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/tile_egg_bg"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/tile_egg_bg"
+    app:strokeWidth="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp">
+
+        <TextView
+            android:id="@+id/textLabel"
+            style="@style/Text.SoBep.BodyBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tile_egg_fg"
+            android:textSize="16sp"
+            tools:text="Trứng" />
+
+        <TextView
+            android:id="@+id/textCount"
+            style="@style/Text.SoBep.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/tile_egg_fg"
+            tools:text="3 món" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

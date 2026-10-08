@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Màn 1 · SplashActivity: nền xanh, logo + tên app ở giữa, thanh chạy nhỏ phía dưới -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green_primary"
+    android:padding="32dp"
+    tools:context=".ui.splash.SplashActivity">
+
+    <!-- Logo: ô trắng bo góc chứa icon nồi -->
+    <FrameLayout
+        android:id="@+id/layoutLogo"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:background="@drawable/bg_logo"
+        app:layout_constraintBottom_toTopOf="@id/textAppName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_logo_pot"
+            app:tint="@color/green_primary" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textAppName"
+        style="@style/Text.SoBep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/be_vietnam_pro_extrabold"
+        android:letterSpacing="-0.02"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/textTagline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutLogo" />
+
+    <TextView
+        android:id="@+id/textTagline"
+        style="@style/Text.SoBep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/splash_tagline"
+        android:textColor="@color/green_soft"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textAppName" />
+
+    <!-- Thanh tải chạy liên tục -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressLoading"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:trackColor="@color/green_mid"
+        app:trackCornerRadius="2dp"
+        app:trackThickness="4dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,8 +12,7 @@
         <item name="colorOnSecondaryContainer">@color/green_dark</item>
         <item name="colorTertiary">@color/accent_orange</item>
         <item name="colorOnTertiary">@color/white</item>
-        <item name="colorError">@color/accent_or
-            ange_dark</item>
+        <item name="colorError">@color/accent_orange_dark</item>
 
         <!-- Nền và bề mặt -->
         <item name="android:colorBackground">@color/bg_app</item>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Màn 5 · AddEditRecipeActivity – Thêm / sửa món:
+     thanh tiêu đề có nút Lưu, khung ảnh món (Chọn ảnh / Chụp ảnh), thẻ "Quét chữ từ ảnh",
+     thông tin món, danh sách nguyên liệu, các bước nấu, ghi chú và nút "Lưu món". -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app"
+    android:orientation="vertical"
+    tools:context=".ui.addedit.AddEditRecipeActivity">
+
+    <!-- Thanh tiêu đề -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp">
+
+        <ImageButton
+            android:id="@+id/buttonBack"
+            style="@style/Widget.SoBep.IconButton"
+            android:contentDescription="@string/cd_back"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textScreenTitle"
+            style="@style/Text.SoBep.ScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="@string/add_recipe_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSaveTop"
+            style="@style/Widget.SoBep.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_save" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingTop="8dp"
+            android:paddingBottom="32dp">
+
+            <!-- Khung ảnh món -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="188dp"
+                android:background="@drawable/bg_dashed_photo">
+
+                <!-- Ảnh đã chọn (hiện khi có ảnh) -->
+                <ImageView
+                    android:id="@+id/imagePhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layoutPhotoActions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_image"
+                        app:tint="@color/text_secondary" />
+
+                    <TextView
+                        style="@style/Text.SoBep.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/add_photo_hint" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonPickPhoto"
+                            style="@style/Widget.SoBep.Button.OutlinedGreen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/icon_button_small"
+                            android:minHeight="@dimen/icon_button_small"
+                            android:paddingHorizontal="16dp"
+                            android:text="@string/action_pick_photo"
+                            app:cornerRadius="22dp"
+                            app:icon="@drawable/ic_image" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonTakePhoto"
+                            style="@style/Widget.SoBep.Button.OutlinedGreen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/icon_button_small"
+                            android:layout_marginStart="10dp"
+                            android:minHeight="@dimen/icon_button_small"
+                            android:paddingHorizontal="16dp"
+                            android:text="@string/action_take_photo"
+                            app:cornerRadius="22dp"
+                            app:icon="@drawable/ic_camera" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Thẻ mở màn Quét công thức -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardScan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/green_soft"
+                app:cardCornerRadius="@dimen/radius_card"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="14dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_icon_square_green"
+                        android:importantForAccessibility="no"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_scan_text"
+                        app:tint="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Text.SoBep.BodyBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/scan_card_title"
+                            android:textColor="@color/green_dark" />
+
+                        <TextView
+                            style="@style/Text.SoBep.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/scan_card_subtitle"
+                            android:textColor="@color/green_dark" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/green_dark" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Thông tin món -->
+            <TextView
+                style="@style/Text.SoBep.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:labelFor="@id/editName"
+                android:text="@string/label_recipe_name" />
+
+            <EditText
+                android:id="@+id/editName"
+                style="@style/Widget.SoBep.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="textCapSentences"
+                tools:text="Thịt kho trứng" />
+
+            <TextView
+                style="@style/Text.SoBep.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/spinnerCategory"
+                android:text="@string/label_category" />
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/recipe_categories"
+                android:paddingStart="4dp"
+                android:paddingEnd="40dp"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.SoBep.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/editCookTime"
+                        android:text="@string/label_cook_time" />
+
+                    <EditText
+                        android:id="@+id/editCookTime"
+                        style="@style/Widget.SoBep.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:inputType="number"
+                        android:maxLength="4"
+                        tools:text="60" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.SoBep.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/editServings"
+                        android:text="@string/label_servings" />
+
+                    <EditText
+                        android:id="@+id/editServings"
+                        style="@style/Widget.SoBep.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:inputType="number"
+                        android:maxLength="2"
+                        tools:text="4" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/Text.SoBep.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/editVideoUrl"
+                android:text="@string/label_video_url" />
+
+            <EditText
+                android:id="@+id/editVideoUrl"
+                style="@style/Widget.SoBep.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="@string/hint_video_url"
+                android:inputType="textUri" />
+
+            <!-- Nguyên liệu -->
+            <TextView
+                style="@style/Text.SoBep.Section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/section_gap"
+                android:text="@string/label_ingredients" />
+
+            <!-- Tiêu đề cột: độ rộng khớp với các ô trong item_ingredient_edit -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="2dp">
+
+                <TextView
+                    style="@style/Text.SoBep.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:text="@string/col_ingredient_name"
+                    android:textSize="12sp" />
+
+                <TextView
+                    style="@style/Text.SoBep.Caption"
+                    android:layout_width="58dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:text="@string/col_ingredient_qty"
+                    android:textSize="12sp" />
+
+                <TextView
+                    style="@style/Text.SoBep.Caption"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:text="@string/col_ingredient_unit"
+                    android:textSize="12sp" />
+
+                <Space
+                    android:layout_width="50dp"
+                    android:layout_height="0dp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_ingredient_edit" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddIngredient"
+                style="@style/Widget.SoBep.Button.Dashed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/action_add_ingredient"
+                app:icon="@drawable/ic_add" />
+
+            <!-- Các bước nấu -->
+            <TextView
+                style="@style/Text.SoBep.Section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/section_gap"
+                android:text="@string/label_steps" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_step_edit" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddStep"
+                style="@style/Widget.SoBep.Button.Dashed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_add_step"
+                app:icon="@drawable/ic_add" />
+
+            <!-- Ghi chú -->
+            <TextView
+                style="@style/Text.SoBep.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/section_gap"
+                android:labelFor="@id/editNote"
+                android:text="@string/label_note" />
+
+            <EditText
+                android:id="@+id/editNote"
+                style="@style/Widget.SoBep.EditText.Multiline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:minLines="3"
+                tools:text="Kho thật nhỏ lửa để thịt thấm và nước kho trong." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSave"
+                style="@style/Widget.SoBep.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/action_save_recipe" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

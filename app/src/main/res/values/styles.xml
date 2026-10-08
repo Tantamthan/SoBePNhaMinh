@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Các style dùng chung cho mọi màn hình, đặt theo đúng cỡ chữ / màu / bo góc trong file mẫu -->
+<resources>
+
+    <!-- ================= CHỮ ================= -->
+    <style name="Text.SoBep" parent="">
+        <item name="android:fontFamily">@font/be_vietnam_pro_regular</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Tên app ở màn chính – 22sp, rất đậm -->
+    <style name="Text.SoBep.AppTitle">
+        <item name="android:fontFamily">@font/be_vietnam_pro_extrabold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- Tiêu đề trên thanh tiêu đề các màn phụ – 20sp đậm -->
+    <style name="Text.SoBep.ScreenTitle">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- Tên món lớn ở màn chi tiết – 26sp -->
+    <style name="Text.SoBep.Display">
+        <item name="android:fontFamily">@font/be_vietnam_pro_extrabold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+    </style>
+
+    <!-- Tiêu đề khối (Nguyên liệu, Các bước…) – 19sp -->
+    <style name="Text.SoBep.Section">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <!-- Tiêu đề danh sách (Tất cả món, Gợi ý…) – 18sp -->
+    <style name="Text.SoBep.Heading">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Tiêu đề nhỏ (tên ngày, Cần mua…) – 17sp -->
+    <style name="Text.SoBep.Subheading">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <!-- Tên món trong thẻ – 15sp đậm -->
+    <style name="Text.SoBep.CardTitle">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Text.SoBep.Body">
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+    <style name="Text.SoBep.BodyLarge">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.SoBep.BodyBold">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Chữ phụ màu xám – 14sp -->
+    <style name="Text.SoBep.Secondary">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Chữ chú thích màu xám – 13sp -->
+    <style name="Text.SoBep.Caption">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Nhãn của ô nhập liệu – 14sp nửa đậm -->
+    <style name="Text.SoBep.Label">
+        <item name="android:fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <!-- Nhãn tròn nền xanh nhạt (loại món, Đã lưu, 3/4…) -->
+    <style name="Text.SoBep.Tag">
+        <item name="android:fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/green_dark</item>
+        <item name="android:background">@drawable/bg_tag_green</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- Chữ trong chip lọc -->
+    <style name="TextAppearance.SoBep.Chip" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Chữ trên nút -->
+    <style name="TextAppearance.SoBep.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="fontFamily">@font/be_vietnam_pro_bold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextAppearance.SoBep.Button.Medium">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextAppearance.SoBep.Button.Semibold">
+        <item name="android:fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="fontFamily">@font/be_vietnam_pro_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ================= NÚT ================= -->
+
+    <!-- Nút chính màu xanh, cao 56dp, bo 16dp (Lưu món, Nấu ngay…) -->
+    <style name="Widget.SoBep.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_height_large</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/green_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconTint">@color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconSize">22dp</item>
+    </style>
+
+    <!-- Nút xanh nhỏ dạng viên thuốc (nút "Lưu" trên thanh tiêu đề) -->
+    <style name="Widget.SoBep.Button.Small">
+        <item name="android:minHeight">@dimen/icon_button_small</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button.Medium</item>
+        <item name="cornerRadius">22dp</item>
+    </style>
+
+    <!-- Nút cam bắt đầu / tạm dừng hẹn giờ -->
+    <style name="Widget.SoBep.Button.Timer">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:minWidth">132dp</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="backgroundTint">@color/accent_orange_dark</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button</item>
+        <item name="android:textSize">16sp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- Nút viền xám nền trắng (Chia sẻ, Video, Sửa, Bước trước…) -->
+    <style name="Widget.SoBep.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="strokeColor">@color/border</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@color/button_text_secondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button.Semibold</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="iconTint">@color/button_text_secondary</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">6dp</item>
+        <item name="iconSize">18dp</item>
+    </style>
+
+    <!-- Nút viền xanh (Chọn ảnh, Chụp ảnh, Chụp lại…) -->
+    <style name="Widget.SoBep.Button.OutlinedGreen" parent="Widget.SoBep.Button.Outlined">
+        <item name="strokeColor">@color/green_primary</item>
+        <item name="android:textColor">@color/green_primary</item>
+        <item name="iconTint">@color/green_primary</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button.Semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="iconPadding">8dp</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
+    <!-- Nút viền nét đứt màu xanh (Thêm nguyên liệu, Thêm bước) -->
+    <style name="Widget.SoBep.Button.Dashed" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:background">@drawable/bg_dashed_green</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/green_primary</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button.Medium</item>
+        <item name="iconTint">@color/green_primary</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
+    <!-- Nút chữ không viền (Xoá các mục đã mua) -->
+    <style name="Widget.SoBep.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:textColor">@color/timer_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button.Semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="iconTint">@color/timer_text</item>
+        <item name="iconPadding">8dp</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
+    <!-- Nút tròn nổi "Thêm món", "Tạo danh sách đi chợ" -->
+    <style name="Widget.SoBep.ExtendedFab" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="backgroundTint">@color/green_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Button</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">@dimen/button_height_large</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SoBep.Fab</item>
+    </style>
+
+    <style name="ShapeAppearance.SoBep.Fab" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <!-- Nút chỉ có icon, nền trong suốt, hiệu ứng gợn tròn khi chạm -->
+    <style name="Widget.SoBep.IconButton" parent="">
+        <item name="android:layout_width">@dimen/icon_button_size</item>
+        <item name="android:layout_height">@dimen/icon_button_size</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">center</item>
+        <item name="tint">@color/text_primary</item>
+    </style>
+
+    <!-- Nút icon tròn nền trắng 44dp (quay lại / yêu thích trên ảnh món) -->
+    <style name="Widget.SoBep.IconButton.White">
+        <item name="android:layout_width">@dimen/icon_button_small</item>
+        <item name="android:layout_height">@dimen/icon_button_small</item>
+        <item name="android:background">@drawable/bg_circle_white</item>
+    </style>
+
+    <!-- ================= Ô NHẬP LIỆU ================= -->
+    <style name="Widget.SoBep.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:minHeight">@dimen/input_height</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:fontFamily">@font/be_vietnam_pro_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+    </style>
+
+    <!-- Ô nhập trong danh sách nguyên liệu (thấp hơn, chữ 15sp) -->
+    <style name="Widget.SoBep.EditText.Compact">
+        <item name="android:minHeight">@dimen/input_height_small</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Ô nhập nhiều dòng (bước nấu, ghi chú, chữ quét được) -->
+    <style name="Widget.SoBep.EditText.Multiline">
+        <item name="android:gravity">top|start</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+    <!-- ================= THẺ ================= -->
+    <style name="Widget.SoBep.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardCornerRadius">@dimen/radius_card</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/border_card</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- ================= CHIP LỌC LOẠI MÓN ================= -->
+    <style name="Widget.SoBep.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="chipCornerRadius">22dp</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.SoBep.Chip</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipIconSize">16dp</item>
+        <item name="chipIconTint">@color/accent_orange</item>
+    </style>
+</resources>

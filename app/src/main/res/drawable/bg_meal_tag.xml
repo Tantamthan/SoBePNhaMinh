@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nhãn bữa ăn (Sáng/Trưa/Tối). Màu nền đổi trong code bằng backgroundTint. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/white" />
+    <corners android:radius="8dp" />
+</shape>

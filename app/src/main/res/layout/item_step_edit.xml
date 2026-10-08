@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một bước nấu ở màn Thêm/Sửa món: số thứ tự, ô nội dung nhiều dòng,
+     ô hẹn giờ (phút) và nút xoá bước. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/textNumber"
+            style="@style/Text.SoBep.BodyBold"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_step_number"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:text="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editContent"
+                style="@style/Widget.SoBep.EditText.Multiline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:contentDescription="@string/cd_step_content"
+                android:minLines="3"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="8dp"
+                tools:text="Thịt ba chỉ rửa sạch, cắt miếng vuông khoảng 3 cm, ướp với nước mắm, đường và hành tím băm." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Text.SoBep.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:labelFor="@id/editTimer"
+                    android:text="@string/label_timer"
+                    app:drawableStartCompat="@drawable/ic_clock_16"
+                    app:drawableTint="@color/text_secondary" />
+
+                <EditText
+                    android:id="@+id/editTimer"
+                    style="@style/Widget.SoBep.EditText.Compact"
+                    android:layout_width="64dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:autofillHints=""
+                    android:contentDescription="@string/cd_step_timer"
+                    android:gravity="center_vertical|end"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:minHeight="40dp"
+                    android:paddingHorizontal="8dp"
+                    tools:text="30" />
+
+                <TextView
+                    style="@style/Text.SoBep.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unit_minutes" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/buttonDelete"
+            style="@style/Widget.SoBep.IconButton"
+            android:layout_width="@dimen/icon_button_small"
+            android:layout_height="@dimen/icon_button_small"
+            android:contentDescription="@string/cd_delete_step"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

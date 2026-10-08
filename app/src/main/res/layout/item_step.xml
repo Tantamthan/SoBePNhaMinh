@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một bước nấu ở màn Chi tiết món: số thứ tự trong vòng tròn xanh, nội dung,
+     và nhãn "Hẹn giờ x phút" (chỉ hiện khi bước có hẹn giờ). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="14dp">
+
+        <TextView
+            android:id="@+id/textNumber"
+            style="@style/Text.SoBep.BodyBold"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_step_number"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="3" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textContent"
+                style="@style/Text.SoBep.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                tools:text="Làm nóng dầu trong chảo ở lửa vừa, đổ trứng vào, chiên đến khi mặt dưới vàng." />
+
+            <TextView
+                android:id="@+id/textTimer"
+                style="@style/Text.SoBep.Tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_tag_timer"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/timer_text"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_clock_14"
+                app:drawableTint="@color/timer_text"
+                tools:text="Hẹn giờ 3 phút"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

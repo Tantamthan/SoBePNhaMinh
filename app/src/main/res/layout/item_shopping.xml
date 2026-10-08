@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một mục trong danh sách đi chợ: ô tích, tên, số lượng.
+     Mục đã mua: adapter đổi chữ sang màu xám và gạch ngang (Paint.STRIKE_THRU_TEXT_FLAG).
+     Adapter ẩn đường kẻ (divider) ở dòng cuối cùng. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layoutRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="52dp"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="16dp">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            app:buttonTint="@color/green_primary" />
+
+        <TextView
+            android:id="@+id/textName"
+            style="@style/Text.SoBep.BodyLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            tools:text="Cà chua" />
+
+        <TextView
+            android:id="@+id/textQuantity"
+            style="@style/Text.SoBep.BodyBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            tools:text="2 quả" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/divider" />
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thanh nút cố định ở đáy màn hình: nền trắng, có đường kẻ phía trên -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/border_card" />
+        </shape>
+    </item>
+    <item android:top="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thẻ một món trong lưới ở màn Sổ công thức -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardRecipe"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Ảnh món. Khi món chưa có ảnh: hiện icon bát trên nền màu (đặt màu trong adapter) -->
+            <FrameLayout
+                android:id="@+id/layoutPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:background="@color/dish_tint_1">
+
+                <ImageView
+                    android:id="@+id/imagePlaceholder"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_dish"
+                    app:tint="@color/dish_ink_1" />
+
+                <ImageView
+                    android:id="@+id/imagePhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    style="@style/Text.SoBep.CardTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="2"
+                    tools:text="Trứng chiên hành lá" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textTime"
+                        style="@style/Text.SoBep.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        app:drawableStartCompat="@drawable/ic_clock_14"
+                        app:drawableTint="@color/text_secondary"
+                        tools:text="10 phút" />
+
+                    <TextView
+                        android:id="@+id/textServings"
+                        style="@style/Text.SoBep.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        app:drawableStartCompat="@drawable/ic_people_14"
+                        app:drawableTint="@color/text_secondary"
+                        tools:text="2 người" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Nút yêu thích góc trên phải -->
+        <ImageButton
+            android:id="@+id/buttonFavorite"
+            style="@style/Widget.SoBep.IconButton.White"
+            android:layout_gravity="top|end"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/cd_add_favorite"
+            android:src="@drawable/ic_heart_outline"
+            app:tint="@null" />
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

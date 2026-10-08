@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Khung logo trắng bo 32dp ở màn hình chờ -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/surface" />
+    <corners android:radius="32dp" />
+</shape>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thẻ một ngày trong Thực đơn tuần: tên ngày, ngày tháng, nhãn "Hôm nay", nút + thêm món,
+     và danh sách các bữa (item_meal_entry). Ngày hôm nay: adapter đổi viền thành 2dp màu xanh. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardDay"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    app:cardCornerRadius="18dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textDayName"
+                style="@style/Text.SoBep.Subheading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Thứ Hai" />
+
+            <TextView
+                android:id="@+id/textDate"
+                style="@style/Text.SoBep.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                tools:text="28/9" />
+
+            <TextView
+                android:id="@+id/textToday"
+                style="@style/Text.SoBep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge_today"
+                android:fontFamily="@font/be_vietnam_pro_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/badge_today"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/buttonAddMeal"
+                style="@style/Widget.SoBep.IconButton"
+                android:layout_width="@dimen/icon_button_small"
+                android:layout_height="@dimen/icon_button_small"
+                android:contentDescription="@string/cd_add_meal"
+                android:src="@drawable/ic_add"
+                app:tint="@color/green_primary" />
+        </LinearLayout>
+
+        <!-- Ngày chưa có món -->
+        <TextView
+            android:id="@+id/textEmpty"
+            style="@style/Text.SoBep.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_rounded_light"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="12dp"
+            android:text="@string/meal_plan_empty_day"
+            android:visibility="gone" />
+
+        <!-- Các bữa trong ngày -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMeals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_meal_entry" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

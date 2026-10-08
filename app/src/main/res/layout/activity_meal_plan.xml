@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Màn 7 · MealPlanActivity – Thực đơn tuần:
+     chuyển tuần trước / tuần sau, danh sách 7 ngày (mỗi ngày là một thẻ chứa các bữa),
+     nút nổi "Tạo danh sách đi chợ". -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app"
+    tools:context=".ui.mealplan.MealPlanActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Thanh tiêu đề -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp">
+
+            <ImageButton
+                android:id="@+id/buttonBack"
+                style="@style/Widget.SoBep.IconButton"
+                android:contentDescription="@string/cd_back"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                style="@style/Text.SoBep.ScreenTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="@string/meal_plan_title" />
+        </LinearLayout>
+
+        <!-- Chọn tuần -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/buttonPrevWeek"
+                style="@style/Widget.SoBep.IconButton"
+                android:contentDescription="@string/cd_prev_week"
+                android:src="@drawable/ic_back" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textWeekTitle"
+                    style="@style/Text.SoBep.Subheading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/this_week" />
+
+                <TextView
+                    android:id="@+id/textWeekRange"
+                    style="@style/Text.SoBep.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    tools:text="28/9 – 4/10/2026" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/buttonNextWeek"
+                style="@style/Widget.SoBep.IconButton"
+                android:contentDescription="@string/cd_next_week"
+                android:src="@drawable/ic_chevron_right" />
+        </LinearLayout>
+
+        <!-- 7 ngày trong tuần -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDays"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingBottom="112dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_day_plan" />
+    </LinearLayout>
+
+    <!-- Nút nổi "Tạo danh sách đi chợ" -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabCreateShoppingList"
+        style="@style/Widget.SoBep.ExtendedFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:layout_marginBottom="24dp"
+        app:icon="@drawable/ic_cart" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

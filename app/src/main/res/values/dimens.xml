@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Khoảng cách lề màn hình -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="screen_padding_large">20dp</dimen>
+
+    <!-- Thanh tiêu đề -->
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="icon_button_size">48dp</dimen>
+    <dimen name="icon_button_small">44dp</dimen>
+
+    <!-- Bo góc -->
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="radius_input">12dp</dimen>
+
+    <!-- Chiều cao các thành phần -->
+    <dimen name="input_height">52dp</dimen>
+    <dimen name="input_height_small">48dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    <dimen name="row_min_height">48dp</dimen>
+
+    <!-- Khoảng cách giữa các khối -->
+    <dimen name="section_gap">28dp</dimen>
+    <dimen name="fab_bottom_space">96dp</dimen>
+</resources>
