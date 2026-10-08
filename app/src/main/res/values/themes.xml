@@ -1,9 +1,65 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SoBepNhaMinh" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Theme gốc của app. Mẫu giao diện chỉ có chế độ sáng nên dùng Material3.Light. -->
+    <style name="Base.Theme.SoBepNhaMinh" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Màu chính -->
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/green_soft</item>
+        <item name="colorOnPrimaryContainer">@color/green_dark</item>
+        <item name="colorSecondary">@color/green_mid</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/green_soft</item>
+        <item name="colorOnSecondaryContainer">@color/green_dark</item>
+        <item name="colorTertiary">@color/accent_orange</item>
+        <item name="colorOnTertiary">@color/white</item>
+        <item name="colorError">@color/accent_or
+            ange_dark</item>
+
+        <!-- Nền và bề mặt -->
+        <item name="android:colorBackground">@color/bg_app</item>
+        <item name="android:windowBackground">@color/bg_app</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/border_input</item>
+        <item name="colorOutlineVariant">@color/border</item>
+
+        <!-- Chữ: font Be Vietnam Pro cho toàn app -->
+        <item name="android:fontFamily">@font/be_vietnam_pro</item>
+        <item name="fontFamily">@font/be_vietnam_pro</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+
+        <!-- Thanh trạng thái chữ tối trên nền sáng -->
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Bottom sheet bo góc 24dp (màn Khám phá) -->
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SoBep.BottomSheetDialog</item>
     </style>
 
     <style name="Theme.SoBepNhaMinh" parent="Base.Theme.SoBepNhaMinh" />
+
+    <!-- Theme riêng cho màn hình chờ: nền xanh, chữ trên thanh trạng thái màu trắng -->
+    <style name="Theme.SoBepNhaMinh.Splash" parent="Theme.SoBepNhaMinh">
+        <item name="android:windowBackground">@color/green_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="ThemeOverlay.SoBep.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.SoBep.BottomSheet</item>
+    </style>
+
+    <style name="Widget.SoBep.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SoBep.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.SoBep.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
 </resources>

@@ -1,3 +1,164 @@
 <resources>
-    <string name="app_name">So Bep Nha Minh</string>
+    <string name="app_name">Sổ Bếp Nhà Mình</string>
+
+    <!-- ===== Dùng chung ===== -->
+    <string name="cd_back">Quay lại</string>
+    <string name="cd_close">Đóng</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_share">Chia sẻ</string>
+    <string name="action_edit">Sửa</string>
+    <string name="action_video">Video</string>
+    <string name="unit_minutes">phút</string>
+    <string name="format_minutes">%1$d phút</string>
+    <string name="format_people">%1$d người</string>
+    <string name="format_recipe_count">%1$d món</string>
+
+    <!-- Loại món (dùng cho chip lọc và ô chọn khi thêm món) -->
+    <string name="category_all">Tất cả</string>
+    <string name="category_favorite">Yêu thích</string>
+    <string name="category_main">Món chính</string>
+    <string name="category_soup">Canh</string>
+    <string name="category_stir_fry">Xào</string>
+    <string name="category_dessert">Tráng miệng</string>
+    <string name="category_drink">Đồ uống</string>
+    <string-array name="recipe_categories">
+        <item>@string/category_main</item>
+        <item>@string/category_soup</item>
+        <item>@string/category_stir_fry</item>
+        <item>@string/category_dessert</item>
+        <item>@string/category_drink</item>
+    </string-array>
+
+    <!-- ===== 1. Splash ===== -->
+    <string name="splash_tagline">Công thức của nhà, nấu lúc nào cũng được</string>
+
+    <!-- ===== 2. Main – Sổ công thức ===== -->
+    <string name="cd_discover">Khám phá món</string>
+    <string name="cd_meal_plan">Thực đơn tuần</string>
+    <string name="cd_shopping_list">Danh sách đi chợ</string>
+    <string name="hint_search_recipe">Tìm theo tên món…</string>
+    <string name="main_heading_all">Tất cả món</string>
+    <string name="main_empty">Chưa có món nào ở mục này</string>
+    <string name="action_add_recipe">Thêm món</string>
+    <string name="cd_add_favorite">Thêm vào yêu thích</string>
+    <string name="cd_remove_favorite">Bỏ yêu thích</string>
+
+    <!-- ===== 3. RecipeDetail – Chi tiết món ===== -->
+    <string name="format_recipe_for_people">Công thức cho %1$d người</string>
+    <string name="detail_cook_for">Nấu cho</string>
+    <string name="detail_cook_for_hint">Định lượng tự nhân theo số người</string>
+    <string name="cd_decrease_servings">Bớt 1 người</string>
+    <string name="cd_increase_servings">Thêm 1 người</string>
+    <string name="detail_ingredients">Nguyên liệu</string>
+    <string name="detail_steps">Các bước</string>
+    <string name="format_step_timer">Hẹn giờ %1$d phút</string>
+    <string name="detail_note_label">Ghi chú:</string>
+    <string name="format_cook_now">Nấu ngay cho %1$d người</string>
+    <string name="qty_to_taste">vừa ăn</string>
+
+    <!-- ===== 4. CookingMode – Chế độ nấu ===== -->
+    <string name="cd_exit_cooking">Thoát chế độ nấu</string>
+    <string name="cooking_label">Đang nấu</string>
+    <string name="format_step_progress">%1$d/%2$d</string>
+    <string name="format_step_number">Bước %1$d</string>
+    <string name="timer_start">Bắt đầu</string>
+    <string name="timer_pause">Tạm dừng</string>
+    <string name="timer_resume">Tiếp tục</string>
+    <string name="timer_done">Xong</string>
+    <string name="timer_reset">Đặt lại</string>
+    <string name="timer_running">Đang đếm ngược</string>
+    <string name="timer_finished">Hết giờ!</string>
+    <string name="cooking_no_timer">Bước này không cần hẹn giờ</string>
+    <string name="cooking_keep_screen_on">Màn hình luôn sáng khi đang nấu</string>
+    <string name="step_prev">Bước trước</string>
+    <string name="step_next">Bước tiếp</string>
+    <string name="step_finish">Hoàn thành</string>
+
+    <!-- ===== 5. AddEditRecipe – Thêm / sửa món ===== -->
+    <string name="add_recipe_title">Thêm món mới</string>
+    <string name="edit_recipe_title">Sửa món</string>
+    <string name="add_photo_hint">Thêm ảnh món ăn</string>
+    <string name="action_pick_photo">Chọn ảnh</string>
+    <string name="action_take_photo">Chụp ảnh</string>
+    <string name="scan_card_title">Quét chữ từ ảnh</string>
+    <string name="scan_card_subtitle">Chụp trang sách, sổ tay hoặc ảnh chụp màn hình</string>
+    <string name="label_recipe_name">Tên món</string>
+    <string name="label_category">Loại món</string>
+    <string name="label_cook_time">Thời gian nấu (phút)</string>
+    <string name="label_servings">Khẩu phần (người)</string>
+    <string name="label_video_url">Link video (không bắt buộc)</string>
+    <string name="hint_video_url">https://</string>
+    <string name="label_ingredients">Nguyên liệu</string>
+    <string name="col_ingredient_name">Tên</string>
+    <string name="col_ingredient_qty">Số lượng</string>
+    <string name="col_ingredient_unit">Đơn vị</string>
+    <string name="cd_ingredient_name">Tên nguyên liệu</string>
+    <string name="cd_ingredient_qty">Số lượng</string>
+    <string name="cd_ingredient_unit">Đơn vị</string>
+    <string name="cd_delete_ingredient">Xoá nguyên liệu</string>
+    <string name="action_add_ingredient">Thêm nguyên liệu</string>
+    <string name="label_steps">Các bước nấu</string>
+    <string name="cd_step_content">Nội dung bước</string>
+    <string name="label_timer">Hẹn giờ</string>
+    <string name="cd_step_timer">Số phút hẹn giờ</string>
+    <string name="cd_delete_step">Xoá bước</string>
+    <string name="action_add_step">Thêm bước</string>
+    <string name="label_note">Ghi chú riêng (không bắt buộc)</string>
+    <string name="action_save_recipe">Lưu món</string>
+
+    <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
+    <string name="scan_title">Quét công thức</string>
+    <string name="scan_photo_badge">Ảnh đã chụp</string>
+    <string name="cd_scanned_photo">Ảnh trang công thức đã chụp</string>
+    <string name="action_retake">Chụp lại</string>
+    <string name="action_pick_other_photo">Chọn ảnh khác</string>
+    <string name="scan_reading">Đang đọc chữ trong ảnh…</string>
+    <string name="scan_done">Đã đọc xong chữ trong ảnh</string>
+    <string name="label_scanned_text">Chữ nhận dạng được (sửa lại nếu sai)</string>
+    <string name="scan_footer_hint">Chữ sẽ được điền vào form thêm món để bạn chỉnh tiếp</string>
+    <string name="action_use_result">Dùng kết quả này</string>
+
+    <!-- ===== 7. MealPlan – Thực đơn tuần ===== -->
+    <string name="meal_plan_title">Thực đơn tuần</string>
+    <string name="cd_prev_week">Tuần trước</string>
+    <string name="cd_next_week">Tuần sau</string>
+    <string name="this_week">Tuần này</string>
+    <string name="badge_today">Hôm nay</string>
+    <string name="cd_add_meal">Thêm món cho ngày này</string>
+    <string name="meal_plan_empty_day">Chưa có món</string>
+    <string name="meal_breakfast">Sáng</string>
+    <string name="meal_lunch">Trưa</string>
+    <string name="meal_dinner">Tối</string>
+    <string name="action_create_shopping_list">Tạo danh sách đi chợ</string>
+
+    <!-- ===== 8. ShoppingList – Đi chợ ===== -->
+    <string name="shopping_title">Đi chợ</string>
+    <string name="cd_share_list">Chia sẻ danh sách</string>
+    <string name="format_shopping_source">Từ thực đơn %1$s</string>
+    <string name="format_shopping_progress">Đã mua %1$d/%2$d</string>
+    <string name="hint_add_shopping_item">Thêm thứ cần mua…</string>
+    <string name="cd_add_shopping_item">Thêm vào danh sách</string>
+    <string name="format_to_buy">Cần mua · %1$d</string>
+    <string name="format_bought">Đã mua · %1$d</string>
+    <string name="action_clear_bought">Xoá các mục đã mua</string>
+
+    <!-- ===== 9. Discover – Khám phá món ===== -->
+    <string name="discover_title">Khám phá món</string>
+    <string name="hint_search_ingredient">Tìm theo nguyên liệu, vd: trứng, gà…</string>
+    <string name="discover_suggest_heading">Gợi ý theo nguyên liệu</string>
+    <string name="discover_empty">Không tìm thấy món phù hợp</string>
+    <string name="badge_saved">Đã lưu</string>
+    <string name="cd_preview_recipe">Xem trước món</string>
+    <string name="format_steps_count">%1$d bước nấu</string>
+    <string name="action_save_to_book">Lưu vào sổ của tôi</string>
+    <string name="discover_already_saved">Món này đã có trong sổ của bạn</string>
+    <string name="action_open_in_book">Mở món trong sổ</string>
+    <string name="keyword_chicken">Gà</string>
+    <string name="keyword_egg">Trứng</string>
+    <string name="keyword_pork">Thịt heo</string>
+    <string name="keyword_seafood">Cá &amp; tôm</string>
+    <string name="keyword_veggie">Rau củ</string>
+    <string name="keyword_vegan">Món chay</string>
+    <string name="keyword_soup">Canh</string>
+    <string name="keyword_quick">Nấu nhanh ≤ 15 phút</string>
 </resources>

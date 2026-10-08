@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Bảng màu lấy đúng theo file giao diện mẫu "Sổ Bếp Nhà Mình – Giao diện app.html" -->
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Màu chủ đạo (xanh lá) -->
+    <color name="green_primary">#2D6A3E</color>
+    <color name="green_dark">#1C4528</color>
+    <color name="green_soft">#D9EBDB</color>
+    <color name="green_mid">#4E8A5F</color>
+
+    <!-- Nền và bề mặt -->
+    <color name="bg_app">#F4F5F1</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="scrim">#7318201A</color>
+
+    <!-- Chữ -->
+    <color name="text_primary">#18201A</color>
+    <color name="text_secondary">#4F5A52</color>
+    <color name="text_disabled">#9AA39B</color>
+
+    <!-- Viền, đường kẻ -->
+    <color name="border">#DDE2DA</color>
+    <color name="border_card">#E6EAE3</color>
+    <color name="border_input">#AEB8AB</color>
+    <color name="divider">#EEF1EC</color>
+    <color name="track">#E2E6DF</color>
+    <color name="sheet_handle">#C9D0C6</color>
+
+    <!-- Màu nhấn (cam): yêu thích, hẹn giờ, xoá -->
+    <color name="accent_orange">#C9512C</color>
+    <color name="accent_orange_dark">#B8482A</color>
+    <color name="timer_text">#8A3A1E</color>
+    <color name="timer_bg">#FBE7DE</color>
+    <color name="note_bg">#FFF4DC</color>
+
+    <!-- Nhãn bữa ăn trong thực đơn tuần -->
+    <color name="meal_breakfast_bg">#FFF1D6</color>
+    <color name="meal_breakfast_fg">#6E4A0C</color>
+    <color name="meal_lunch_bg">#E0ECF5</color>
+    <color name="meal_lunch_fg">#1F4A68</color>
+    <color name="meal_dinner_bg">#E9E0F1</color>
+    <color name="meal_dinner_fg">#523068</color>
+
+    <!-- Màu nền ảnh giữ chỗ của món (khi món chưa có ảnh): tint = nền, ink = icon -->
+    <color name="dish_tint_1">#F3E3B8</color>
+    <color name="dish_ink_1">#7A5A12</color>
+    <color name="dish_tint_2">#D7E8CF</color>
+    <color name="dish_ink_2">#3C6B33</color>
+    <color name="dish_tint_3">#CDE3C2</color>
+    <color name="dish_ink_3">#2F6227</color>
+    <color name="dish_tint_4">#EBCFB5</color>
+    <color name="dish_ink_4">#7A4320</color>
+    <color name="dish_tint_5">#F2D6C4</color>
+    <color name="dish_ink_5">#8A3F22</color>
+    <color name="dish_tint_6">#E4E8C4</color>
+    <color name="dish_ink_6">#5D6420</color>
+
+    <!-- Ô gợi ý nguyên liệu ở màn Khám phá -->
+    <color name="tile_chicken_bg">#FBE7DE</color>
+    <color name="tile_chicken_fg">#7A3A1E</color>
+    <color name="tile_egg_bg">#FFF1D6</color>
+    <color name="tile_egg_fg">#6E4A0C</color>
+    <color name="tile_pork_bg">#F6E0E0</color>
+    <color name="tile_pork_fg">#7A2E2E</color>
+    <color name="tile_seafood_bg">#E0ECF5</color>
+    <color name="tile_seafood_fg">#1F4A68</color>
+    <color name="tile_veggie_bg">#DCEBD8</color>
+    <color name="tile_veggie_fg">#2F5A27</color>
+    <color name="tile_vegan_bg">#E6EED2</color>
+    <color name="tile_vegan_fg">#4A5A1C</color>
+    <color name="tile_soup_bg">#E9E0F1</color>
+    <color name="tile_soup_fg">#523068</color>
+    <color name="tile_quick_bg">#EDEDE8</color>
+    <color name="tile_quick_fg">#3D443F</color>
+
+    <!-- Khung ảnh ở màn Quét công thức -->
+    <color name="scan_photo_bg">#E6E1D4</color>
 </resources>

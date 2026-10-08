@@ -29,6 +29,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        // Sinh class Binding cho mỗi layout XML (vd. ActivityMainBinding)
+        viewBinding = true
+    }
 }
 
 dependencies {
