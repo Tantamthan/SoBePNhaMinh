@@ -26,8 +26,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         // Sinh class Binding cho mỗi layout XML (vd. ActivityMainBinding)
@@ -40,6 +40,15 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+
+    // Room: lưu dữ liệu offline bằng SQLite. Dự án viết Java nên dùng annotationProcessor
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
+    // Lifecycle: ViewModel (giữ dữ liệu khi xoay màn hình) và LiveData (tự cập nhật giao diện)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

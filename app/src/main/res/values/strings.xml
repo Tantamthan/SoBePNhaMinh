@@ -12,6 +12,14 @@
     <string name="format_minutes">%1$d phút</string>
     <string name="format_people">%1$d người</string>
     <string name="format_recipe_count">%1$d món</string>
+    <string name="share_chooser_title">Chia sẻ qua</string>
+
+    <!-- Thông báo ngắn (Toast) -->
+    <string name="msg_coming_soon">Tính năng này sẽ có ở bản sau</string>
+    <string name="msg_recipe_saved">Đã lưu món mới</string>
+    <string name="msg_recipe_updated">Đã cập nhật món</string>
+    <string name="msg_recipe_not_found">Không tìm thấy món này</string>
+    <string name="msg_no_app_to_open">Không có ứng dụng nào để mở</string>
 
     <!-- Loại món (dùng cho chip lọc và ô chọn khi thêm món) -->
     <string name="category_all">Tất cả</string>
@@ -55,6 +63,7 @@
     <string name="detail_note_label">Ghi chú:</string>
     <string name="format_cook_now">Nấu ngay cho %1$d người</string>
     <string name="qty_to_taste">vừa ăn</string>
+    <string name="format_share_recipe">%1$s – %2$d phút, nấu cho %3$d người (từ Sổ Bếp Nhà Mình)</string>
 
     <!-- ===== 4. CookingMode – Chế độ nấu ===== -->
     <string name="cd_exit_cooking">Thoát chế độ nấu</string>
@@ -105,6 +114,8 @@
     <string name="action_add_step">Thêm bước</string>
     <string name="label_note">Ghi chú riêng (không bắt buộc)</string>
     <string name="action_save_recipe">Lưu món</string>
+    <string name="error_recipe_name_required">Vui lòng nhập tên món</string>
+    <string name="msg_scan_filled">Đã điền tên món từ chữ quét được</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
     <string name="scan_title">Quét công thức</string>
@@ -117,12 +128,16 @@
     <string name="label_scanned_text">Chữ nhận dạng được (sửa lại nếu sai)</string>
     <string name="scan_footer_hint">Chữ sẽ được điền vào form thêm món để bạn chỉnh tiếp</string>
     <string name="action_use_result">Dùng kết quả này</string>
+    <string name="msg_scan_empty">Chưa có chữ nào để dùng</string>
 
     <!-- ===== 7. MealPlan – Thực đơn tuần ===== -->
     <string name="meal_plan_title">Thực đơn tuần</string>
     <string name="cd_prev_week">Tuần trước</string>
     <string name="cd_next_week">Tuần sau</string>
     <string name="this_week">Tuần này</string>
+    <string name="week_previous">Tuần trước</string>
+    <string name="week_next">Tuần sau</string>
+    <string name="format_week_number">Tuần %1$d</string>
     <string name="badge_today">Hôm nay</string>
     <string name="cd_add_meal">Thêm món cho ngày này</string>
     <string name="meal_plan_empty_day">Chưa có món</string>

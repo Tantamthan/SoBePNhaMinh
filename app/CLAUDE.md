@@ -25,6 +25,7 @@ Trọng tâm thuyết trình: "Thiết kế ứng dụng nhiều màn hình (dù
 - Viết file đầy đủ, không bỏ lửng bằng "..." hay "phần còn lại giữ nguyên".
 
 ## Cấu trúc package
+Thiết kế đích:
 ```
 com.sobep
 ├── data/local        AppDatabase, SampleData, entity/, dao/, model/
@@ -32,10 +33,39 @@ com.sobep
 ├── ui/               BaseActivity + mỗi màn hình một package (Activity, ViewModel, Adapter)
 └── util/             IntentKeys, RecipeTextParser, ImageStorage, DateUtils
 ```
+Hiện có (21/10/2026, sau khi dọn code demo):
+```
+com.sobep
+├── ui/
+│   ├── BaseActivity.java
+│   ├── splash/     SplashActivity
+│   ├── main/       MainActivity
+│   ├── detail/     RecipeDetailActivity
+│   ├── cooking/    CookingModeActivity
+│   ├── addedit/    AddEditRecipeActivity
+│   ├── scan/       ScanRecipeActivity
+│   ├── mealplan/   MealPlanActivity
+│   ├── shopping/   ShoppingListActivity
+│   └── discover/   DiscoverActivity
+├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
+└── util/           IntentKeys, DateUtils
+```
+Chưa có: `data/repository`, các ViewModel, Adapter, `RecipeTextParser`, `ImageStorage`.
 
 ## 9 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
 MealPlan, ShoppingList, ScanRecipe, Discover.
+
+## Trạng thái (cập nhật 21/10/2026)
+- Đã có: layout XML của 9 màn hình + 10 layout item + 1 bottom sheet, toàn bộ resource
+  (màu, chữ, font, icon). 9 Activity đã khai báo trong Manifest, chuyển màn được bằng Intent
+  (tường minh, ngầm định, `registerForActivityResult`). Build `assembleDebug` thành công.
+- Đã dọn code demo: không còn dữ liệu giả (`DemoRecipe`, `demo_data.xml`), danh sách món đang trống.
+- Hệ quả tạm thời: chưa mở được Chi tiết món và Chế độ nấu từ màn chính, vì chưa có món nào.
+- Đã có Room (5 bảng, 3 DAO, AppDatabase, SampleData 2 món), build OK, nhưng chưa nối vào giao diện.
+- Chưa làm: Repository, ViewModel, Adapter,
+  quyền CAMERA, quét chữ, hẹn giờ, thực đơn tuần, danh sách đi chợ, khám phá món.
+- Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi
 - Trước khi sửa: tóm tắt sẽ làm gì, liệt kê các file sẽ tạo/sửa, rồi chờ tôi đồng ý.

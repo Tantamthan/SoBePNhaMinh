@@ -11,16 +11,64 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SoBepNhaMinh">
+
+        <!-- Màn 1 · Splash: màn mở đầu tiên khi bấm icon app (MAIN + LAUNCHER) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.SoBepNhaMinh.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Các màn còn lại chỉ mở từ bên trong app nên exported="false" -->
+        <!-- Màn 2 · Sổ công thức -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 3 · Chi tiết món -->
+        <activity
+            android:name=".ui.detail.RecipeDetailActivity"
+            android:exported="false" />
+
+        <!-- Màn 4 · Chế độ nấu -->
+        <activity
+            android:name=".ui.cooking.CookingModeActivity"
+            android:exported="false" />
+
+        <!-- Màn 5 · Thêm / sửa món -->
+        <activity
+            android:name=".ui.addedit.AddEditRecipeActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 6 · Quét công thức -->
+        <activity
+            android:name=".ui.scan.ScanRecipeActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 7 · Thực đơn tuần -->
+        <activity
+            android:name=".ui.mealplan.MealPlanActivity"
+            android:exported="false" />
+
+        <!-- Màn 8 · Danh sách đi chợ -->
+        <activity
+            android:name=".ui.shopping.ShoppingListActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 9 · Khám phá món -->
+        <activity
+            android:name=".ui.discover.DiscoverActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
