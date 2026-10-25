@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ghi chu ca nhan, khong day len Git
+CLAUDE_4.md
+GHI_CHU_THUYET_TRINH.md
