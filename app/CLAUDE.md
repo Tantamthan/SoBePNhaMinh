@@ -48,9 +48,11 @@ com.sobep
 │   ├── shopping/   ShoppingListActivity
 │   └── discover/   DiscoverActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
+├── data/repository/ RecipeRepository
 └── util/           IntentKeys, DateUtils
 ```
-Chưa có: `data/repository`, các ViewModel, Adapter, `RecipeTextParser`, `ImageStorage`.
+ViewModel đã có ở main/, detail/, addedit/ (27/10/2026).
+Chưa có: ViewModel các màn còn lại, Adapter, `RecipeTextParser`, `ImageStorage`.
 
 ## 9 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -63,7 +65,8 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
 - Đã dọn code demo: không còn dữ liệu giả (`DemoRecipe`, `demo_data.xml`), danh sách món đang trống.
 - Hệ quả tạm thời: chưa mở được Chi tiết món và Chế độ nấu từ màn chính, vì chưa có món nào.
 - Đã có Room (5 bảng, 3 DAO, AppDatabase, SampleData 2 món), build OK, nhưng chưa nối vào giao diện.
-- Chưa làm: Repository, ViewModel, Adapter,
+- 27/10: có `RecipeRepository` + 3 ViewModel (Main, RecipeDetail, AddEditRecipe), build OK, chưa nối vào Activity.
+- Chưa làm: Adapter, nối ViewModel vào Activity,
   quyền CAMERA, quét chữ, hẹn giờ, thực đơn tuần, danh sách đi chợ, khám phá món.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 

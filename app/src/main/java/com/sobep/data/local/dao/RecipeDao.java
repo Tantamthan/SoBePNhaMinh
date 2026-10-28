@@ -54,6 +54,18 @@ public abstract class RecipeDao {
     public abstract LiveData<List<Recipe>> search(String keyword, String category,
                                                   boolean favoriteOnly, int maxMinutes);
 
+    // ---------- Đọc một lần (không LiveData), gọi qua databaseWriteExecutor ----------
+    // Dùng khi mở màn Sửa món: chỉ cần lấy dữ liệu một lần để điền sẵn vào form
+
+    @Query("SELECT * FROM recipes WHERE id = :id")
+    public abstract Recipe getByIdNow(long id);
+
+    @Query("SELECT * FROM ingredients WHERE recipeId = :recipeId ORDER BY position")
+    public abstract List<Ingredient> getIngredientsNow(long recipeId);
+
+    @Query("SELECT * FROM steps WHERE recipeId = :recipeId ORDER BY position")
+    public abstract List<Step> getStepsNow(long recipeId);
+
     // ---------- Ghi (gọi qua databaseWriteExecutor) ----------
 
     @Insert
