@@ -139,16 +139,31 @@ public class CookingModeViewModel extends AndroidViewModel {
 
     // ---------- Hẹn giờ ----------
 
-    /** Nút chính của bộ đếm: Bắt đầu / Tạm dừng / Tiếp tục; hết giờ thì bấm "Xong" để đặt lại. */
+    /** Nút chính của bộ đếm: Bắt đầu / Tạm dừng / Tiếp tục. Lúc hết giờ nút là "Xong" → gọi completeTimedStep(). */
     public void toggleTimer() {
         TimerState state = timerState.getValue();
         if (state == TimerState.RUNNING) {
             pauseTimer();
-        } else if (state == TimerState.FINISHED) {
-            resetTimer();
-        } else {
+        } else if (state != TimerState.FINISHED) {
             startTimer();
         }
+    }
+
+    /**
+     * Bấm "Xong" khi hết giờ: sang bước tiếp theo (bộ đếm tự đặt lại theo bước mới).
+     * @return false nếu đang ở bước cuối → Activity đóng chế độ nấu (giống nút Hoàn thành)
+     */
+    public boolean completeTimedStep() {
+        List<Step> list = steps.getValue();
+        if (list == null || currentIndex() >= list.size() - 1) {
+            return false;
+        }
+        nextStep();
+        return true;
+    }
+
+    public boolean isTimerFinished() {
+        return timerState.getValue() == TimerState.FINISHED;
     }
 
     /** Đặt lại bộ đếm về số phút của bước hiện tại, chưa chạy. */

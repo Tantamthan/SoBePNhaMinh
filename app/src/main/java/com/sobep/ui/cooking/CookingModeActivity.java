@@ -75,7 +75,14 @@ public class CookingModeActivity extends BaseActivity {
         });
         binding.buttonTimerToggle.setOnClickListener(v -> {
             stopAlarm();
-            viewModel.toggleTimer();
+            if (viewModel.isTimerFinished()) {
+                // Hết giờ, nút là "Xong" → sang bước tiếp; bước cuối thì đóng chế độ nấu
+                if (!viewModel.completeTimedStep()) {
+                    finish();
+                }
+            } else {
+                viewModel.toggleTimer();
+            }
         });
         binding.buttonTimerReset.setOnClickListener(v -> {
             stopAlarm();
