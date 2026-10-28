@@ -51,7 +51,9 @@ com.sobep
 ├── data/repository/ RecipeRepository
 └── util/           IntentKeys, DateUtils
 ```
-ViewModel đã có ở main/, detail/, addedit/ (27/10/2026). Adapter đã có: `main/RecipeAdapter` (28/10/2026).
+ViewModel đã có ở main/, detail/, addedit/ (27/10/2026), cooking/ (28/10/2026).
+Adapter đã có (28/10/2026): `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
+`addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`.
 Chưa có: ViewModel các màn còn lại, Adapter các màn còn lại, `RecipeTextParser`, `ImageStorage`.
 
 ## 9 màn hình (Activity)
@@ -67,7 +69,11 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
 - Đã có Room (5 bảng, 3 DAO, AppDatabase, SampleData 2 món), build OK, nhưng chưa nối vào giao diện.
 - 27/10: có `RecipeRepository` + 3 ViewModel (Main, RecipeDetail, AddEditRecipe), build OK, chưa nối vào Activity.
 - 28/10: màn chính đọc CSDL (`RecipeAdapter` + `MainViewModel`), bấm thẻ mở Chi tiết món, bấm tim đổi yêu thích.
-- Chưa làm: nối ViewModel vào RecipeDetail, AddEditRecipe; tìm kiếm + chip lọc ở màn chính,
+- 28/10: màn Chi tiết món đọc CSDL (`IngredientAdapter`, `StepAdapter` + `RecipeDetailViewModel`), quy đổi số người.
+- 28/10: Thêm/Sửa món lưu CSDL (`IngredientEditAdapter`, `StepEditAdapter` + `AddEditRecipeViewModel`);
+  xoá món = nhấn giữ thẻ ở màn chính + hộp thoại xác nhận. Đã test trên máy ảo.
+- 28/10: Chế độ nấu đọc CSDL (`CookingModeViewModel`), hẹn giờ `CountDownTimer`, chuông khi hết giờ.
+- Chưa làm: tìm kiếm + chip lọc ở màn chính,
   quyền CAMERA, quét chữ, hẹn giờ, thực đơn tuần, danh sách đi chợ, khám phá món.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 

@@ -32,6 +32,9 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.RecipeViewH
         void onRecipeClick(Recipe recipe);
 
         void onFavoriteClick(Recipe recipe);
+
+        /** CN05: nhấn giữ thẻ món để xoá. */
+        void onRecipeLongClick(Recipe recipe);
     }
 
     // Màu nền + màu icon cho thẻ món chưa có ảnh, chọn xoay vòng theo mã món
@@ -89,6 +92,11 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.RecipeViewH
                     ? R.string.cd_remove_favorite : R.string.cd_add_favorite));
 
             binding.cardRecipe.setOnClickListener(v -> listener.onRecipeClick(recipe));
+            // Trả về true = đã xử lý nhấn giữ, không tính thêm là một lần bấm thường
+            binding.cardRecipe.setOnLongClickListener(v -> {
+                listener.onRecipeLongClick(recipe);
+                return true;
+            });
             binding.buttonFavorite.setOnClickListener(v -> listener.onFavoriteClick(recipe));
         }
 

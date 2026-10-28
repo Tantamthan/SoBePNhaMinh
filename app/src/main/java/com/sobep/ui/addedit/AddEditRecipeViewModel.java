@@ -28,6 +28,8 @@ public class AddEditRecipeViewModel extends AndroidViewModel {
     private long recipeId = IntentKeys.NO_RECIPE_ID;
     // true = đã nạp dữ liệu (tránh đọc lại CSDL và ghi đè chữ người dùng đang gõ khi xoay màn hình)
     private boolean loaded;
+    private boolean formFilled;
+    private boolean saving;
 
     // Món đang sửa (chế độ Sửa) hoặc món trống (chế độ Thêm). Activity dùng để điền form
     private final MutableLiveData<Recipe> recipe = new MutableLiveData<>();
@@ -130,12 +132,42 @@ public class AddEditRecipeViewModel extends AndroidViewModel {
     /**
      * Lưu món. Activity đã kiểm tra tên món không trống và đã chép dữ liệu form vào formRecipe.
      * Món có id = 0 → thêm mới; id khác 0 → cập nhật.
+     * Dòng nguyên liệu không có tên / bước không có nội dung (người dùng thêm dòng rồi để trống) bị bỏ qua.
      */
     public void save(Recipe formRecipe) {
-        repository.saveRecipe(formRecipe,
-                new ArrayList<>(currentList(ingredients)),
-                new ArrayList<>(currentList(steps)),
-                savedRecipeId::postValue);
+        // Bấm Lưu 2 lần liên tiếp → chỉ lưu 1 lần
+        if (saving) {
+            return;
+        }
+        saving = true;
+
+        List<Ingredient> ingredientsToSave = new ArrayList<>();
+        for (Ingredient ingredient : currentList(ingredients)) {
+            ingredient.name = ingredient.name.trim();
+            ingredient.unit = ingredient.unit.trim();
+            if (!ingredient.name.isEmpty()) {
+                ingredientsToSave.add(ingredient);
+            }
+        }
+        List<Step> stepsToSave = new ArrayList<>();
+        for (Step step : currentList(steps)) {
+            step.content = step.content.trim();
+            if (!step.content.isEmpty()) {
+                stepsToSave.add(step);
+            }
+        }
+        repository.saveRecipe(formRecipe, ingredientsToSave, stepsToSave, savedRecipeId::postValue);
+    }
+
+    // ---------- Điền form một lần ----------
+
+    /** true = Activity đã điền dữ liệu món vào form; xoay màn hình thì không điền lại (giữ chữ đang gõ). */
+    public boolean isFormFilled() {
+        return formFilled;
+    }
+
+    public void markFormFilled() {
+        formFilled = true;
     }
 
     private static <T> List<T> currentList(LiveData<List<T>> liveData) {

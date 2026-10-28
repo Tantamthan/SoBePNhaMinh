@@ -9,6 +9,9 @@
     <dimen name="icon_button_size">48dp</dimen>
     <dimen name="icon_button_small">44dp</dimen>
 
+    <!-- Chế độ nấu: khoảng cách giữa các đoạn thanh tiến độ -->
+    <dimen name="step_segment_gap">6dp</dimen>
+
     <!-- Bo góc -->
     <dimen name="radius_card">16dp</dimen>
     <dimen name="radius_input">12dp</dimen>

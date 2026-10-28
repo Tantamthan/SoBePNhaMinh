@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sobep.R;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.databinding.ActivityMainBinding;
@@ -101,5 +102,19 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
     @Override
     public void onFavoriteClick(Recipe recipe) {
         viewModel.toggleFavorite(recipe);
+    }
+
+    /** CN05: nhấn giữ thẻ → hỏi xác nhận → xoá. Thẻ tự biến mất vì Room báo danh sách mới. */
+    @Override
+    public void onRecipeLongClick(Recipe recipe) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_delete_title)
+                .setMessage(getString(R.string.format_delete_message, recipe.name))
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
+                    viewModel.deleteRecipe(recipe);
+                    showToast(R.string.msg_recipe_deleted);
+                })
+                .show();
     }
 }

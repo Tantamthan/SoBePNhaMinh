@@ -19,6 +19,7 @@
     <string name="msg_recipe_saved">Đã lưu món mới</string>
     <string name="msg_recipe_updated">Đã cập nhật món</string>
     <string name="msg_recipe_not_found">Không tìm thấy món này</string>
+    <string name="msg_recipe_deleted">Đã xoá món</string>
     <string name="msg_no_app_to_open">Không có ứng dụng nào để mở</string>
 
     <!-- Loại món (dùng cho chip lọc và ô chọn khi thêm món) -->
@@ -50,6 +51,11 @@
     <string name="action_add_recipe">Thêm món</string>
     <string name="cd_add_favorite">Thêm vào yêu thích</string>
     <string name="cd_remove_favorite">Bỏ yêu thích</string>
+    <!-- Hộp thoại xác nhận xoá món (nhấn giữ thẻ món) -->
+    <string name="dialog_delete_title">Xoá món?</string>
+    <string name="format_delete_message">Món \"%1$s\" cùng nguyên liệu và các bước nấu sẽ bị xoá, không khôi phục được.</string>
+    <string name="action_delete">Xoá</string>
+    <string name="action_cancel">Huỷ</string>
 
     <!-- ===== 3. RecipeDetail – Chi tiết món ===== -->
     <string name="format_recipe_for_people">Công thức cho %1$d người</string>
@@ -63,6 +69,8 @@
     <string name="detail_note_label">Ghi chú:</string>
     <string name="format_cook_now">Nấu ngay cho %1$d người</string>
     <string name="qty_to_taste">vừa ăn</string>
+    <!-- Định lượng nguyên liệu: số lượng + đơn vị, vd "250 g" -->
+    <string name="format_quantity">%1$s %2$s</string>
     <string name="format_share_recipe">%1$s – %2$d phút, nấu cho %3$d người (từ Sổ Bếp Nhà Mình)</string>
 
     <!-- ===== 4. CookingMode – Chế độ nấu ===== -->
@@ -78,6 +86,9 @@
     <string name="timer_running">Đang đếm ngược</string>
     <string name="timer_finished">Hết giờ!</string>
     <string name="cooking_no_timer">Bước này không cần hẹn giờ</string>
+    <string name="cooking_no_steps">Món này chưa có bước nấu. Bấm Sửa ở màn chi tiết để thêm các bước.</string>
+    <!-- Đồng hồ đếm ngược phút:giây, vd "03:00" -->
+    <string name="format_timer">%1$02d:%2$02d</string>
     <string name="cooking_keep_screen_on">Màn hình luôn sáng khi đang nấu</string>
     <string name="step_prev">Bước trước</string>
     <string name="step_next">Bước tiếp</string>
@@ -115,6 +126,7 @@
     <string name="label_note">Ghi chú riêng (không bắt buộc)</string>
     <string name="action_save_recipe">Lưu món</string>
     <string name="error_recipe_name_required">Vui lòng nhập tên món</string>
+    <string name="error_servings_range">Khẩu phần từ %1$d đến %2$d người</string>
     <string name="msg_scan_filled">Đã điền tên món từ chữ quét được</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
