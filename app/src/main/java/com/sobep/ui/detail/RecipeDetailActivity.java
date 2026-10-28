@@ -17,6 +17,7 @@ import com.sobep.databinding.ActivityRecipeDetailBinding;
 import com.sobep.ui.BaseActivity;
 import com.sobep.ui.addedit.AddEditRecipeActivity;
 import com.sobep.ui.cooking.CookingModeActivity;
+import com.sobep.util.CategoryNames;
 import com.sobep.util.IntentKeys;
 
 import java.io.File;
@@ -108,7 +109,7 @@ public class RecipeDetailActivity extends BaseActivity {
     /** Điền thông tin chung của món lên màn hình. */
     private void showRecipe(Recipe recipe) {
         binding.textTitle.setText(recipe.name);
-        binding.textCategory.setText(getCategoryName(recipe.category));
+        binding.textCategory.setText(CategoryNames.of(this, recipe.category));
         binding.textTime.setText(getString(R.string.format_minutes, recipe.cookTimeMinutes));
         binding.textBaseServings.setText(getString(R.string.format_recipe_for_people, recipe.servings));
 
@@ -138,17 +139,6 @@ public class RecipeDetailActivity extends BaseActivity {
         binding.buttonCookNow.setText(getString(R.string.format_cook_now, currentServings));
         binding.buttonDecrease.setEnabled(currentServings > RecipeDetailViewModel.MIN_SERVINGS);
         binding.buttonIncrease.setEnabled(currentServings < RecipeDetailViewModel.MAX_SERVINGS);
-    }
-
-    /** Mã danh mục trong CSDL (vd "soup") → tên hiển thị (vd "Canh"), theo string-array recipe_categories. */
-    private String getCategoryName(String category) {
-        String[] names = getResources().getStringArray(R.array.recipe_categories);
-        for (int i = 0; i < Recipe.CATEGORIES.length; i++) {
-            if (Recipe.CATEGORIES[i].equals(category)) {
-                return names[i];
-            }
-        }
-        return names[0];
     }
 
     private void setupActions() {

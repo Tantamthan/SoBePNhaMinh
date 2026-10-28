@@ -185,6 +185,12 @@
     <string name="action_save_to_book">Lưu vào sổ của tôi</string>
     <string name="discover_already_saved">Món này đã có trong sổ của bạn</string>
     <string name="action_open_in_book">Mở món trong sổ</string>
+    <!-- "Canh · 15 phút" -->
+    <string name="format_discover_meta">%1$s · %2$d phút</string>
+    <!-- Một dòng nguyên liệu trong bảng xem trước: "· Trứng gà 2 quả" -->
+    <string name="format_ingredient_line">· %1$s %2$s</string>
+    <string name="format_saved_to_book">Đã lưu “%1$s” vào sổ</string>
+    <string name="msg_sample_load_error">Không đọc được danh sách món mẫu</string>
     <string name="keyword_chicken">Gà</string>
     <string name="keyword_egg">Trứng</string>
     <string name="keyword_pork">Thịt heo</string>

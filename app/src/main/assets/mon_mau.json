@@ -1,0 +1,257 @@
+{
+  "_ghi_chu": "Món mẫu cho màn Khám phá. tags: ga, trung, heo, haisan, rau, chay, canh. category: main, soup, stir_fry, dessert, drink. quantity = 0 nghĩa là vừa ăn.",
+  "recipes": [
+    {
+      "id": "m01",
+      "name": "Canh trứng cà chua",
+      "category": "soup",
+      "cookTimeMinutes": 15,
+      "servings": 3,
+      "tags": ["trung", "canh", "rau"],
+      "ingredients": [
+        { "name": "Trứng gà", "quantity": 2, "unit": "quả" },
+        { "name": "Cà chua", "quantity": 2, "unit": "quả" },
+        { "name": "Hành lá", "quantity": 2, "unit": "nhánh" },
+        { "name": "Nước", "quantity": 800, "unit": "ml" },
+        { "name": "Nước mắm", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Muối", "quantity": 0, "unit": "" }
+      ],
+      "steps": [
+        { "content": "Cà chua bổ múi cau, hành lá cắt khúc.", "timerMinutes": 0 },
+        { "content": "Phi thơm đầu hành, cho cà chua vào xào đến khi mềm.", "timerMinutes": 3 },
+        { "content": "Đổ nước vào, đun sôi rồi nêm nước mắm, muối.", "timerMinutes": 5 },
+        { "content": "Đánh tan trứng, rót từ từ vào nồi và khuấy nhẹ. Rắc hành lá rồi tắt bếp.", "timerMinutes": 1 }
+      ]
+    },
+    {
+      "id": "m02",
+      "name": "Trứng chiên hành lá",
+      "category": "main",
+      "cookTimeMinutes": 10,
+      "servings": 2,
+      "tags": ["trung"],
+      "ingredients": [
+        { "name": "Trứng gà", "quantity": 3, "unit": "quả" },
+        { "name": "Hành lá", "quantity": 3, "unit": "nhánh" },
+        { "name": "Nước mắm", "quantity": 1, "unit": "muỗng cà phê" },
+        { "name": "Tiêu", "quantity": 0, "unit": "" },
+        { "name": "Dầu ăn", "quantity": 2, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        { "content": "Đập trứng ra tô, thêm hành lá thái nhỏ, nước mắm, tiêu rồi đánh đều.", "timerMinutes": 0 },
+        { "content": "Làm nóng dầu trong chảo ở lửa vừa, đổ trứng vào, chiên đến khi mặt dưới vàng.", "timerMinutes": 3 },
+        { "content": "Lật mặt trứng, chiên thêm cho chín đều rồi cắt miếng.", "timerMinutes": 2 }
+      ]
+    },
+    {
+      "id": "m03",
+      "name": "Sườn ram mặn ngọt",
+      "category": "main",
+      "cookTimeMinutes": 40,
+      "servings": 4,
+      "tags": ["heo"],
+      "ingredients": [
+        { "name": "Sườn non", "quantity": 500, "unit": "g" },
+        { "name": "Hành tím", "quantity": 3, "unit": "củ" },
+        { "name": "Tỏi", "quantity": 3, "unit": "tép" },
+        { "name": "Nước mắm", "quantity": 2, "unit": "muỗng canh" },
+        { "name": "Đường", "quantity": 2, "unit": "muỗng canh" },
+        { "name": "Dầu ăn", "quantity": 2, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        { "content": "Sườn chặt miếng vừa ăn, chần qua nước sôi rồi rửa lại cho sạch.", "timerMinutes": 5 },
+        { "content": "Ướp sườn với hành, tỏi băm, nước mắm và đường.", "timerMinutes": 15 },
+        { "content": "Chiên sườn trong chảo dầu nóng đến khi săn và vàng mặt.", "timerMinutes": 10 },
+        { "content": "Đổ phần nước ướp vào, ram lửa nhỏ, đảo đều đến khi nước sệt bám vào sườn.", "timerMinutes": 10 }
+      ]
+    },
+    {
+      "id": "m04",
+      "name": "Gà kho gừng",
+      "category": "main",
+      "cookTimeMinutes": 35,
+      "servings": 4,
+      "tags": ["ga"],
+      "ingredients": [
+        { "name": "Thịt gà", "quantity": 500, "unit": "g" },
+        { "name": "Gừng", "quantity": 1, "unit": "củ" },
+        { "name": "Hành tím", "quantity": 2, "unit": "củ" },
+        { "name": "Nước mắm", "quantity": 2, "unit": "muỗng canh" },
+        { "name": "Đường", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Tiêu", "quantity": 0, "unit": "" }
+      ],
+      "steps": [
+        { "content": "Gà chặt miếng, ướp với nước mắm, đường, hành tím băm.", "timerMinutes": 15 },
+        { "content": "Gừng thái sợi, phi thơm với chút dầu.", "timerMinutes": 0 },
+        { "content": "Cho gà vào đảo đến khi thịt săn lại.", "timerMinutes": 5 },
+        { "content": "Thêm chút nước, kho lửa nhỏ đến khi gà thấm và nước kho sệt lại. Rắc tiêu.", "timerMinutes": 15 }
+      ]
+    },
+    {
+      "id": "m05",
+      "name": "Cháo gà",
+      "category": "main",
+      "cookTimeMinutes": 45,
+      "servings": 3,
+      "tags": ["ga"],
+      "note": "Có thể thêm hành phi và chanh khi ăn.",
+      "ingredients": [
+        { "name": "Gạo", "quantity": 100, "unit": "g" },
+        { "name": "Thịt gà", "quantity": 300, "unit": "g" },
+        { "name": "Gừng", "quantity": 1, "unit": "củ" },
+        { "name": "Hành lá", "quantity": 2, "unit": "nhánh" },
+        { "name": "Muối", "quantity": 0, "unit": "" },
+        { "name": "Tiêu", "quantity": 0, "unit": "" }
+      ],
+      "steps": [
+        { "content": "Vo gạo, để ráo rồi rang sơ trên chảo cho thơm.", "timerMinutes": 5 },
+        { "content": "Luộc gà với vài lát gừng. Vớt gà ra, để nguội rồi xé sợi.", "timerMinutes": 20 },
+        { "content": "Cho gạo vào nồi nước luộc gà, nấu đến khi gạo nở nhừ.", "timerMinutes": 20 },
+        { "content": "Nêm muối, cho gà xé, hành lá và tiêu vào rồi tắt bếp.", "timerMinutes": 0 }
+      ]
+    },
+    {
+      "id": "m06",
+      "name": "Rau muống xào tỏi",
+      "category": "stir_fry",
+      "cookTimeMinutes": 10,
+      "servings": 2,
+      "tags": ["rau", "chay"],
+      "ingredients": [
+        { "name": "Rau muống", "quantity": 1, "unit": "bó" },
+        { "name": "Tỏi", "quantity": 4, "unit": "tép" },
+        { "name": "Hạt nêm chay", "quantity": 1, "unit": "muỗng cà phê" },
+        { "name": "Dầu ăn", "quantity": 2, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        { "content": "Nhặt rau muống, rửa sạch và để ráo. Tỏi đập dập.", "timerMinutes": 0 },
+        { "content": "Phi thơm tỏi với dầu ăn.", "timerMinutes": 1 },
+        { "content": "Cho rau vào xào nhanh trên lửa lớn, nêm hạt nêm vừa ăn rồi tắt bếp.", "timerMinutes": 3 }
+      ]
+    },
+    {
+      "id": "m07",
+      "name": "Đậu hũ sốt cà chua",
+      "category": "main",
+      "cookTimeMinutes": 20,
+      "servings": 3,
+      "tags": ["chay", "rau"],
+      "ingredients": [
+        { "name": "Đậu hũ", "quantity": 3, "unit": "miếng" },
+        { "name": "Cà chua", "quantity": 3, "unit": "quả" },
+        { "name": "Hành lá", "quantity": 2, "unit": "nhánh" },
+        { "name": "Nước tương", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Đường", "quantity": 1, "unit": "muỗng cà phê" },
+        { "name": "Dầu ăn", "quantity": 3, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        { "content": "Cắt đậu hũ miếng vuông, chiên vàng các mặt rồi vớt ra.", "timerMinutes": 8 },
+        { "content": "Cà chua băm nhỏ, xào đến khi nhuyễn thành sốt.", "timerMinutes": 5 },
+        { "content": "Cho đậu vào, nêm nước tương, đường, rim cho đậu thấm sốt.", "timerMinutes": 5 },
+        { "content": "Rắc hành lá thái nhỏ rồi tắt bếp.", "timerMinutes": 0 }
+      ]
+    },
+    {
+      "id": "m08",
+      "name": "Tôm rim mặn ngọt",
+      "category": "main",
+      "cookTimeMinutes": 20,
+      "servings": 3,
+      "tags": ["haisan"],
+      "ingredients": [
+        { "name": "Tôm", "quantity": 300, "unit": "g" },
+        { "name": "Tỏi", "quantity": 3, "unit": "tép" },
+        { "name": "Nước mắm", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Đường", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Dầu ăn", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Hành lá", "quantity": 1, "unit": "nhánh" }
+      ],
+      "steps": [
+        { "content": "Tôm cắt râu, rửa sạch, để ráo.", "timerMinutes": 0 },
+        { "content": "Phi thơm tỏi băm, cho tôm vào đảo đến khi tôm đỏ.", "timerMinutes": 3 },
+        { "content": "Thêm nước mắm, đường, rim lửa nhỏ đến khi nước sệt lại. Rắc hành lá.", "timerMinutes": 10 }
+      ]
+    },
+    {
+      "id": "m09",
+      "name": "Cá kho tộ",
+      "category": "main",
+      "cookTimeMinutes": 45,
+      "servings": 3,
+      "tags": ["haisan"],
+      "ingredients": [
+        { "name": "Cá basa", "quantity": 500, "unit": "g" },
+        { "name": "Nước màu", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Nước mắm", "quantity": 2, "unit": "muỗng canh" },
+        { "name": "Đường", "quantity": 1, "unit": "muỗng canh" },
+        { "name": "Hành tím", "quantity": 2, "unit": "củ" },
+        { "name": "Ớt", "quantity": 1, "unit": "trái" }
+      ],
+      "steps": [
+        { "content": "Cá làm sạch, cắt khúc, ướp với nước màu, nước mắm, đường, hành tím băm.", "timerMinutes": 20 },
+        { "content": "Xếp cá vào nồi đất, thêm chút nước, kho lửa nhỏ đến khi nước kho sánh lại. Thêm ớt.", "timerMinutes": 25 }
+      ]
+    },
+    {
+      "id": "m10",
+      "name": "Canh bí đỏ thịt bằm",
+      "category": "soup",
+      "cookTimeMinutes": 25,
+      "servings": 3,
+      "tags": ["heo", "canh", "rau"],
+      "ingredients": [
+        { "name": "Bí đỏ", "quantity": 300, "unit": "g" },
+        { "name": "Thịt heo xay", "quantity": 150, "unit": "g" },
+        { "name": "Hành lá", "quantity": 2, "unit": "nhánh" },
+        { "name": "Nước", "quantity": 1, "unit": "lít" },
+        { "name": "Nước mắm", "quantity": 1, "unit": "muỗng canh" }
+      ],
+      "steps": [
+        { "content": "Bí đỏ gọt vỏ, cắt miếng vừa ăn.", "timerMinutes": 0 },
+        { "content": "Xào thịt xay cho săn lại.", "timerMinutes": 3 },
+        { "content": "Đổ nước, cho bí vào nấu đến khi bí mềm.", "timerMinutes": 15 },
+        { "content": "Nêm nước mắm vừa ăn, rắc hành lá rồi tắt bếp.", "timerMinutes": 1 }
+      ]
+    },
+    {
+      "id": "m11",
+      "name": "Chè đậu xanh nước cốt dừa",
+      "category": "dessert",
+      "cookTimeMinutes": 40,
+      "servings": 4,
+      "tags": ["chay"],
+      "note": "Ngâm đậu xanh khoảng 2 tiếng trước khi nấu cho nhanh mềm.",
+      "ingredients": [
+        { "name": "Đậu xanh cà vỏ", "quantity": 200, "unit": "g" },
+        { "name": "Đường", "quantity": 120, "unit": "g" },
+        { "name": "Nước cốt dừa", "quantity": 200, "unit": "ml" },
+        { "name": "Nước", "quantity": 1, "unit": "lít" },
+        { "name": "Lá dứa", "quantity": 2, "unit": "lá" }
+      ],
+      "steps": [
+        { "content": "Đậu xanh đã ngâm rửa sạch, để ráo.", "timerMinutes": 0 },
+        { "content": "Nấu đậu với nước và lá dứa đến khi đậu mềm nhừ.", "timerMinutes": 30 },
+        { "content": "Thêm đường, khuấy tan và nấu thêm cho chè sánh.", "timerMinutes": 5 },
+        { "content": "Múc chè ra chén, chan nước cốt dừa lên trên.", "timerMinutes": 0 }
+      ]
+    },
+    {
+      "id": "m12",
+      "name": "Sinh tố bơ",
+      "category": "drink",
+      "cookTimeMinutes": 5,
+      "servings": 2,
+      "tags": ["chay"],
+      "ingredients": [
+        { "name": "Bơ", "quantity": 1, "unit": "quả" },
+        { "name": "Sữa đặc", "quantity": 2, "unit": "muỗng canh" },
+        { "name": "Sữa tươi", "quantity": 200, "unit": "ml" },
+        { "name": "Đá viên", "quantity": 1, "unit": "chén" }
+      ],
+      "steps": [
+        { "content": "Bơ bổ đôi, bỏ hạt, dùng muỗng nạo lấy phần thịt.", "timerMinutes": 0 },
+        { "content": "Cho bơ, sữa đặc, sữa tươi và đá vào máy xay, xay đến khi mịn.", "timerMinutes": 1 }
+      ]
+    }
+  ]
+}

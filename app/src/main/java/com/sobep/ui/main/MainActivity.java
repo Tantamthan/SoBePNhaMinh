@@ -23,6 +23,7 @@ import com.sobep.ui.detail.RecipeDetailActivity;
 import com.sobep.ui.discover.DiscoverActivity;
 import com.sobep.ui.mealplan.MealPlanActivity;
 import com.sobep.ui.shopping.ShoppingListActivity;
+import com.sobep.util.CategoryNames;
 import com.sobep.util.IntentKeys;
 
 import java.util.List;
@@ -131,21 +132,10 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
         } else if (filter.maxMinutes > 0) {
             binding.textHeading.setText(R.string.main_heading_quick);
         } else if (!filter.category.isEmpty()) {
-            binding.textHeading.setText(getCategoryName(filter.category));
+            binding.textHeading.setText(CategoryNames.of(this, filter.category));
         } else {
             binding.textHeading.setText(R.string.main_heading_all);
         }
-    }
-
-    /** Mã danh mục (vd "soup") → tên hiển thị (vd "Canh"), theo string-array recipe_categories. */
-    private String getCategoryName(String category) {
-        String[] names = getResources().getStringArray(R.array.recipe_categories);
-        for (int i = 0; i < Recipe.CATEGORIES.length; i++) {
-            if (Recipe.CATEGORIES[i].equals(category)) {
-                return names[i];
-            }
-        }
-        return getString(R.string.main_heading_all);
     }
 
     private void hideKeyboard() {

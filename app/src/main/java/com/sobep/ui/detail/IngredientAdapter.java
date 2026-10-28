@@ -56,8 +56,8 @@ public class IngredientAdapter extends ListAdapter<Ingredient, IngredientAdapter
         }
     }
 
-    /** Định lượng hiển thị: "250 g", "2 quả"; số lượng 0 → "vừa ăn". */
-    static String formatQuantity(Context context, Ingredient ingredient) {
+    /** Định lượng hiển thị: "250 g", "2 quả"; số lượng 0 → "vừa ăn". Màn Khám phá cũng dùng hàm này. */
+    public static String formatQuantity(Context context, Ingredient ingredient) {
         if (ingredient.quantity <= 0) {
             return context.getString(R.string.qty_to_taste);
         }

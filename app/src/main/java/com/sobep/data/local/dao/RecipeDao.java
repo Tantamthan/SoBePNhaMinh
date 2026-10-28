@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
+import com.sobep.data.local.model.SavedSample;
 
 import java.util.List;
 
@@ -53,6 +54,10 @@ public abstract class RecipeDao {
             + " ORDER BY updatedAt DESC")
     public abstract LiveData<List<Recipe>> search(String keyword, String category,
                                                   boolean favoriteOnly, int maxMinutes);
+
+    /** CN06: các món trong sổ chép từ món mẫu (để biết món mẫu nào đã lưu). */
+    @Query("SELECT id, sourceSampleId FROM recipes WHERE sourceSampleId IS NOT NULL")
+    public abstract LiveData<List<SavedSample>> getSavedSamples();
 
     // ---------- Đọc một lần (không LiveData), gọi qua databaseWriteExecutor ----------
     // Dùng khi mở màn Sửa món: chỉ cần lấy dữ liệu một lần để điền sẵn vào form

@@ -49,11 +49,12 @@ com.sobep
 │   └── discover/   DiscoverActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
 ├── data/repository/ RecipeRepository
-└── util/           IntentKeys, DateUtils
+├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
+└── util/           IntentKeys, DateUtils, CategoryNames
 ```
-ViewModel đã có ở main/, detail/, addedit/ (27/10/2026), cooking/ (28/10/2026).
-Adapter đã có (28/10/2026): `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
-`addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`.
+ViewModel đã có ở main/, detail/, addedit/ (27/10/2026), cooking/ (28/10/2026), discover/ (29/10/2026).
+Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
+`addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`.
 Chưa có: ViewModel các màn còn lại, Adapter các màn còn lại, `RecipeTextParser`, `ImageStorage`.
 
 ## 9 màn hình (Activity)
@@ -74,7 +75,9 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
   xoá món = nhấn giữ thẻ ở màn chính + hộp thoại xác nhận. Đã test trên máy ảo.
 - 28/10: Chế độ nấu đọc CSDL (`CookingModeViewModel`), hẹn giờ `CountDownTimer`, chuông khi hết giờ.
 - 29/10: tìm kiếm (tên món / nguyên liệu) + chip lọc (loại món, Yêu thích, Dưới 30 phút) ở màn chính.
-- Chưa làm: quyền CAMERA, quét chữ, thực đơn tuần, danh sách đi chợ, khám phá món.
+- 29/10: Khám phá món (`DiscoverViewModel`), 12 món mẫu trong `assets/mon_mau.json` (`data/sample/`), lưu vào sổ
+  qua `sourceSampleId`. Thêm `util/CategoryNames`.
+- Chưa làm: quyền CAMERA, quét chữ, thực đơn tuần, danh sách đi chợ.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

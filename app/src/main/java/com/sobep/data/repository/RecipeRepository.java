@@ -10,6 +10,7 @@ import com.sobep.data.local.dao.RecipeDao;
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
+import com.sobep.data.local.model.SavedSample;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +67,11 @@ public class RecipeRepository {
 
     public LiveData<List<Step>> getSteps(long recipeId) {
         return recipeDao.getSteps(recipeId);
+    }
+
+    /** CN06: món mẫu nào đã được lưu vào sổ (kèm mã món trong sổ). */
+    public LiveData<List<SavedSample>> getSavedSamples() {
+        return recipeDao.getSavedSamples();
     }
 
     /** CN04: đọc món một lần để điền sẵn vào form Sửa. */
