@@ -48,14 +48,15 @@ com.sobep
 │   ├── shopping/   ShoppingListActivity
 │   └── discover/   DiscoverActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
-├── data/repository/ RecipeRepository
+├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
-└── util/           IntentKeys, DateUtils, CategoryNames
+└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat
 ```
-ViewModel đã có ở main/, detail/, addedit/ (27/10/2026), cooking/ (28/10/2026), discover/ (29/10/2026).
+ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/ (mỗi màn trừ splash, scan).
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
-`addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`.
-Chưa có: ViewModel các màn còn lại, Adapter các màn còn lại, `RecipeTextParser`, `ImageStorage`.
+`addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
+`mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
+Chưa có: ViewModel của scan/, `RecipeTextParser`, `ImageStorage`.
 
 ## 9 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -77,7 +78,12 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
 - 29/10: tìm kiếm (tên món / nguyên liệu) + chip lọc (loại món, Yêu thích, Dưới 30 phút) ở màn chính.
 - 29/10: Khám phá món (`DiscoverViewModel`), 12 món mẫu trong `assets/mon_mau.json` (`data/sample/`), lưu vào sổ
   qua `sourceSampleId`. Thêm `util/CategoryNames`.
-- Chưa làm: quyền CAMERA, quét chữ, thực đơn tuần, danh sách đi chợ.
+- 29/10: Thực đơn tuần (`MealPlanViewModel`, RecyclerView lồng nhau) → Đi chợ (`ShoppingListViewModel`):
+  chia theo ngày nấu, tự lấy nguyên liệu theo thực đơn khi mở màn (`syncWithMealPlan`), tích, tự thêm, chia sẻ.
+  Thêm `MealPlanRepository`, `ShoppingRepository`, `util/QuantityFormat`.
+- CSDL **version 2**: `MIGRATION_1_2` thêm cột `date`, `forRecipes` vào `shopping_items`. Đổi schema lần sau
+  phải tăng version và viết Migration mới (không xoá dữ liệu người dùng).
+- Chưa làm: quyền CAMERA, quét chữ (ScanRecipe), tài khoản & đồng bộ.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

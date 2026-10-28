@@ -12,8 +12,9 @@ public final class IntentKeys {
     // Đoạn chữ quét được (String). ScanRecipe trả về cho AddEditRecipe
     public static final String EXTRA_SCANNED_TEXT = "com.sobep.extra.SCANNED_TEXT";
 
-    // Khoảng ngày của tuần (String, vd "6/10 – 12/10/2026"). MealPlan gửi sang ShoppingList
-    public static final String EXTRA_WEEK_RANGE = "com.sobep.extra.WEEK_RANGE";
+    // Ngày Thứ Hai của tuần (String "yyyy-MM-dd", vd "2026-10-26"). MealPlan gửi sang ShoppingList
+    // để đi chợ theo đúng tuần đang xem; không gửi = tuần này
+    public static final String EXTRA_WEEK_START = "com.sobep.extra.WEEK_START";
 
     // Giá trị mặc định khi Intent không mang mã món
     public static final long NO_RECIPE_ID = -1L;

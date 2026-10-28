@@ -12,6 +12,10 @@
     <!-- Chế độ nấu: khoảng cách giữa các đoạn thanh tiến độ -->
     <dimen name="step_segment_gap">6dp</dimen>
 
+    <!-- Viền thẻ: thường 1dp (giống Widget.SoBep.Card), thẻ ngày hôm nay 2dp -->
+    <dimen name="stroke_card">1dp</dimen>
+    <dimen name="stroke_today">2dp</dimen>
+
     <!-- Bo góc -->
     <dimen name="radius_card">16dp</dimen>
     <dimen name="radius_input">12dp</dimen>

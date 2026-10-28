@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sobep.R;
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.databinding.ItemIngredientBinding;
+import com.sobep.util.QuantityFormat;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -22,9 +21,6 @@ import java.util.List;
  * Số lượng nhận vào đã được RecipeDetailViewModel nhân theo số người đang chọn.
  */
 public class IngredientAdapter extends ListAdapter<Ingredient, IngredientAdapter.IngredientViewHolder> {
-
-    // Tối đa 2 chữ số thập phân, bỏ số 0 thừa: 250.0 → "250", 0.125 → "0,13" (dấu phẩy theo ngôn ngữ máy)
-    private static final DecimalFormat QUANTITY_FORMAT = new DecimalFormat("#.##");
 
     public IngredientAdapter() {
         super(DIFF_CALLBACK);
@@ -58,14 +54,7 @@ public class IngredientAdapter extends ListAdapter<Ingredient, IngredientAdapter
 
     /** Định lượng hiển thị: "250 g", "2 quả"; số lượng 0 → "vừa ăn". Màn Khám phá cũng dùng hàm này. */
     public static String formatQuantity(Context context, Ingredient ingredient) {
-        if (ingredient.quantity <= 0) {
-            return context.getString(R.string.qty_to_taste);
-        }
-        String number = QUANTITY_FORMAT.format(ingredient.quantity);
-        if (ingredient.unit.trim().isEmpty()) {
-            return number;
-        }
-        return context.getString(R.string.format_quantity, number, ingredient.unit.trim());
+        return QuantityFormat.format(context, ingredient.quantity, ingredient.unit);
     }
 
     static class IngredientViewHolder extends RecyclerView.ViewHolder {

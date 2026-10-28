@@ -55,7 +55,34 @@ public final class DateUtils {
                 calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private static String formatDayMonth(Calendar calendar) {
+    /** Ngược lại với toDateKey: "2026-10-21" → Calendar (00:00 ngày đó). */
+    public static Calendar fromDateKey(String dateKey) {
+        String[] parts = dateKey.split("-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]) - 1, Integer.parseInt(parts[2]));
+        return calendar;
+    }
+
+    /** Cộng thêm số ngày vào ngày dạng "yyyy-MM-dd", vd ("2026-10-26", 6) → "2026-11-01". */
+    public static String addDays(String dateKey, int days) {
+        Calendar calendar = fromDateKey(dateKey);
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        return toDateKey(calendar);
+    }
+
+    /** Vị trí trong tuần: Thứ Hai = 0, …, Chủ nhật = 6 (dùng với string-array day_names). */
+    public static int dayIndex(Calendar calendar) {
+        return (calendar.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY + 7) % 7;
+    }
+
+    /** Ngày hôm nay dạng "yyyy-MM-dd", để biết thẻ ngày nào là "Hôm nay". */
+    public static String todayKey() {
+        return toDateKey(Calendar.getInstance());
+    }
+
+    /** Ngày/tháng ngắn, vd "28/9". */
+    public static String formatDayMonth(Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1);
     }
 }

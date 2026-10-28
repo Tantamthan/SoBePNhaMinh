@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một nhóm trong danh sách đi chợ (ShoppingDayAdapter): tiêu đề ngày (Thứ Năm 29/10, nhãn "Hôm nay", 2/5),
+     dòng các món nấu trong ngày (Tối: Canh trứng cà chua), rồi các nguyên liệu cần mua (item_shopping).
+     Nhóm "Tự thêm": không có ngày, ẩn dòng món. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardDay"
+    style="@style/Widget.SoBep.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/textDayName"
+                style="@style/Text.SoBep.Subheading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Thứ Năm" />
+
+            <TextView
+                android:id="@+id/textDate"
+                style="@style/Text.SoBep.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                tools:text="29/10" />
+
+            <TextView
+                android:id="@+id/textToday"
+                style="@style/Text.SoBep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge_today"
+                android:fontFamily="@font/be_vietnam_pro_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/badge_today"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Đã mua bao nhiêu trong ngày, vd "2/5" -->
+            <TextView
+                android:id="@+id/textDayProgress"
+                style="@style/Text.SoBep.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2/5" />
+        </LinearLayout>
+
+        <!-- Các món nấu trong ngày -->
+        <TextView
+            android:id="@+id/textMeals"
+            style="@style/Text.SoBep.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingHorizontal="16dp"
+            tools:text="Tối: Canh trứng cà chua · Sáng: Trứng chiên hành lá" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_shopping" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

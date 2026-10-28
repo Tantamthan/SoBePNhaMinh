@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Màn 8 · ShoppingListActivity – Đi chợ:
-     thẻ tiến độ (Đã mua x/y), ô thêm thứ cần mua, danh sách "Cần mua" và "Đã mua",
-     nút "Xoá các mục đã mua". -->
+     thẻ tiến độ (Đã mua x/y), ô thêm thứ cần mua, danh sách chia theo từng ngày nấu trong tuần
+     (món đã mua gạch ngang tại chỗ), nhóm "Tự thêm", nút xoá các mục tự thêm đã mua. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -138,58 +138,31 @@
                     app:tint="@color/white" />
             </LinearLayout>
 
-            <!-- Cần mua -->
+            <!-- Thực đơn tuần chưa có món và chưa tự thêm gì -->
             <TextView
-                android:id="@+id/textToBuyHeading"
-                style="@style/Text.SoBep.Subheading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                tools:text="Cần mua · 11" />
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SoBep.Card"
+                android:id="@+id/textEmpty"
+                style="@style/Text.SoBep.Secondary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerToBuy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="11"
-                    tools:listitem="@layout/item_shopping" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Đã mua -->
-            <TextView
-                android:id="@+id/textBoughtHeading"
-                style="@style/Text.SoBep.Subheading"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@color/text_secondary"
-                tools:text="Đã mua · 2" />
+                android:background="@drawable/bg_dashed_empty"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="28dp"
+                android:text="@string/shopping_empty"
+                android:textSize="15sp"
+                android:visibility="gone" />
 
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SoBep.Card"
+            <!-- Các nhóm theo ngày nấu (item_shopping_day), nhóm "Tự thêm" ở cuối -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerDays"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerBought"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/item_shopping" />
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_shopping_day" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonClearBought"

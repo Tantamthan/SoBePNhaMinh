@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Một mục trong danh sách đi chợ: ô tích, tên, số lượng.
+<!-- Một mục trong danh sách đi chợ: ô tích, tên (+ dòng nhỏ "cho món nào" nếu ngày nấu nhiều món), số lượng.
      Mục đã mua: adapter đổi chữ sang màu xám và gạch ngang (Paint.STRIKE_THRU_TEXT_FLAG).
      Adapter ẩn đường kẻ (divider) ở dòng cuối cùng. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,14 +28,32 @@
             android:minHeight="0dp"
             app:buttonTint="@color/green_primary" />
 
-        <TextView
-            android:id="@+id/textName"
-            style="@style/Text.SoBep.BodyLarge"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
-            tools:text="Cà chua" />
+            android:orientation="vertical"
+            android:paddingVertical="6dp">
+
+            <TextView
+                android:id="@+id/textName"
+                style="@style/Text.SoBep.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Trứng gà" />
+
+            <!-- Dùng cho món nào (chỉ hiện khi ngày đó nấu từ 2 món trở lên) -->
+            <TextView
+                android:id="@+id/textForRecipes"
+                style="@style/Text.SoBep.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"
+                tools:text="cho Canh trứng cà chua, Trứng chiên hành lá"
+                tools:visibility="visible" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textQuantity"

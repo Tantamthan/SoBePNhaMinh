@@ -162,6 +162,28 @@
     <string name="meal_lunch">Trưa</string>
     <string name="meal_dinner">Tối</string>
     <string name="action_create_shopping_list">Tạo danh sách đi chợ</string>
+    <!-- Tên ngày theo thứ tự Thứ Hai → Chủ nhật (DayPlan.dayIndex) -->
+    <string-array name="day_names">
+        <item>Thứ Hai</item>
+        <item>Thứ Ba</item>
+        <item>Thứ Tư</item>
+        <item>Thứ Năm</item>
+        <item>Thứ Sáu</item>
+        <item>Thứ Bảy</item>
+        <item>Chủ nhật</item>
+    </string-array>
+    <!-- Thứ tự trùng với MealPlan.MEAL_BREAKFAST / MEAL_LUNCH / MEAL_DINNER -->
+    <string-array name="meal_names">
+        <item>@string/meal_breakfast</item>
+        <item>@string/meal_lunch</item>
+        <item>@string/meal_dinner</item>
+    </string-array>
+    <string name="format_pick_recipe_title">Thêm món cho %1$s</string>
+    <string name="format_pick_meal_title">“%1$s” vào bữa nào?</string>
+    <string name="msg_no_recipes_for_plan">Sổ chưa có món nào. Hãy thêm món hoặc lưu món từ Khám phá trước.</string>
+    <string name="dialog_remove_meal_title">Bỏ món khỏi thực đơn?</string>
+    <string name="format_remove_meal_message">Bỏ “%1$s” khỏi bữa %2$s? Món vẫn còn trong sổ.</string>
+    <string name="action_remove">Bỏ</string>
 
     <!-- ===== 8. ShoppingList – Đi chợ ===== -->
     <string name="shopping_title">Đi chợ</string>
@@ -170,9 +192,22 @@
     <string name="format_shopping_progress">Đã mua %1$d/%2$d</string>
     <string name="hint_add_shopping_item">Thêm thứ cần mua…</string>
     <string name="cd_add_shopping_item">Thêm vào danh sách</string>
-    <string name="format_to_buy">Cần mua · %1$d</string>
-    <string name="format_bought">Đã mua · %1$d</string>
-    <string name="action_clear_bought">Xoá các mục đã mua</string>
+    <!-- Nhóm các thứ người dùng tự gõ thêm (không thuộc ngày nào) -->
+    <string name="shopping_manual_group">Tự thêm</string>
+    <!-- Ngày nấu nhiều món: nguyên liệu dùng cho món nào -->
+    <string name="format_for_recipes">cho %1$s</string>
+    <!-- Một món trong tiêu đề ngày: "Tối: Canh trứng cà chua" -->
+    <string name="format_meal_line">%1$s: %2$s</string>
+    <!-- Đã mua bao nhiêu trong một ngày: "2/5" -->
+    <string name="format_day_progress">%1$d/%2$d</string>
+    <string name="shopping_empty">Tuần này chưa có món nào trong thực đơn. Hãy lên thực đơn tuần hoặc tự thêm thứ cần mua.</string>
+    <string name="action_clear_bought">Xoá các mục tự thêm đã mua</string>
+    <string name="shopping_share_header">Cần mua:</string>
+    <!-- Tiêu đề một ngày khi chia sẻ: "Thứ Năm 29/10:" -->
+    <string name="format_share_day">%1$s %2$s:</string>
+    <string name="msg_shopping_nothing_to_share">Không còn thứ gì cần mua</string>
+    <!-- Một dòng khi chia sẻ danh sách: "- Cà chua 2 quả" -->
+    <string name="format_share_line">- %1$s %2$s</string>
 
     <!-- ===== 9. Discover – Khám phá món ===== -->
     <string name="discover_title">Khám phá món</string>
