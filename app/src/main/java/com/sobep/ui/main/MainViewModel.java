@@ -22,6 +22,9 @@ import java.util.List;
  */
 public class MainViewModel extends AndroidViewModel {
 
+    // Chip "Dưới 30 phút" (CN08: lọc theo thời gian nấu)
+    public static final int QUICK_MAX_MINUTES = 30;
+
     /** Bộ lọc danh sách món. Không sửa trực tiếp: mỗi lần đổi tạo một bản mới (bất biến). */
     public static final class RecipeFilter {
         public final String keyword;      // "" = không tìm
@@ -89,6 +92,16 @@ public class MainViewModel extends AndroidViewModel {
     public void setFavoriteOnly(boolean favoriteOnly) {
         RecipeFilter f = currentFilter();
         filter.setValue(new RecipeFilter(f.keyword, f.category, favoriteOnly, f.maxMinutes));
+    }
+
+    /**
+     * Bấm một chip lọc: đổi danh mục + yêu thích + thời gian cùng lúc (chỉ chạy truy vấn 1 lần),
+     * giữ nguyên từ khoá đang tìm.
+     */
+    public void setChipFilter(String category, boolean favoriteOnly, int maxMinutes) {
+        RecipeFilter f = currentFilter();
+        filter.setValue(new RecipeFilter(f.keyword, category == null ? "" : category,
+                favoriteOnly, maxMinutes));
     }
 
     public void clearFilter() {

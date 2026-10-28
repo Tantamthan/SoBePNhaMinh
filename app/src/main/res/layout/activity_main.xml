@@ -124,6 +124,16 @@
                     app:chipIcon="@drawable/ic_heart_filled"
                     app:chipIconVisible="true" />
 
+                <!-- CN08: lọc món nấu nhanh (thời gian nấu ≤ 30 phút) -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipQuick"
+                    style="@style/Widget.SoBep.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_quick"
+                    app:chipIcon="@drawable/ic_clock_14"
+                    app:chipIconVisible="true" />
+
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMain"
                     style="@style/Widget.SoBep.Chip.Filter"

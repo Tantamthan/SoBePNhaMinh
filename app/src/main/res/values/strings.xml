@@ -25,6 +25,7 @@
     <!-- Loại món (dùng cho chip lọc và ô chọn khi thêm món) -->
     <string name="category_all">Tất cả</string>
     <string name="category_favorite">Yêu thích</string>
+    <string name="category_quick">Dưới 30 phút</string>
     <string name="category_main">Món chính</string>
     <string name="category_soup">Canh</string>
     <string name="category_stir_fry">Xào</string>
@@ -45,9 +46,13 @@
     <string name="cd_discover">Khám phá món</string>
     <string name="cd_meal_plan">Thực đơn tuần</string>
     <string name="cd_shopping_list">Danh sách đi chợ</string>
-    <string name="hint_search_recipe">Tìm theo tên món…</string>
+    <string name="hint_search_recipe">Tìm theo tên món, nguyên liệu…</string>
     <string name="main_heading_all">Tất cả món</string>
+    <string name="main_heading_favorite">Món yêu thích</string>
+    <string name="main_heading_quick">Món nấu dưới 30 phút</string>
+    <string name="format_search_heading">Kết quả cho “%1$s”</string>
     <string name="main_empty">Chưa có món nào ở mục này</string>
+    <string name="main_no_result">Không tìm thấy món nào khớp với từ khoá</string>
     <string name="action_add_recipe">Thêm món</string>
     <string name="cd_add_favorite">Thêm vào yêu thích</string>
     <string name="cd_remove_favorite">Bỏ yêu thích</string>
