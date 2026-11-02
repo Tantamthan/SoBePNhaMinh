@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Chụp ảnh trang công thức ở màn Quét. Quyền "nguy hiểm" → phải xin thêm lúc chạy -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Máy không có camera vẫn cài được app (khi đó chỉ chọn ảnh có sẵn) -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -69,6 +76,17 @@
             android:name=".ui.discover.DiscoverActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Cho app Camera ghi ảnh vào file của app mình qua Uri content:// (xem util/ImageStorage) -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

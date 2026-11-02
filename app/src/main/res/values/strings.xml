@@ -136,7 +136,7 @@
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
     <string name="scan_title">Quét công thức</string>
-    <string name="scan_photo_badge">Ảnh đã chụp</string>
+    <string name="scan_photo_badge">Ảnh công thức</string>
     <string name="cd_scanned_photo">Ảnh trang công thức đã chụp</string>
     <string name="action_retake">Chụp lại</string>
     <string name="action_pick_other_photo">Chọn ảnh khác</string>
@@ -146,6 +146,17 @@
     <string name="scan_footer_hint">Chữ sẽ được điền vào form thêm món để bạn chỉnh tiếp</string>
     <string name="action_use_result">Dùng kết quả này</string>
     <string name="msg_scan_empty">Chưa có chữ nào để dùng</string>
+    <string name="scan_idle">Chụp hoặc chọn một ảnh có công thức</string>
+    <string name="scan_no_text">Không thấy chữ trong ảnh. Thử chụp lại thẳng và đủ sáng hơn</string>
+    <string name="scan_error">Không đọc được ảnh này. Thử chụp lại hoặc chọn ảnh khác</string>
+    <string name="msg_no_camera_app">Máy không có ứng dụng camera, hãy chọn ảnh có sẵn</string>
+    <string name="permission_camera_title">Cho phép dùng camera</string>
+    <string name="permission_camera_rationale">Sổ Bếp cần camera để chụp trang công thức rồi đọc chữ. Ảnh chỉ lưu tạm trong máy, không gửi đi đâu.</string>
+    <string name="permission_camera_denied">Chưa có quyền camera. Bạn vẫn có thể chọn ảnh có sẵn</string>
+    <string name="permission_camera_blocked">Quyền camera đang bị tắt. Vào Cài đặt → Quyền → Camera để bật lại, hoặc chọn ảnh có sẵn.</string>
+    <string name="action_allow">Cho phép</string>
+    <string name="action_open_settings">Mở Cài đặt</string>
+    <string name="action_not_now">Để sau</string>
 
     <!-- ===== 7. MealPlan – Thực đơn tuần ===== -->
     <string name="meal_plan_title">Thực đơn tuần</string>

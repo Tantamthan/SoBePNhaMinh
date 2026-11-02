@@ -69,7 +69,9 @@
                     android:src="@drawable/ic_image"
                     app:tint="@color/text_disabled" />
 
+                <!-- Nhãn chỉ hiện khi đã có ảnh -->
                 <TextView
+                    android:id="@+id/textPhotoBadge"
                     style="@style/Text.SoBep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +82,8 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="@string/scan_photo_badge"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Chụp lại / Chọn ảnh khác -->
@@ -111,7 +114,8 @@
                     app:icon="@drawable/ic_image" />
             </LinearLayout>
 
-            <!-- Trạng thái đọc chữ: đang đọc (vòng xoay) hoặc đã xong (dấu tích) -->
+            <!-- Trạng thái đọc chữ: chưa có ảnh, đang đọc (vòng xoay), đã xong (dấu tích),
+                 không có chữ / lỗi (nền cam). Activity đổi theo ScanRecipeViewModel.Status -->
             <LinearLayout
                 android:id="@+id/layoutStatus"
                 android:layout_width="match_parent"

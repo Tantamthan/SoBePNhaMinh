@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
 
+    // ML Kit nhận dạng chữ (bản kèm sẵn mô hình trong APK): đọc chữ trong ảnh ngay trên máy, không cần mạng
+    implementation(libs.mlkit.text.recognition)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
