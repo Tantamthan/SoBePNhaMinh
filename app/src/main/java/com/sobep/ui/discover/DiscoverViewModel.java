@@ -15,13 +15,12 @@ import com.sobep.data.local.model.SavedSample;
 import com.sobep.data.repository.RecipeRepository;
 import com.sobep.data.sample.SampleRecipe;
 import com.sobep.data.sample.SampleRecipeLoader;
+import com.sobep.util.VietnameseText;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -148,7 +147,7 @@ public class DiscoverViewModel extends AndroidViewModel {
         if (all == null) {
             return;
         }
-        String query = normalize(keyword.getValue());
+        String query = VietnameseText.normalize(keyword.getValue());
         KeywordTile tile = selectedTile.getValue() == null ? null : KeywordTile.find(selectedTile.getValue());
 
         List<SampleRecipe> filtered = new ArrayList<>();
@@ -164,27 +163,15 @@ public class DiscoverViewModel extends AndroidViewModel {
 
     /** Khớp tên món hoặc tên một nguyên liệu, không phân biệt hoa thường và dấu. */
     private static boolean matchesKeyword(SampleRecipe recipe, String query) {
-        if (normalize(recipe.name).contains(query)) {
+        if (VietnameseText.normalize(recipe.name).contains(query)) {
             return true;
         }
         for (Ingredient ingredient : recipe.ingredients) {
-            if (normalize(ingredient.name).contains(query)) {
+            if (VietnameseText.normalize(ingredient.name).contains(query)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * Bỏ dấu tiếng Việt + chữ thường: "Trứng gà" → "trung ga", nên gõ "trung" vẫn ra "trứng".
-     * NFD tách chữ và dấu ("ứ" → "u" + dấu), rồi xoá các dấu (\p{M}); riêng "đ" không tách được nên đổi tay.
-     */
-    static String normalize(@Nullable String text) {
-        if (text == null) {
-            return "";
-        }
-        String noAccent = Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
-        return noAccent.replace('đ', 'd').replace('Đ', 'D').toLowerCase(Locale.ROOT).trim();
     }
 
     private static Map<String, Integer> countTiles(List<SampleRecipe> list) {

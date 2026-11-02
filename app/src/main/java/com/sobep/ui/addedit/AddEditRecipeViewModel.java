@@ -12,6 +12,7 @@ import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
 import com.sobep.data.repository.RecipeRepository;
 import com.sobep.util.IntentKeys;
+import com.sobep.util.RecipeTextParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +126,36 @@ public class AddEditRecipeViewModel extends AndroidViewModel {
             list.remove(index);
             steps.setValue(list);
         }
+    }
+
+    // ---------- Chữ quét từ ảnh ----------
+
+    /**
+     * Tách chữ quét được (RecipeTextParser) rồi THÊM nguyên liệu và các bước vào CUỐI bản nháp
+     * (không xoá những gì người dùng đã nhập). Dòng trống người dùng thêm mà chưa gõ gì thì bỏ đi trước.
+     * Trả về kết quả tách để Activity điền tên món / thời gian / khẩu phần / ghi chú vào các ô đang trống.
+     */
+    public RecipeTextParser.Result applyScannedText(String scannedText) {
+        RecipeTextParser.Result result = RecipeTextParser.parse(scannedText);
+
+        List<Ingredient> ingredientList = new ArrayList<>();
+        for (Ingredient ingredient : currentList(ingredients)) {
+            if (!ingredient.name.trim().isEmpty()) {
+                ingredientList.add(ingredient);
+            }
+        }
+        ingredientList.addAll(result.ingredients);
+        ingredients.setValue(ingredientList);
+
+        List<Step> stepList = new ArrayList<>();
+        for (Step step : currentList(steps)) {
+            if (!step.content.trim().isEmpty()) {
+                stepList.add(step);
+            }
+        }
+        stepList.addAll(result.steps);
+        steps.setValue(stepList);
+        return result;
     }
 
     // ---------- Lưu ----------

@@ -59,6 +59,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show();
     }
 
+    /** Hiện Toast với chuỗi đã ghép số liệu, vd getString(R.string.msg_scan_filled, 4, 3). */
+    protected void showToast(CharSequence message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     /** Dùng cho các nút có trên giao diện nhưng tính năng chưa làm. */
     protected void showComingSoon() {
         showToast(R.string.msg_coming_soon);

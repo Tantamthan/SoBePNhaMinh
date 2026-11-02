@@ -132,7 +132,7 @@
     <string name="action_save_recipe">Lưu món</string>
     <string name="error_recipe_name_required">Vui lòng nhập tên món</string>
     <string name="error_servings_range">Khẩu phần từ %1$d đến %2$d người</string>
-    <string name="msg_scan_filled">Đã điền tên món từ chữ quét được</string>
+    <string name="msg_scan_filled">Đã điền từ ảnh: %1$d nguyên liệu, %2$d bước. Kiểm tra lại trước khi lưu</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
     <string name="scan_title">Quét công thức</string>
@@ -143,7 +143,7 @@
     <string name="scan_reading">Đang đọc chữ trong ảnh…</string>
     <string name="scan_done">Đã đọc xong chữ trong ảnh</string>
     <string name="label_scanned_text">Chữ nhận dạng được (sửa lại nếu sai)</string>
-    <string name="scan_footer_hint">Chữ sẽ được điền vào form thêm món để bạn chỉnh tiếp</string>
+    <string name="scan_footer_hint">Giữ các dòng tiêu đề “Nguyên liệu”, “Cách làm” để app tự điền vào đúng ô</string>
     <string name="action_use_result">Dùng kết quả này</string>
     <string name="msg_scan_empty">Chưa có chữ nào để dùng</string>
     <string name="scan_idle">Chụp hoặc chọn một ảnh có công thức</string>

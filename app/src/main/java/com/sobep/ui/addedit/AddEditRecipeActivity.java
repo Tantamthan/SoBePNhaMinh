@@ -19,13 +19,14 @@ import com.sobep.databinding.ActivityAddEditRecipeBinding;
 import com.sobep.ui.BaseActivity;
 import com.sobep.ui.scan.ScanRecipeActivity;
 import com.sobep.util.IntentKeys;
+import com.sobep.util.RecipeTextParser;
 
 /**
  * Màn 5 · Thêm / Sửa món (CN03, CN04). Một màn dùng cho 2 chế độ:
  * - Intent KHÔNG có mã món → Thêm mới.
  * - Intent CÓ mã món → Sửa, điền sẵn thông tin món đọc từ CSDL.
  * Bấm Lưu → AddEditRecipeViewModel ghi vào Room → trả RESULT_OK về màn đã mở nó.
- * Chưa làm: chọn / chụp ảnh món (bước 7).
+ * Thẻ "Quét chữ từ ảnh" → ScanRecipe → RecipeTextParser tách chữ vào từng ô. Chưa làm: chọn / chụp ảnh món (bước 7c).
  */
 public class AddEditRecipeActivity extends BaseActivity {
 
@@ -122,14 +123,34 @@ public class AddEditRecipeActivity extends BaseActivity {
         return 0;
     }
 
-    /** Tạm thời lấy dòng đầu tiên của chữ quét được làm tên món (sau này thay bằng RecipeTextParser). */
+    /**
+     * Điền chữ quét được vào form. ViewModel tách chữ (RecipeTextParser) và thêm nguyên liệu, các bước vào cuối danh sách.
+     * Tên món, thời gian, khẩu phần, ghi chú: CHỈ điền khi ô đang trống → không ghi đè chữ người dùng đã nhập.
+     * Khẩu phần ở chế độ Thêm luôn có sẵn số mặc định (2) nên coi số mặc định đó như ô trống.
+     */
     private void fillFromScannedText(String scannedText) {
         if (TextUtils.isEmpty(scannedText)) {
             return;
         }
-        String firstLine = scannedText.trim().split("\n")[0].trim();
-        binding.editName.setText(firstLine);
-        showToast(R.string.msg_scan_filled);
+        RecipeTextParser.Result result = viewModel.applyScannedText(scannedText);
+
+        if (!result.name.isEmpty() && textOf(binding.editName).isEmpty()) {
+            binding.editName.setText(result.name);
+            binding.editName.setError(null);
+        }
+        if (result.cookTimeMinutes > 0 && textOf(binding.editCookTime).isEmpty()) {
+            binding.editCookTime.setText(String.valueOf(result.cookTimeMinutes));
+        }
+        String currentServings = textOf(binding.editServings);
+        boolean servingsUntouched = currentServings.isEmpty()
+                || (!viewModel.isEditMode() && currentServings.equals(String.valueOf(new Recipe().servings)));
+        if (result.servings >= MIN_SERVINGS && result.servings <= MAX_SERVINGS && servingsUntouched) {
+            binding.editServings.setText(String.valueOf(result.servings));
+        }
+        if (!result.otherLines.isEmpty() && textOf(binding.editNote).isEmpty()) {
+            binding.editNote.setText(TextUtils.join("\n", result.otherLines));
+        }
+        showToast(getString(R.string.msg_scan_filled, result.ingredients.size(), result.steps.size()));
     }
 
     private void setupActions() {

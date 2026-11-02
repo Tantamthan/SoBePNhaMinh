@@ -50,13 +50,13 @@ com.sobep
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
 ├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
-└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage
+└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText
 ```
 ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/ (mỗi màn trừ splash).
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
-Chưa có: `RecipeTextParser`.
+Unit test: `app/src/test/java/com/sobep/util/RecipeTextParserTest.java` (`./gradlew testDebugUnitTest`).
 
 ## 9 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -85,7 +85,9 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
   phải tăng version và viết Migration mới (không xoá dữ liệu người dùng).
 - 02/11: màn Quét xin quyền CAMERA lúc chạy, chụp ảnh (`TakePicture` + FileProvider), chọn ảnh (`PickVisualMedia`),
   đọc chữ bằng ML Kit (`ScanRecipeViewModel`), thêm `util/ImageStorage`. Chữ quét mới điền tên món.
-- Chưa làm: tách chữ quét vào từng ô (`RecipeTextParser`), ảnh món ăn, tài khoản & đồng bộ.
+- 02/11: `util/RecipeTextParser` tách chữ quét vào tên món, thời gian, khẩu phần, nguyên liệu, các bước (+ hẹn giờ);
+  `util/VietnameseText` bỏ dấu dùng chung với Khám phá. 8 unit test.
+- Chưa làm: ảnh món ăn (7c), tài khoản & đồng bộ.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi
