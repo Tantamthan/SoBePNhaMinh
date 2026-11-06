@@ -46,21 +46,24 @@ com.sobep
 │   ├── scan/       ScanRecipeActivity
 │   ├── mealplan/   MealPlanActivity
 │   ├── shopping/   ShoppingListActivity
-│   └── discover/   DiscoverActivity
+│   ├── discover/   DiscoverActivity
+│   ├── auth/       LoginActivity, RegisterActivity
+│   └── account/    AccountActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
-├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository
+├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository, AuthRepository
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
 └── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText
 ```
-ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/ (mỗi màn trừ splash).
+ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/, auth/, account/
+(mỗi màn trừ splash).
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
 Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest` (`./gradlew testDebugUnitTest`).
 
-## 9 màn hình (Activity)
+## 12 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
-MealPlan, ShoppingList, ScanRecipe, Discover.
+MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
 
 ## Trạng thái (cập nhật 21/10/2026)
 - Đã có: layout XML của 9 màn hình + 10 layout item + 1 bottom sheet, toàn bộ resource
@@ -92,7 +95,13 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
   Bấm ảnh để đổi / xoá. File thừa xoá sau khi lưu; thoát không lưu thì xoá ảnh mới; xoá món thì xoá ảnh.
 - 02/11: tìm kiếm màn chính không phân biệt dấu: `RecipeDao.filter` chỉ lọc chip, `getIngredientNames` (GROUP_CONCAT);
   `MainViewModel` ghép bằng `MediatorLiveData` và lọc từ khoá bằng `VietnameseText.containsNormalized`. Không đổi CSDL.
-- Chưa làm: tài khoản & đồng bộ.
+- 07/11: CN13 (bước 8a) Firebase Auth email/mật khẩu, tuỳ chọn. `data/repository/AuthRepository` (không đụng Room),
+  `ui/auth/` (LoginActivity, RegisterActivity, LoginViewModel, RegisterViewModel, AuthFormViewModel, AuthFormHelper),
+  `ui/account/` (AccountActivity, AccountViewModel). Main có nút Tài khoản. Quyền INTERNET. **12 Activity**.
+  Firebase project `sotaynauan-78901`, gói Spark (miễn phí); `app/google-services.json` nằm trong `.gitignore`.
+  BoM 35.1.0, plugin google-services 4.5.0. Đã test máy ảo với tài khoản `sobep.test0711@example.com`.
+- Chưa làm: CN14 đồng bộ Firestore (8b, chỉ chữ – không dùng Firebase Storage vì cần gói trả phí),
+  CN15 tab Cộng đồng (8c).
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

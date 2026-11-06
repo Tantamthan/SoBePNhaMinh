@@ -16,6 +16,10 @@ public final class IntentKeys {
     // để đi chợ theo đúng tuần đang xem; không gửi = tuần này
     public static final String EXTRA_WEEK_START = "com.sobep.extra.WEEK_START";
 
+    // Email (String). Login gửi sang Register để điền sẵn ô email;
+    // Register trả về cho Login khi tạo tài khoản xong
+    public static final String EXTRA_EMAIL = "com.sobep.extra.EMAIL";
+
     // Giá trị mặc định khi Intent không mang mã món
     public static final long NO_RECIPE_ID = -1L;
 

@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Firebase: cần file app/google-services.json (tải từ Firebase Console)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -51,6 +53,11 @@ dependencies {
 
     // ML Kit nhận dạng chữ (bản kèm sẵn mô hình trong APK): đọc chữ trong ảnh ngay trên máy, không cần mạng
     implementation(libs.mlkit.text.recognition)
+
+    // Firebase Auth (CN13): đăng ký / đăng nhập / đăng xuất bằng email + mật khẩu.
+    // Đăng nhập là tuỳ chọn: không đăng nhập app vẫn chạy offline với Room
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

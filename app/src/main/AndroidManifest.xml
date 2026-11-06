@@ -8,6 +8,8 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <!-- CN13: Firebase Auth gửi email / mật khẩu lên máy chủ Google. Quyền thường, không cần xin lúc chạy -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -76,6 +78,23 @@
             android:name=".ui.discover.DiscoverActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 10 · Đăng nhập (CN13) -->
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 11 · Đăng ký (CN13) -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Màn 12 · Tài khoản -->
+        <activity
+            android:name=".ui.account.AccountActivity"
+            android:exported="false" />
 
         <!-- Cho app Camera ghi ảnh vào file của app mình qua Uri content:// (xem util/ImageStorage) -->
         <provider

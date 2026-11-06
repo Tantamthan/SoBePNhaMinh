@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Màn 2 · MainActivity – Sổ công thức:
-     thanh tiêu đề + 3 nút (Khám phá, Thực đơn tuần, Đi chợ), ô tìm kiếm, chip lọc loại món,
+     thanh tiêu đề + 4 nút (Khám phá, Thực đơn tuần, Đi chợ, Tài khoản), ô tìm kiếm, chip lọc loại món,
      lưới 2 cột các món và nút nổi "Thêm món". -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,12 +26,17 @@
             android:paddingTop="8dp"
             android:paddingEnd="8dp">
 
+            <!-- 4 nút trên thanh nên tên app 20sp (thay vì 22sp) để hiện đủ chữ;
+                 máy màn quá hẹp thì cắt "…" thay vì xuống dòng -->
             <TextView
                 style="@style/Text.SoBep.AppTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/app_name" />
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/buttonDiscover"
@@ -50,8 +55,16 @@
             <ImageButton
                 android:id="@+id/buttonShoppingList"
                 style="@style/Widget.SoBep.IconButton"
+                android:layout_marginEnd="4dp"
                 android:contentDescription="@string/cd_shopping_list"
                 android:src="@drawable/ic_cart" />
+
+            <!-- CN13: chưa đăng nhập → màn Đăng nhập; đã đăng nhập → màn Tài khoản -->
+            <ImageButton
+                android:id="@+id/buttonAccount"
+                style="@style/Widget.SoBep.IconButton"
+                android:contentDescription="@string/cd_account"
+                android:src="@drawable/ic_account" />
         </LinearLayout>
 
         <!-- Ô tìm kiếm theo tên món -->

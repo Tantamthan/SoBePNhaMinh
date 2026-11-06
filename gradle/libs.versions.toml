@@ -10,6 +10,8 @@ constraintlayout = "2.2.2"
 room = "2.8.5"
 lifecycle = "2.11.0"
 mlkitTextRecognition = "16.0.1"
+firebaseBom = "35.1.0"
+googleServices = "4.5.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -24,7 +26,12 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycle" }
 mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
+# Firebase: BoM chốt phiên bản cho cả bộ thư viện Firebase, nên firebase-auth không ghi version
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+# Đọc app/google-services.json → sinh cấu hình kết nối tới Firebase project
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 

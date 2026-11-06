@@ -46,6 +46,8 @@
     <string name="cd_discover">Khám phá món</string>
     <string name="cd_meal_plan">Thực đơn tuần</string>
     <string name="cd_shopping_list">Danh sách đi chợ</string>
+    <string name="cd_account">Tài khoản</string>
+    <string name="format_signed_in">Đã đăng nhập: %1$s</string>
     <string name="hint_search_recipe">Tìm theo tên món, nguyên liệu…</string>
     <string name="main_heading_all">Tất cả món</string>
     <string name="main_heading_favorite">Món yêu thích</string>
@@ -252,4 +254,48 @@
     <string name="keyword_vegan">Món chay</string>
     <string name="keyword_soup">Canh</string>
     <string name="keyword_quick">Nấu nhanh ≤ 15 phút</string>
+
+    <!-- ===== 10. Login / Register – Đăng nhập, đăng ký (CN13) ===== -->
+    <string name="login_title">Đăng nhập</string>
+    <string name="login_heading">Sao lưu sổ bếp của bạn</string>
+    <string name="login_subtitle">Đăng nhập để đồng bộ món lên mây. Không đăng nhập vẫn dùng đầy đủ app trên máy này.</string>
+    <string name="label_email">Email</string>
+    <string name="hint_email">ten@vidu.com</string>
+    <string name="label_password">Mật khẩu</string>
+    <string name="hint_password_login">Nhập mật khẩu</string>
+    <string name="hint_password_new">Ít nhất 6 ký tự</string>
+    <string name="label_confirm_password">Nhập lại mật khẩu</string>
+    <string name="hint_confirm_password">Gõ lại mật khẩu ở trên</string>
+    <string name="action_sign_in">Đăng nhập</string>
+    <string name="login_no_account">Chưa có tài khoản? Đăng ký</string>
+    <string name="register_title">Tạo tài khoản</string>
+    <string name="register_heading">Tài khoản mới</string>
+    <string name="register_subtitle">Dùng email của bạn và mật khẩu ít nhất 6 ký tự. Tạo xong là đăng nhập luôn.</string>
+    <string name="action_register">Tạo tài khoản</string>
+    <!-- Lỗi dưới ô nhập -->
+    <string name="error_email_required">Vui lòng nhập email</string>
+    <string name="error_email_invalid">Email chưa đúng dạng (vd ten@vidu.com)</string>
+    <string name="error_password_required">Vui lòng nhập mật khẩu</string>
+    <string name="error_password_short">Mật khẩu cần ít nhất 6 ký tự</string>
+    <string name="error_password_mismatch">Hai mật khẩu chưa giống nhau</string>
+    <!-- Lỗi Firebase trả về -->
+    <string name="error_auth_wrong_credentials">Email hoặc mật khẩu không đúng</string>
+    <string name="error_auth_email_in_use">Email này đã có tài khoản. Hãy đăng nhập</string>
+    <string name="error_auth_user_disabled">Tài khoản này đã bị khoá</string>
+    <string name="error_auth_network">Không có kết nối mạng. Kiểm tra Wi-Fi / 4G rồi thử lại</string>
+    <string name="error_auth_too_many">Thử sai quá nhiều lần. Đợi vài phút rồi thử lại</string>
+    <string name="error_auth_not_enabled">Firebase chưa bật đăng nhập bằng Email/Password</string>
+    <string name="error_auth_unknown">Có lỗi xảy ra, hãy thử lại</string>
+
+    <!-- ===== 11. Account – Tài khoản ===== -->
+    <string name="account_title">Tài khoản</string>
+    <string name="account_signed_in_as">Đang đăng nhập</string>
+    <string name="account_sync_title">Sao lưu &amp; đồng bộ</string>
+    <string name="account_sync_desc">Đưa món trong sổ lên mây để lấy lại khi đổi máy. Chỉ đồng bộ chữ, ảnh món vẫn lưu trong máy.</string>
+    <string name="action_sync_now">Đồng bộ ngay</string>
+    <string name="account_local_note">Đăng xuất không xoá món nào trong máy.</string>
+    <string name="action_sign_out">Đăng xuất</string>
+    <string name="dialog_sign_out_title">Đăng xuất?</string>
+    <string name="dialog_sign_out_message">Món ăn trong máy vẫn giữ nguyên. Bạn có thể đăng nhập lại bất cứ lúc nào.</string>
+    <string name="msg_signed_out">Đã đăng xuất</string>
 </resources>

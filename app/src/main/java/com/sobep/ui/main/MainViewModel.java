@@ -11,6 +11,7 @@ import androidx.lifecycle.Transformations;
 
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.model.RecipeIngredientNames;
+import com.sobep.data.repository.AuthRepository;
 import com.sobep.data.repository.RecipeRepository;
 import com.sobep.util.VietnameseText;
 
@@ -57,6 +58,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private final RecipeRepository repository;
+    // CN13: chỉ để biết nút Tài khoản mở màn Đăng nhập hay màn Tài khoản
+    private final AuthRepository authRepository = new AuthRepository();
     private final MutableLiveData<RecipeFilter> filter = new MutableLiveData<>(RecipeFilter.none());
     // Tầng 1: món đã lọc theo chip (từ Room)
     private final LiveData<List<Recipe>> chipFilteredRecipes;
@@ -161,6 +164,11 @@ public class MainViewModel extends AndroidViewModel {
 
     public void clearFilter() {
         filter.setValue(RecipeFilter.none());
+    }
+
+    /** CN13: đã đăng nhập chưa (Firebase tự nhớ phiên đăng nhập, kể cả khi tắt app mở lại). */
+    public boolean isSignedIn() {
+        return authRepository.isSignedIn();
     }
 
     // ---------- Thao tác trên một món ----------

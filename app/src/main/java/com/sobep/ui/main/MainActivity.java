@@ -18,7 +18,9 @@ import com.sobep.R;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.databinding.ActivityMainBinding;
 import com.sobep.ui.BaseActivity;
+import com.sobep.ui.account.AccountActivity;
 import com.sobep.ui.addedit.AddEditRecipeActivity;
+import com.sobep.ui.auth.LoginActivity;
 import com.sobep.ui.detail.RecipeDetailActivity;
 import com.sobep.ui.discover.DiscoverActivity;
 import com.sobep.ui.mealplan.MealPlanActivity;
@@ -45,6 +47,16 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     showToast(R.string.msg_recipe_saved);
+                }
+            });
+
+    // CN13: mở màn Đăng nhập và chờ kết quả: RESULT_OK + EXTRA_EMAIL = đã đăng nhập (hoặc vừa đăng ký)
+    private final ActivityResultLauncher<Intent> loginLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    String email = result.getData().getStringExtra(IntentKeys.EXTRA_EMAIL);
+                    showToast(getString(R.string.format_signed_in, email == null ? "" : email));
                 }
             });
 
@@ -176,6 +188,14 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
                 startActivity(new Intent(this, MealPlanActivity.class)));
         binding.buttonShoppingList.setOnClickListener(v ->
                 startActivity(new Intent(this, ShoppingListActivity.class)));
+        // CN13: một nút, hai đích tuỳ trạng thái đăng nhập
+        binding.buttonAccount.setOnClickListener(v -> {
+            if (viewModel.isSignedIn()) {
+                startActivity(new Intent(this, AccountActivity.class));
+            } else {
+                loginLauncher.launch(new Intent(this, LoginActivity.class));
+            }
+        });
 
         // Không gửi mã món → AddEditRecipe hiểu là chế độ Thêm mới
         binding.fabAddRecipe.setOnClickListener(v ->
