@@ -10,6 +10,7 @@ import com.sobep.data.local.dao.RecipeDao;
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
+import com.sobep.data.local.model.RecipeIngredientNames;
 import com.sobep.data.local.model.SavedSample;
 import com.sobep.util.ImageStorage;
 
@@ -51,10 +52,14 @@ public class RecipeRepository {
         return recipeDao.getAll();
     }
 
-    /** CN07–CN09: tìm theo tên/nguyên liệu, lọc danh mục, thời gian nấu, yêu thích. */
-    public LiveData<List<Recipe>> searchRecipes(String keyword, String category,
-                                                boolean favoriteOnly, int maxMinutes) {
-        return recipeDao.search(keyword, category, favoriteOnly, maxMinutes);
+    /** CN08–CN09: lọc theo danh mục, thời gian nấu, yêu thích (từ khoá lọc ở MainViewModel). */
+    public LiveData<List<Recipe>> filterRecipes(String category, boolean favoriteOnly, int maxMinutes) {
+        return recipeDao.filter(category, favoriteOnly, maxMinutes);
+    }
+
+    /** CN07: tên nguyên liệu của từng món, để tìm món theo nguyên liệu. */
+    public LiveData<List<RecipeIngredientNames>> getIngredientNames() {
+        return recipeDao.getIngredientNames();
     }
 
     /** CN02: thông tin một món, kèm nguyên liệu và các bước. */

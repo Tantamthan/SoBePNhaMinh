@@ -56,7 +56,7 @@ ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/,
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
-Unit test: `app/src/test/java/com/sobep/util/RecipeTextParserTest.java` (`./gradlew testDebugUnitTest`).
+Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest` (`./gradlew testDebugUnitTest`).
 
 ## 9 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -87,7 +87,12 @@ MealPlan, ShoppingList, ScanRecipe, Discover.
   đọc chữ bằng ML Kit (`ScanRecipeViewModel`), thêm `util/ImageStorage`. Chữ quét mới điền tên món.
 - 02/11: `util/RecipeTextParser` tách chữ quét vào tên món, thời gian, khẩu phần, nguyên liệu, các bước (+ hẹn giờ);
   `util/VietnameseText` bỏ dấu dùng chung với Khám phá. 8 unit test.
-- Chưa làm: ảnh món ăn (7c), tài khoản & đồng bộ.
+- 02/11: ảnh món ăn ở màn Thêm/Sửa (7c): chọn ảnh / chụp ảnh (xin quyền CAMERA), `ImageStorage.saveRecipePhoto`
+  thu nhỏ 1280 px + xoay EXIF → `files/recipe_photos/`, đường dẫn ghi vào `recipes.imagePath` (không đổi CSDL).
+  Bấm ảnh để đổi / xoá. File thừa xoá sau khi lưu; thoát không lưu thì xoá ảnh mới; xoá món thì xoá ảnh.
+- 02/11: tìm kiếm màn chính không phân biệt dấu: `RecipeDao.filter` chỉ lọc chip, `getIngredientNames` (GROUP_CONCAT);
+  `MainViewModel` ghép bằng `MediatorLiveData` và lọc từ khoá bằng `VietnameseText.containsNormalized`. Không đổi CSDL.
+- Chưa làm: tài khoản & đồng bộ.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

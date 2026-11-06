@@ -6,7 +6,7 @@ import java.text.Normalizer;
 
 /**
  * Xử lý chữ tiếng Việt dùng chung:
- * - Khám phá: tìm không dấu ("trung" vẫn ra "trứng").
+ * - Màn chính, Khám phá: tìm không dấu ("trung" vẫn ra "trứng").
  * - Quét công thức: nhận ra tiêu đề "Nguyên liệu", "Cách làm"... kể cả khi ML Kit đọc sai dấu
  *   (vd "Khấu phần" thay vì "Khẩu phần").
  */
@@ -25,6 +25,24 @@ public final class VietnameseText {
             return "";
         }
         return fold(toNfc(text)).trim();
+    }
+
+    /**
+     * text có chứa keyword không, KHÔNG phân biệt dấu và hoa/thường:
+     * containsIgnoreAccents("Thịt kho trứng", "TRUNG") → true.
+     * keyword trống → true (không tìm gì thì món nào cũng khớp); text null → false.
+     * Muốn so nhiều lần với cùng một keyword: normalize keyword một lần rồi dùng containsNormalized.
+     */
+    public static boolean containsIgnoreAccents(@Nullable String text, @Nullable String keyword) {
+        return containsNormalized(text, normalize(keyword));
+    }
+
+    /** Như containsIgnoreAccents nhưng normalizedKeyword đã được normalize sẵn (tiết kiệm khi lọc cả danh sách). */
+    public static boolean containsNormalized(@Nullable String text, String normalizedKeyword) {
+        if (normalizedKeyword.isEmpty()) {
+            return true;
+        }
+        return text != null && normalize(text).contains(normalizedKeyword);
     }
 
     /**

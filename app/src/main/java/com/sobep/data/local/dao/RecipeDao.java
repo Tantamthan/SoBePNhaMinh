@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
+import com.sobep.data.local.model.RecipeIngredientNames;
 import com.sobep.data.local.model.SavedSample;
 
 import java.util.List;
@@ -39,21 +40,26 @@ public abstract class RecipeDao {
     public abstract LiveData<List<Step>> getSteps(long recipeId);
 
     /**
-     * Tìm kiếm + lọc trong một câu truy vấn (CN07, CN08, CN09). Tham số để trống / 0 / false = bỏ qua điều kiện đó.
-     * @param keyword      khớp với tên món HOẶC tên một nguyên liệu của món
+     * Lọc món theo chip (CN08, CN09). Tham số để trống / 0 / false = bỏ qua điều kiện đó.
+     * Tìm theo từ khoá (CN07) KHÔNG làm ở đây: LIKE của SQLite phân biệt dấu ("trung" không khớp "trứng"),
+     * nên MainViewModel lọc từ khoá bằng Java (VietnameseText) trên danh sách này.
      * @param category     mã danh mục (Recipe.CATEGORY_*), "" = mọi danh mục
      * @param favoriteOnly true = chỉ món yêu thích
      * @param maxMinutes   thời gian nấu tối đa, 0 = không giới hạn
      */
     @Query("SELECT * FROM recipes"
-            + " WHERE (:keyword = '' OR name LIKE '%' || :keyword || '%'"
-            + "        OR id IN (SELECT recipeId FROM ingredients WHERE name LIKE '%' || :keyword || '%'))"
-            + " AND (:category = '' OR category = :category)"
+            + " WHERE (:category = '' OR category = :category)"
             + " AND (:favoriteOnly = 0 OR favorite = 1)"
             + " AND (:maxMinutes <= 0 OR cookTimeMinutes <= :maxMinutes)"
             + " ORDER BY updatedAt DESC")
-    public abstract LiveData<List<Recipe>> search(String keyword, String category,
-                                                  boolean favoriteOnly, int maxMinutes);
+    public abstract LiveData<List<Recipe>> filter(String category, boolean favoriteOnly, int maxMinutes);
+
+    /**
+     * CN07: tên nguyên liệu của từng món, gộp thành một chuỗi (mỗi món một dòng).
+     * MainViewModel dùng để tìm món theo nguyên liệu không phân biệt dấu.
+     */
+    @Query("SELECT recipeId, GROUP_CONCAT(name, ' ') AS names FROM ingredients GROUP BY recipeId")
+    public abstract LiveData<List<RecipeIngredientNames>> getIngredientNames();
 
     /** CN06: các món trong sổ chép từ món mẫu (để biết món mẫu nào đã lưu). */
     @Query("SELECT id, sourceSampleId FROM recipes WHERE sourceSampleId IS NOT NULL")
