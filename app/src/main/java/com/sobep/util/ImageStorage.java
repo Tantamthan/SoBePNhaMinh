@@ -12,18 +12,26 @@ import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Các việc với file ảnh:
- * - Tạo file ảnh tạm cho app Camera ghi vào (qua FileProvider), dùng ở màn Quét công thức.
+ * - Tạo file ảnh tạm cho app Camera ghi vào (qua FileProvider), dùng ở màn Quét công thức và màn Thêm món.
  * - Đọc ảnh thu nhỏ để hiển thị (ảnh camera 12 MP mà đọc nguyên kích thước dễ hết bộ nhớ).
+ * - Lưu ảnh món ăn lâu dài vào bộ nhớ riêng của app (files/recipe_photos), xoá ảnh món khi không dùng nữa.
  */
 public final class ImageStorage {
 
-    // Thư mục ảnh quét tạm trong cache; trùng với <cache-path path="scan/"> trong res/xml/file_paths.xml
-    private static final String SCAN_DIR = "scan";
+    // Thư mục ảnh chụp tạm trong cache; trùng với <cache-path path="scan/"> trong res/xml/file_paths.xml
+    private static final String CAMERA_DIR = "scan";
+    // Thư mục ảnh món ăn lâu dài trong files/ (bộ nhớ riêng của app, không cần xin quyền, gỡ app thì mất theo)
+    private static final String RECIPE_PHOTO_DIR = "recipe_photos";
+    // Ảnh món lưu với cạnh dài tối đa 1280 px, nén JPEG chất lượng 85: rõ nét trên điện thoại, mỗi ảnh chỉ vài trăm KB
+    private static final int RECIPE_PHOTO_MAX_SIZE = 1280;
+    private static final int RECIPE_PHOTO_QUALITY = 85;
 
     private ImageStorage() {
         // Lớp tiện ích, không cho tạo đối tượng
@@ -39,25 +47,97 @@ public final class ImageStorage {
      * App Camera không được ghi thẳng vào thư mục riêng của app mình, nên phải đưa Uri qua FileProvider.
      */
     @NonNull
-    public static Uri createScanPhotoUri(Context context) throws IOException {
-        File dir = new File(context.getCacheDir(), SCAN_DIR);
+    public static Uri createCameraPhotoUri(Context context) throws IOException {
+        File dir = new File(context.getCacheDir(), CAMERA_DIR);
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IOException("Không tạo được thư mục " + dir);
         }
-        File file = new File(dir, "scan_" + System.currentTimeMillis() + ".jpg");
+        File file = new File(dir, "camera_" + System.currentTimeMillis() + ".jpg");
         if (!file.exists() && !file.createNewFile()) {
             throw new IOException("Không tạo được file " + file);
         }
         return FileProvider.getUriForFile(context, authority(context), file);
     }
 
-    /** Xoá hết ảnh quét tạm (gọi khi rời hẳn màn Quét). Chạy ở luồng nền. */
-    public static void clearScanPhotos(Context context) {
-        File[] files = new File(context.getCacheDir(), SCAN_DIR).listFiles();
+    /**
+     * Xoá một ảnh chụp tạm (Uri do createCameraPhotoUri tạo) sau khi đã lưu xong thành ảnh món.
+     * FileProvider hỗ trợ delete(): xoá đúng file nằm sau Uri. Chạy ở luồng nền.
+     */
+    public static void deleteCameraPhoto(Context context, Uri uri) {
+        try {
+            context.getContentResolver().delete(uri, null, null);
+        } catch (IllegalArgumentException | SecurityException e) {
+            // Uri không thuộc FileProvider của app (vd ảnh từ bộ chọn ảnh) → không xoá
+        }
+    }
+
+    /** Xoá hết ảnh chụp tạm trong cache/scan (gọi khi đã dùng xong ảnh). Chạy ở luồng nền. */
+    public static void clearCameraPhotos(Context context) {
+        File[] files = new File(context.getCacheDir(), CAMERA_DIR).listFiles();
         if (files == null) {
             return;
         }
         for (File file : files) {
+            //noinspection ResultOfMethodCallIgnored
+            file.delete();
+        }
+    }
+
+    /**
+     * Lưu ảnh món ăn (Uri từ camera hoặc bộ chọn ảnh) thành file JPEG trong files/recipe_photos.
+     * Ảnh được thu nhỏ (cạnh dài tối đa 1280 px) và xoay sẵn đúng chiều, nên màn chính và Chi tiết món
+     * chỉ cần setImageURI là hiện đúng. Mỗi lần lưu là một file tên mới (theo thời gian).
+     * Chạy ở luồng nền. Trả về đường dẫn tuyệt đối của file, lỗi → null.
+     */
+    @Nullable
+    public static String saveRecipePhoto(Context context, Uri uri) {
+        Bitmap bitmap = decodePreview(context, uri, RECIPE_PHOTO_MAX_SIZE);
+        if (bitmap == null) {
+            return null;
+        }
+        // decodePreview chỉ thu nhỏ theo bậc 1/2, 1/4... → ảnh có thể còn lớn hơn 1280 px, thu nhỏ nốt cho đúng
+        int longSide = Math.max(bitmap.getWidth(), bitmap.getHeight());
+        if (longSide > RECIPE_PHOTO_MAX_SIZE) {
+            float scale = (float) RECIPE_PHOTO_MAX_SIZE / longSide;
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap,
+                    Math.round(bitmap.getWidth() * scale), Math.round(bitmap.getHeight() * scale), true);
+            if (scaled != bitmap) {
+                bitmap.recycle();
+            }
+            bitmap = scaled;
+        }
+
+        File dir = new File(context.getFilesDir(), RECIPE_PHOTO_DIR);
+        if (!dir.exists() && !dir.mkdirs()) {
+            bitmap.recycle();
+            return null;
+        }
+        File file = new File(dir, "recipe_" + System.currentTimeMillis() + ".jpg");
+        try (OutputStream out = new FileOutputStream(file)) {
+            if (!bitmap.compress(Bitmap.CompressFormat.JPEG, RECIPE_PHOTO_QUALITY, out)) {
+                throw new IOException("Không nén được ảnh");
+            }
+        } catch (IOException e) {
+            //noinspection ResultOfMethodCallIgnored
+            file.delete();
+            return null;
+        } finally {
+            bitmap.recycle();
+        }
+        return file.getAbsolutePath();
+    }
+
+    /**
+     * Xoá file ảnh món ăn. Chỉ xoá file nằm trong thư mục recipe_photos (đề phòng đường dẫn lạ trong CSDL).
+     * path = null → không làm gì. Chạy ở luồng nền.
+     */
+    public static void deleteRecipePhoto(@Nullable String path) {
+        if (path == null || path.isEmpty()) {
+            return;
+        }
+        File file = new File(path);
+        File parent = file.getParentFile();
+        if (parent != null && RECIPE_PHOTO_DIR.equals(parent.getName())) {
             //noinspection ResultOfMethodCallIgnored
             file.delete();
         }

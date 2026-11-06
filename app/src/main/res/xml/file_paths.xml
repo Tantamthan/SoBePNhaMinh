@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Các thư mục FileProvider được phép đưa ra ngoài (dạng content://) cho app khác dùng.
-     scan/: ảnh tạm app Camera ghi vào khi chụp ở màn Quét công thức (ImageStorage.createScanPhotoUri). -->
+     scan/: ảnh tạm app Camera ghi vào khi chụp ở màn Quét công thức và màn Thêm món
+     (ImageStorage.createCameraPhotoUri). -->
 <paths>
     <cache-path
         name="scan_photos"

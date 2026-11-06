@@ -11,6 +11,7 @@ import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.data.local.entity.Step;
 import com.sobep.data.local.model.SavedSample;
+import com.sobep.util.ImageStorage;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -106,9 +107,15 @@ public class RecipeRepository {
         });
     }
 
-    /** CN05: xoá món (nguyên liệu, bước, thực đơn của món tự xoá theo nhờ CASCADE). */
+    /**
+     * CN05: xoá món (nguyên liệu, bước, thực đơn của món tự xoá theo nhờ CASCADE).
+     * Món có ảnh → xoá luôn file ảnh trong máy để không chiếm bộ nhớ.
+     */
     public void deleteRecipe(Recipe recipe) {
-        executor.execute(() -> recipeDao.deleteRecipe(recipe));
+        executor.execute(() -> {
+            recipeDao.deleteRecipe(recipe);
+            ImageStorage.deleteRecipePhoto(recipe.imagePath);
+        });
     }
 
     /** CN09: bật/tắt yêu thích. */

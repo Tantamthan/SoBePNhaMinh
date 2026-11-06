@@ -132,6 +132,13 @@
     <string name="action_save_recipe">Lưu món</string>
     <string name="error_recipe_name_required">Vui lòng nhập tên món</string>
     <string name="error_servings_range">Khẩu phần từ %1$d đến %2$d người</string>
+    <string name="photo_options_title">Ảnh món ăn</string>
+    <string name="cd_recipe_photo_edit">Ảnh món ăn. Bấm để đổi hoặc xoá ảnh</string>
+    <string name="action_take_other_photo">Chụp ảnh khác</string>
+    <string name="action_remove_photo">Xoá ảnh</string>
+    <string name="msg_photo_error">Không đọc được ảnh này, hãy thử ảnh khác</string>
+    <string name="msg_photo_processing">Đang lưu ảnh, đợi một chút rồi bấm Lưu</string>
+    <string name="permission_camera_rationale_photo">Sổ Bếp cần camera để chụp ảnh món ăn. Ảnh chỉ lưu trong máy, không gửi đi đâu.</string>
     <string name="msg_scan_filled">Đã điền từ ảnh: %1$d nguyên liệu, %2$d bước. Kiểm tra lại trước khi lưu</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->

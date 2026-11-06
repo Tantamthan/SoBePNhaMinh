@@ -151,7 +151,7 @@ public class ScanRecipeActivity extends BaseActivity {
     /** Tạo file ảnh tạm rồi mở app Camera (Intent ngầm định ACTION_IMAGE_CAPTURE bên trong TakePicture). */
     private void launchCamera() {
         try {
-            pendingPhotoUri = ImageStorage.createScanPhotoUri(this);
+            pendingPhotoUri = ImageStorage.createCameraPhotoUri(this);
             takePictureLauncher.launch(pendingPhotoUri);
         } catch (IOException e) {
             pendingPhotoUri = null;

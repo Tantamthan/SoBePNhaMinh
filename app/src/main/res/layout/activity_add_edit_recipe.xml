@@ -65,12 +65,15 @@
                 android:layout_height="188dp"
                 android:background="@drawable/bg_dashed_photo">
 
-                <!-- Ảnh đã chọn (hiện khi có ảnh) -->
+                <!-- Ảnh đã chọn (hiện khi có ảnh). Bấm vào → chọn ảnh khác / chụp ảnh khác / xoá ảnh -->
                 <ImageView
                     android:id="@+id/imagePhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:importantForAccessibility="no"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:contentDescription="@string/cd_recipe_photo_edit"
+                    android:focusable="true"
                     android:scaleType="centerCrop"
                     android:visibility="gone" />
 

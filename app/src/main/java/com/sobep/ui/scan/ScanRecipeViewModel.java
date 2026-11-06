@@ -140,7 +140,7 @@ public class ScanRecipeViewModel extends AndroidViewModel {
         recognizer.close();
         // Rời hẳn màn Quét: xoá ảnh chụp tạm (chữ đã được trả về màn Thêm món)
         Application app = getApplication();
-        imageExecutor.execute(() -> ImageStorage.clearScanPhotos(app));
+        imageExecutor.execute(() -> ImageStorage.clearCameraPhotos(app));
         imageExecutor.shutdown();
         super.onCleared();
     }
