@@ -102,6 +102,13 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   `ui/account/` (AccountActivity, AccountViewModel). Main có nút Tài khoản. Quyền INTERNET. **12 Activity**.
   Firebase project `sotaynauan-78901`, gói Spark (miễn phí); `app/google-services.json` nằm trong `.gitignore`.
   BoM 35.1.0, plugin google-services 4.5.0. Đã test máy ảo với tài khoản `sobep.test0711@example.com`.
+- 09/11: thêm đăng nhập Google: Credential Manager (`credentials` 1.5.0 + `googleid` 1.1.1, `GetSignInWithGoogleOption`)
+  ở `LoginActivity` → ID token → `LoginViewModel.signInWithGoogle` → `AuthRepository.signInWithGoogle`
+  (`GoogleAuthProvider` + `signInWithCredential`). `signOut(context)` xoá thêm trạng thái Credential Manager.
+  Console: đã bật Google provider, SHA-1 debug `38:7F:23:...:8E:63`. Không thêm Activity.
+- 10/11: bản debug ký bằng khoá dùng chung `app/sobep-shared.keystore` (alias `sobep`, mật khẩu `android`, có trong Git)
+  qua `signingConfigs.debug` → mọi máy build ra cùng SHA-1 `9E:83:17:...:8D:2E` (đăng ký trên Firebase) → Google chạy mọi máy.
+  Không dùng lại `~/.android/debug.keystore`. Máy đã cài bản ký khoá cũ phải gỡ app trước khi cài lại.
 - Chưa làm: CN14 đồng bộ Firestore (8b, chỉ chữ – không dùng Firebase Storage vì cần gói trả phí),
   CN15 tab Cộng đồng (8c).
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.

@@ -32,8 +32,8 @@ public class AccountViewModel extends AndroidViewModel {
         return user == null ? null : user.getEmail();
     }
 
-    /** Đăng xuất: món ăn trong máy (Room) giữ nguyên. */
+    /** Đăng xuất (cả tài khoản email lẫn Google): món ăn trong máy (Room) giữ nguyên. */
     public void signOut() {
-        repository.signOut();
+        repository.signOut(getApplication());
     }
 }

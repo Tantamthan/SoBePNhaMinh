@@ -269,6 +269,8 @@
     <string name="hint_confirm_password">Gõ lại mật khẩu ở trên</string>
     <string name="action_sign_in">Đăng nhập</string>
     <string name="login_no_account">Chưa có tài khoản? Đăng ký</string>
+    <string name="login_or">hoặc</string>
+    <string name="action_sign_in_google">Tiếp tục với Google</string>
     <string name="register_title">Tạo tài khoản</string>
     <string name="register_heading">Tài khoản mới</string>
     <string name="register_subtitle">Dùng email của bạn và mật khẩu ít nhất 6 ký tự. Tạo xong là đăng nhập luôn.</string>
@@ -285,7 +287,10 @@
     <string name="error_auth_user_disabled">Tài khoản này đã bị khoá</string>
     <string name="error_auth_network">Không có kết nối mạng. Kiểm tra Wi-Fi / 4G rồi thử lại</string>
     <string name="error_auth_too_many">Thử sai quá nhiều lần. Đợi vài phút rồi thử lại</string>
-    <string name="error_auth_not_enabled">Firebase chưa bật đăng nhập bằng Email/Password</string>
+    <string name="error_auth_not_enabled">Firebase chưa bật cách đăng nhập này (Email/Password hoặc Google)</string>
+    <!-- Lỗi khi chọn tài khoản Google (trước khi gửi lên Firebase) -->
+    <string name="error_google_no_account">Máy chưa có tài khoản Google. Thêm tài khoản trong Cài đặt rồi thử lại</string>
+    <string name="error_google_failed">Chưa đăng nhập được bằng Google, hãy thử lại</string>
     <string name="error_auth_unknown">Có lỗi xảy ra, hãy thử lại</string>
 
     <!-- ===== 11. Account – Tài khoản ===== -->

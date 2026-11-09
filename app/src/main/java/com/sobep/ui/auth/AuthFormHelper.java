@@ -4,6 +4,9 @@ import android.util.Patterns;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.credentials.exceptions.GetCredentialException;
+import androidx.credentials.exceptions.GetCredentialInterruptedException;
+import androidx.credentials.exceptions.NoCredentialException;
 
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.FirebaseTooManyRequestsException;
@@ -84,6 +87,24 @@ public final class AuthFormHelper {
             return R.string.error_auth_not_enabled;
         }
         return R.string.error_auth_unknown;
+    }
+
+    /**
+     * Lỗi khi lấy tài khoản Google từ Credential Manager (TRƯỚC khi gửi lên Firebase) → câu báo.
+     * Trường hợp người dùng tự đóng bảng chọn (GetCredentialCancellationException) không coi là lỗi,
+     * LoginActivity xử lý riêng nên không có ở đây.
+     */
+    @StringRes
+    public static int messageForGoogle(GetCredentialException error) {
+        if (error instanceof NoCredentialException) {
+            // Máy chưa đăng nhập tài khoản Google nào (hoặc không có Google Play)
+            return R.string.error_google_no_account;
+        }
+        if (error instanceof GetCredentialInterruptedException) {
+            return R.string.error_auth_network;
+        }
+        // Còn lại: thường do cấu hình (thiếu SHA-1 trên Firebase Console, sai Web client ID)
+        return R.string.error_google_failed;
     }
 
     /** Chưa bật "Email/Password" trong Firebase Console → Authentication → Sign-in method. */

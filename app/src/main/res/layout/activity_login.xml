@@ -148,6 +148,52 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/action_sign_in" />
 
+            <!-- Dòng "hoặc" ngăn cách 2 cách đăng nhập -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/border" />
+
+                <TextView
+                    style="@style/Text.SoBep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:text="@string/login_or"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/border" />
+            </LinearLayout>
+
+            <!-- Đăng nhập bằng Google (Credential Manager → Firebase). Icon giữ màu gốc nên iconTint = null -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonGoogle"
+                style="@style/Widget.SoBep.Button.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:minHeight="@dimen/button_height_large"
+                android:text="@string/action_sign_in_google"
+                android:textColor="@color/text_primary"
+                app:icon="@drawable/ic_google"
+                app:iconGravity="textStart"
+                app:iconPadding="10dp"
+                app:iconSize="20dp"
+                app:iconTint="@null" />
+
             <!-- Vòng xoay chờ khi đang gửi lên Firebase -->
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress"

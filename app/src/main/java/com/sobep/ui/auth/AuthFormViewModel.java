@@ -66,6 +66,17 @@ public abstract class AuthFormViewModel extends AndroidViewModel {
         loading.setValue(true);
     }
 
+    /** Tắt vòng xoay chờ mà không báo lỗi (vd người dùng tự đóng bảng chọn tài khoản Google). */
+    protected void stopLoading() {
+        loading.setValue(false);
+    }
+
+    /** Tắt vòng xoay chờ và hiện lỗi ở khung báo lỗi chung. */
+    protected void showError(@StringRes int messageRes) {
+        loading.setValue(false);
+        message.setValue(messageRes);
+    }
+
     /** Callback chung: Firebase gọi về trên main thread nên dùng setValue được. */
     protected AuthRepository.Callback resultCallback() {
         return new AuthRepository.Callback() {
@@ -77,8 +88,7 @@ public abstract class AuthFormViewModel extends AndroidViewModel {
 
             @Override
             public void onError(@NonNull Exception error) {
-                loading.setValue(false);
-                message.setValue(AuthFormHelper.messageFor(error));
+                showError(AuthFormHelper.messageFor(error));
             }
         };
     }
