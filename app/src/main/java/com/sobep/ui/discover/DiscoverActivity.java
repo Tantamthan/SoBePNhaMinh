@@ -125,12 +125,20 @@ public class DiscoverActivity extends BaseActivity
         binding.textEmpty.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
     }
 
-    /** Tiêu đề kết quả: đang tìm → "Kết quả cho …"; chọn ô → tên ô; không thì "Tất cả món". */
+    /**
+     * Tiêu đề kết quả, khớp đúng điều kiện đang lọc (ViewModel lọc theo CẢ chữ tìm VÀ ô đang chọn):
+     * có chữ + có ô → "Kết quả cho “trung” trong Gà"; chỉ có chữ → "Kết quả cho …";
+     * chỉ có ô → tên ô; không có gì → "Tất cả món".
+     */
     private void showHeading() {
         String keyword = viewModel.getKeyword().getValue();
         KeywordTile tile = viewModel.getSelectedTile().getValue() == null
                 ? null : KeywordTile.find(viewModel.getSelectedTile().getValue());
-        if (keyword != null && !keyword.isEmpty()) {
+        boolean hasKeyword = keyword != null && !keyword.isEmpty();
+        if (hasKeyword && tile != null) {
+            binding.textResultHeading.setText(
+                    getString(R.string.format_search_heading_in_tile, keyword, getString(tile.labelRes)));
+        } else if (hasKeyword) {
             binding.textResultHeading.setText(getString(R.string.format_search_heading, keyword));
         } else if (tile != null) {
             binding.textResultHeading.setText(tile.labelRes);

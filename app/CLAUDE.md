@@ -95,6 +95,8 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   Bấm ảnh để đổi / xoá. File thừa xoá sau khi lưu; thoát không lưu thì xoá ảnh mới; xoá món thì xoá ảnh.
 - 02/11: tìm kiếm màn chính không phân biệt dấu: `RecipeDao.filter` chỉ lọc chip, `getIngredientNames` (GROUP_CONCAT);
   `MainViewModel` ghép bằng `MediatorLiveData` và lọc từ khoá bằng `VietnameseText.containsNormalized`. Không đổi CSDL.
+- 07/11: Khám phá – tiêu đề kết quả ghi cả từ khoá lẫn ô đang chọn ("Kết quả cho “trung” trong Gà"),
+  khớp với cách `DiscoverViewModel` lọc (từ khoá VÀ ô). Chỉ sửa `DiscoverActivity.showHeading()` + 1 string.
 - 07/11: CN13 (bước 8a) Firebase Auth email/mật khẩu, tuỳ chọn. `data/repository/AuthRepository` (không đụng Room),
   `ui/auth/` (LoginActivity, RegisterActivity, LoginViewModel, RegisterViewModel, AuthFormViewModel, AuthFormHelper),
   `ui/account/` (AccountActivity, AccountViewModel). Main có nút Tài khoản. Quyền INTERNET. **12 Activity**.
