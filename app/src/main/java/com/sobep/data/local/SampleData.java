@@ -14,6 +14,9 @@ import java.util.List;
  */
 final class SampleData {
 
+    // 1 mili giây sau mốc 01/01/1970: mọi lần sửa thật đều có updatedAt lớn hơn
+    private static final long SEED_TIME = 1L;
+
     private SampleData() {
         // Lớp chỉ chứa hàm tĩnh, không cho tạo đối tượng
     }
@@ -26,6 +29,8 @@ final class SampleData {
     private static void insertCanhChua(RecipeDao dao) {
         Recipe recipe = new Recipe();
         recipe.name = "Canh chua cá lóc";
+        // cloudId cố định: máy nào cũng tạo sẵn món này → đồng bộ không bị 2 bản trùng
+        recipe.cloudId = "seed-canh-chua";
         recipe.category = Recipe.CATEGORY_SOUP;
         recipe.cookTimeMinutes = 35;
         recipe.servings = 4;
@@ -49,12 +54,13 @@ final class SampleData {
         steps.add(step("Cho cá vào nấu chín, hớt bọt cho nước trong.", 10));
         steps.add(step("Thêm cà chua, bạc hà, giá; sôi lại thì tắt bếp, rắc ngò om, ngò gai.", 2));
 
-        dao.insertFullRecipe(recipe, ingredients, steps);
+        insertSeed(dao, recipe, ingredients, steps);
     }
 
     private static void insertThitKho(RecipeDao dao) {
         Recipe recipe = new Recipe();
         recipe.name = "Thịt kho trứng";
+        recipe.cloudId = "seed-thit-kho";
         recipe.category = Recipe.CATEGORY_MAIN;
         recipe.cookTimeMinutes = 90;
         recipe.servings = 4;
@@ -74,7 +80,19 @@ final class SampleData {
         steps.add(step("Thắng đường cho có màu cánh gián, cho thịt vào đảo săn.", 0));
         steps.add(step("Đổ nước dừa ngập thịt, cho trứng vào, kho lửa nhỏ đến khi thịt mềm.", 45));
 
-        dao.insertFullRecipe(recipe, ingredients, steps);
+        insertSeed(dao, recipe, ingredients, steps);
+    }
+
+    /**
+     * CN14: món tạo sẵn mang thời điểm "cũ nhất có thể" (SEED_TIME) thay vì thời điểm cài app.
+     * Cài app trên máy mới rồi đồng bộ: bản trên mây (đã sửa, hoặc bia mộ nếu đã xoá) luôn mới hơn → thắng,
+     * món tạo sẵn không ghi đè bản của người dùng và món đã xoá không "sống lại".
+     * Dùng insertSyncedRecipe vì hàm này giữ nguyên createdAt / updatedAt (insertFullRecipe đặt = bây giờ).
+     */
+    private static void insertSeed(RecipeDao dao, Recipe recipe, List<Ingredient> ingredients, List<Step> steps) {
+        recipe.createdAt = SEED_TIME;
+        recipe.updatedAt = SEED_TIME;
+        dao.insertSyncedRecipe(recipe, ingredients, steps);
     }
 
     private static Ingredient ingredient(String name, double quantity, String unit) {

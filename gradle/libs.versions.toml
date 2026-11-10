@@ -31,6 +31,7 @@ mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition"
 # Firebase: BoM chốt phiên bản cho cả bộ thư viện Firebase, nên firebase-auth không ghi version
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 # Đăng nhập bằng Google (Credential Manager): hiện bảng chọn tài khoản Google, trả về ID token cho Firebase
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }

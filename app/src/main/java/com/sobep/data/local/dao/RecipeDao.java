@@ -77,6 +77,10 @@ public abstract class RecipeDao {
     @Query("SELECT * FROM steps WHERE recipeId = :recipeId ORDER BY position")
     public abstract List<Step> getStepsNow(long recipeId);
 
+    /** CN14: toàn bộ món trong máy, để so với Firestore khi đồng bộ. */
+    @Query("SELECT * FROM recipes")
+    public abstract List<Recipe> getAllNow();
+
     // ---------- Ghi (gọi qua databaseWriteExecutor) ----------
 
     @Insert
@@ -114,6 +118,10 @@ public abstract class RecipeDao {
         long now = System.currentTimeMillis();
         recipe.createdAt = now;
         recipe.updatedAt = now;
+        // CN14: mọi món mới (tự nhập, món mẫu, món tạo sẵn) đều có cloudId để đồng bộ
+        if (recipe.cloudId == null) {
+            recipe.cloudId = Recipe.newCloudId(recipe.sourceSampleId);
+        }
         long recipeId = insertRecipe(recipe);
         saveChildren(recipeId, ingredients, steps);
         return recipeId;
@@ -126,6 +134,35 @@ public abstract class RecipeDao {
     @Transaction
     public void updateFullRecipe(Recipe recipe, List<Ingredient> ingredients, List<Step> steps) {
         recipe.updatedAt = System.currentTimeMillis();
+        // Phòng trường hợp đối tượng món không mang theo cloudId: lấy lại mã cũ, không được đổi mã của món
+        if (recipe.cloudId == null) {
+            Recipe stored = getByIdNow(recipe.id);
+            recipe.cloudId = stored != null && stored.cloudId != null
+                    ? stored.cloudId : Recipe.newCloudId(recipe.sourceSampleId);
+        }
+        replaceChildren(recipe, ingredients, steps);
+    }
+
+    // ---------- CN14: ghi món tải về từ Firestore (GIỮ NGUYÊN createdAt / updatedAt của bản trên mây) ----------
+    // Nếu đặt updatedAt = bây giờ thì lần đồng bộ sau bản trong máy trông "mới hơn" → bị gửi lên lại vô ích.
+
+    /** Món chỉ có trên mây → thêm vào máy. @return id món trong máy */
+    @Transaction
+    public long insertSyncedRecipe(Recipe recipe, List<Ingredient> ingredients, List<Step> steps) {
+        recipe.id = 0;
+        long recipeId = insertRecipe(recipe);
+        saveChildren(recipeId, ingredients, steps);
+        return recipeId;
+    }
+
+    /** Bản trên mây mới hơn → ghi đè món trong máy (recipe.id là id món trong máy). */
+    @Transaction
+    public void replaceSyncedRecipe(Recipe recipe, List<Ingredient> ingredients, List<Step> steps) {
+        replaceChildren(recipe, ingredients, steps);
+    }
+
+    // Cập nhật bảng recipes, xoá hết nguyên liệu/bước cũ rồi chèn danh sách mới
+    private void replaceChildren(Recipe recipe, List<Ingredient> ingredients, List<Step> steps) {
         updateRecipe(recipe);
         deleteIngredientsOf(recipe.id);
         deleteStepsOf(recipe.id);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Màn 12 · AccountActivity – Tài khoản:
-     thẻ người đang đăng nhập (email), thẻ "Sao lưu & đồng bộ" (CN14, làm ở bước 8b),
+     thẻ người đang đăng nhập (email), thẻ "Sao lưu & đồng bộ" (CN14: nút, thanh chạy, kết quả, lần gần nhất),
      ghi chú "đăng xuất không xoá món" và nút Đăng xuất. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -133,6 +133,40 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
                         android:text="@string/action_sync_now" />
+
+                    <!-- Thanh chạy khi đang đồng bộ -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressSync"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        app:indicatorColor="@color/green_primary"
+                        app:trackColor="@color/track"
+                        app:trackCornerRadius="2dp" />
+
+                    <!-- Kết quả lần đồng bộ vừa rồi (số món gửi lên / tải về / xoá) hoặc lỗi -->
+                    <TextView
+                        android:id="@+id/textSyncStatus"
+                        style="@style/Text.SoBep"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/be_vietnam_pro_semibold"
+                        android:textColor="@color/green_primary"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        tools:text="Xong: gửi lên 3 món, tải về 0 món, xoá 0 món"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/textLastSync"
+                        style="@style/Text.SoBep.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        tools:text="Đồng bộ gần nhất: 00:30, 10/11/2026" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

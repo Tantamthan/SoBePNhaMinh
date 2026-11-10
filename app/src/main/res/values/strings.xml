@@ -299,6 +299,15 @@
     <string name="account_sync_title">Sao lưu &amp; đồng bộ</string>
     <string name="account_sync_desc">Đưa món trong sổ lên mây để lấy lại khi đổi máy. Chỉ đồng bộ chữ, ảnh món vẫn lưu trong máy.</string>
     <string name="action_sync_now">Đồng bộ ngay</string>
+    <string name="sync_in_progress">Đang đồng bộ…</string>
+    <string name="sync_never">Chưa đồng bộ lần nào</string>
+    <string name="format_sync_last">Đồng bộ gần nhất: %1$s</string>
+    <string name="format_sync_result">Xong: gửi lên %1$d món, tải về %2$d món, xoá %3$d món</string>
+    <string name="sync_result_none">Xong: máy và mây đã khớp, không có gì thay đổi</string>
+    <string name="error_sync_network">Không kết nối được máy chủ. Kiểm tra Wi-Fi / 4G rồi thử lại</string>
+    <string name="error_sync_permission">Máy chủ từ chối truy cập. Kiểm tra Firestore Rules trên Firebase Console</string>
+    <string name="error_sync_not_ready">Firebase chưa tạo Firestore Database</string>
+    <string name="error_sync_unknown">Đồng bộ chưa xong, hãy thử lại</string>
     <string name="account_local_note">Đăng xuất không xoá món nào trong máy.</string>
     <string name="action_sign_out">Đăng xuất</string>
     <string name="dialog_sign_out_title">Đăng xuất?</string>

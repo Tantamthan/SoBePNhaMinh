@@ -71,6 +71,8 @@ dependencies {
     // Đăng nhập là tuỳ chọn: không đăng nhập app vẫn chạy offline với Room
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    // Cloud Firestore (CN14): sao lưu / đồng bộ món ăn (chỉ chữ) lên mây theo uid người dùng
+    implementation(libs.firebase.firestore)
 
     // Đăng nhập bằng Google (CN13 mở rộng): Credential Manager hiện bảng chọn tài khoản Google
     // → lấy ID token → đưa cho Firebase Auth. credentials-play-services-auth cần cho Android 13 trở xuống

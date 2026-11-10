@@ -38,11 +38,14 @@ public class RecipeRepository {
 
     private final RecipeDao recipeDao;
     private final ExecutorService executor;
+    // CN14: báo Firestore khi xoá món (ghi bia mộ) để máy khác đồng bộ cũng xoá theo
+    private final SyncRepository syncRepository;
 
     public RecipeRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
         recipeDao = db.recipeDao();
         executor = AppDatabase.databaseWriteExecutor;
+        syncRepository = new SyncRepository(application);
     }
 
     // ---------- Đọc ----------
@@ -115,11 +118,13 @@ public class RecipeRepository {
     /**
      * CN05: xoá món (nguyên liệu, bước, thực đơn của món tự xoá theo nhờ CASCADE).
      * Món có ảnh → xoá luôn file ảnh trong máy để không chiếm bộ nhớ.
+     * CN14: đang đăng nhập thì ghi bia mộ lên Firestore (mất mạng thì Firestore tự gửi sau).
      */
     public void deleteRecipe(Recipe recipe) {
         executor.execute(() -> {
             recipeDao.deleteRecipe(recipe);
             ImageStorage.deleteRecipePhoto(recipe.imagePath);
+            syncRepository.markDeleted(recipe.cloudId);
         });
     }
 

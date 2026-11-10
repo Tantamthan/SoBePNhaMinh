@@ -3,13 +3,16 @@ package com.sobep.data.local.entity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
  * Bảng recipes: một công thức (món ăn) trong sổ bếp.
  * Nguyên liệu và các bước nấu nằm ở bảng riêng (ingredients, steps), nối bằng recipeId.
  */
-@Entity(tableName = "recipes")
+@Entity(tableName = "recipes",
+        // cloudId không được trùng: mỗi món trong máy ứng với đúng 1 document trên Firestore
+        indices = @Index(value = "cloudId", unique = true))
 public class Recipe {
 
     // Mã danh mục lưu trong CSDL. Thứ tự trùng với string-array recipe_categories trong strings.xml
@@ -54,7 +57,21 @@ public class Recipe {
     @Nullable
     public String sourceSampleId;
 
-    // Thời điểm tạo / sửa lần cuối (mili giây). updatedAt dùng để sắp xếp và để đồng bộ Firestore sau này
+    /**
+     * CN14: mã món dùng chung giữa máy và Firestore (tên document users/{uid}/recipes/{cloudId}).
+     * Không dùng id vì id do Room tự tăng, mỗi máy đánh số khác nhau. Gán khi thêm món (RecipeDao.insertFullRecipe):
+     * món mẫu = "sample-" + sourceSampleId (2 máy lưu cùng món mẫu không bị trùng), món tự nhập = UUID ngẫu nhiên.
+     */
+    @Nullable
+    public String cloudId;
+
+    // Thời điểm tạo / sửa lần cuối (mili giây). updatedAt dùng để sắp xếp và để đồng bộ: bản nào sửa sau thì thắng
     public long createdAt;
     public long updatedAt;
+
+    /** Tạo cloudId cho món mới: món mẫu dùng mã cố định theo món mẫu, món tự nhập dùng UUID. */
+    @NonNull
+    public static String newCloudId(@Nullable String sourceSampleId) {
+        return sourceSampleId != null ? "sample-" + sourceSampleId : java.util.UUID.randomUUID().toString();
+    }
 }

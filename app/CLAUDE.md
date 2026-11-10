@@ -50,16 +50,16 @@ com.sobep
 │   ├── auth/       LoginActivity, RegisterActivity
 │   └── account/    AccountActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
-├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository, AuthRepository
+├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository, AuthRepository, SyncRepository
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
-└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText
+└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText, SyncMerge
 ```
 ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/, auth/, account/
 (mỗi màn trừ splash).
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
-Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest` (`./gradlew testDebugUnitTest`).
+Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest`, `SyncMergeTest` (`./gradlew testDebugUnitTest`).
 
 ## 12 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -84,8 +84,8 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
 - 29/10: Thực đơn tuần (`MealPlanViewModel`, RecyclerView lồng nhau) → Đi chợ (`ShoppingListViewModel`):
   chia theo ngày nấu, tự lấy nguyên liệu theo thực đơn khi mở màn (`syncWithMealPlan`), tích, tự thêm, chia sẻ.
   Thêm `MealPlanRepository`, `ShoppingRepository`, `util/QuantityFormat`.
-- CSDL **version 2**: `MIGRATION_1_2` thêm cột `date`, `forRecipes` vào `shopping_items`. Đổi schema lần sau
-  phải tăng version và viết Migration mới (không xoá dữ liệu người dùng).
+- CSDL **version 3**: `MIGRATION_1_2` thêm cột `date`, `forRecipes` vào `shopping_items`; `MIGRATION_2_3` thêm
+  `recipes.cloudId` (UNIQUE). Đổi schema lần sau phải tăng version và viết Migration mới (không xoá dữ liệu người dùng).
 - 02/11: màn Quét xin quyền CAMERA lúc chạy, chụp ảnh (`TakePicture` + FileProvider), chọn ảnh (`PickVisualMedia`),
   đọc chữ bằng ML Kit (`ScanRecipeViewModel`), thêm `util/ImageStorage`. Chữ quét mới điền tên món.
 - 02/11: `util/RecipeTextParser` tách chữ quét vào tên món, thời gian, khẩu phần, nguyên liệu, các bước (+ hẹn giờ);
@@ -109,8 +109,13 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
 - 10/11: bản debug ký bằng khoá dùng chung `app/sobep-shared.keystore` (alias `sobep`, mật khẩu `android`, có trong Git)
   qua `signingConfigs.debug` → mọi máy build ra cùng SHA-1 `9E:83:17:...:8D:2E` (đăng ký trên Firebase) → Google chạy mọi máy.
   Không dùng lại `~/.android/debug.keystore`. Máy đã cài bản ký khoá cũ phải gỡ app trước khi cài lại.
-- Chưa làm: CN14 đồng bộ Firestore (8b, chỉ chữ – không dùng Firebase Storage vì cần gói trả phí),
-  CN15 tab Cộng đồng (8c).
+- 10/11: CN14 (bước 8b) đồng bộ Firestore: `data/repository/SyncRepository` (gộp 2 chiều theo `updatedAt`,
+  bia mộ `{deleted:true}` khi xoá món, `get(Source.SERVER)`, `Tasks.await` 30 s trên `databaseWriteExecutor`),
+  `util/SyncMerge` + `SyncMergeTest` (9 test). Firestore: `users/{uid}/recipes/{cloudId}`, nguyên liệu/bước là mảng
+  trong document, không gửi `id`/`imagePath`. Món tạo sẵn `cloudId` = `seed-canh-chua`/`seed-thit-kho`, `updatedAt = 1`;
+  món mẫu `cloudId` = `"sample-" + sourceSampleId`. Rules: chỉ `request.auth.uid == userId`. Màn Tài khoản có thanh chạy,
+  kết quả, lần đồng bộ gần nhất. Đã test máy ảo (máy mới, xoá lan sang máy khác, migration từ v2, mất mạng).
+- Chưa làm: CN15 tab Cộng đồng (8c) – sẽ thêm khối `match /community/...` vào Firestore Rules.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi
