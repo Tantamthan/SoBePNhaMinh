@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sobep.R;
 import com.sobep.data.local.entity.Recipe;
 import com.sobep.databinding.ActivityRecipeDetailBinding;
@@ -28,6 +29,7 @@ import java.io.File;
  * Minh hoạ đủ các loại Intent:
  * - Tường minh: mở Chế độ nấu, mở màn Sửa món (chờ kết quả trả về).
  * - Ngầm định: Chia sẻ (ACTION_SEND), mở Video (ACTION_VIEW) bằng app khác trên máy.
+ * CN15: nút "Đăng lên cộng đồng" chỉ hiện khi đã đăng nhập; hỏi xác nhận trước khi đăng.
  */
 public class RecipeDetailActivity extends BaseActivity {
 
@@ -76,6 +78,13 @@ public class RecipeDetailActivity extends BaseActivity {
         observeViewModel();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Có thể vừa đăng nhập / đăng xuất ở màn khác → ẩn/hiện nút Đăng lên cộng đồng
+        binding.buttonPublish.setVisibility(viewModel.isSignedIn() ? View.VISIBLE : View.GONE);
+    }
+
     private void setupLists() {
         // LinearLayoutManager đã khai báo trong activity_recipe_detail.xml
         ingredientAdapter = new IngredientAdapter();
@@ -104,6 +113,19 @@ public class RecipeDetailActivity extends BaseActivity {
         // Nguyên liệu đã nhân theo số người; các bước lấy nguyên từ CSDL
         viewModel.getIngredients().observe(this, ingredientAdapter::submitList);
         viewModel.getSteps().observe(this, stepAdapter::submitList);
+
+        // CN15: đang đăng → khoá nút, đổi chữ; đăng xong → báo kết quả một lần
+        viewModel.isPublishing().observe(this, publishing -> {
+            boolean busy = Boolean.TRUE.equals(publishing);
+            binding.buttonPublish.setEnabled(!busy);
+            binding.buttonPublish.setText(busy ? R.string.publish_in_progress : R.string.action_publish_community);
+        });
+        viewModel.getPublishMessage().observe(this, messageRes -> {
+            if (messageRes != null) {
+                showToast(messageRes);
+                viewModel.consumePublishMessage();
+            }
+        });
     }
 
     /** Điền thông tin chung của món lên màn hình. */
@@ -159,11 +181,30 @@ public class RecipeDetailActivity extends BaseActivity {
             editRecipeLauncher.launch(intent);
         });
 
+        binding.buttonPublish.setOnClickListener(v -> confirmPublish());
+
         binding.buttonCookNow.setOnClickListener(v -> {
             Intent intent = new Intent(this, CookingModeActivity.class);
             intent.putExtra(IntentKeys.EXTRA_RECIPE_ID, recipeId);
             startActivity(intent);
         });
+    }
+
+    /** CN15: hộp xác nhận nói rõ món sẽ công khai, chỉ đăng chữ, tên hiển thị là gì → bấm Đăng mới gửi. */
+    private void confirmPublish() {
+        if (currentRecipe == null) {
+            return;
+        }
+        String author = viewModel.getAuthorName();
+        if (author.isEmpty()) {
+            author = getString(R.string.community_unknown_author);
+        }
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_publish_title)
+                .setMessage(getString(R.string.format_dialog_publish_message, currentRecipe.name, author))
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_publish, (dialog, which) -> viewModel.publishToCommunity())
+                .show();
     }
 
     /** Intent ngầm định: không chỉ rõ app nào, hệ thống hiện danh sách app có thể nhận chữ. */

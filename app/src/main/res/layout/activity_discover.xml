@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Màn 9 · DiscoverActivity – Khám phá món:
-     ô tìm theo nguyên liệu, lưới 8 ô gợi ý nguyên liệu, danh sách món tìm được.
+     2 tab Món mẫu | Cộng đồng (thanh tab chỉ hiện khi đã đăng nhập, CN15),
+     ô tìm theo nguyên liệu, lưới 8 ô gợi ý nguyên liệu (chỉ tab Món mẫu), danh sách món tìm được.
      Bấm một món sẽ mở bottom sheet xem trước (bottom_sheet_recipe_preview.xml). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,6 +37,36 @@
             android:layout_weight="1"
             android:text="@string/discover_title" />
     </LinearLayout>
+
+    <!-- Thanh 2 tab: chỉ hiện khi đã đăng nhập (ẩn/hiện trong DiscoverActivity) -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleTabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/screen_padding"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        app:checkedButton="@id/buttonTabSamples"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        tools:visibility="visible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonTabSamples"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/discover_tab_samples" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonTabCommunity"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/discover_tab_community" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -82,27 +113,34 @@
                     android:textColorHint="@color/text_secondary" />
             </LinearLayout>
 
-            <!-- Gợi ý theo nguyên liệu -->
-            <TextView
-                style="@style/Text.SoBep.Heading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_padding_large"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/discover_suggest_heading" />
-
-            <!-- Lưới 2 cột; mỗi ô margin 5dp nên khoảng cách giữa 2 ô = 10dp -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerKeywords"
+            <!-- Gợi ý theo nguyên liệu (ẩn ở tab Cộng đồng) -->
+            <LinearLayout
+                android:id="@+id/layoutSuggest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:paddingHorizontal="11dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:itemCount="8"
-                tools:listitem="@layout/item_discover_tile" />
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.SoBep.Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/screen_padding_large"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/discover_suggest_heading" />
+
+                <!-- Lưới 2 cột; mỗi ô margin 5dp nên khoảng cách giữa 2 ô = 10dp -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerKeywords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="11dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:itemCount="8"
+                    tools:listitem="@layout/item_discover_tile" />
+            </LinearLayout>
 
             <!-- Tiêu đề kết quả + số món -->
             <LinearLayout
@@ -128,7 +166,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="9 món" />
+
+                <!-- Tải lại bài cộng đồng (chỉ tab Cộng đồng) -->
+                <ImageButton
+                    android:id="@+id/buttonReload"
+                    style="@style/Widget.SoBep.IconButton"
+                    android:layout_width="@dimen/icon_button_small"
+                    android:layout_height="@dimen/icon_button_small"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/cd_reload_community"
+                    android:src="@drawable/ic_reset"
+                    android:visibility="gone" />
             </LinearLayout>
+
+            <!-- Đang tải bài cộng đồng -->
+            <ProgressBar
+                android:id="@+id/progressCommunity"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="16dp"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerResults"

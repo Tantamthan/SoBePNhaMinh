@@ -3,6 +3,7 @@ package com.sobep.ui.detail;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -11,15 +12,21 @@ import androidx.lifecycle.Transformations;
 
 import com.sobep.data.local.entity.Ingredient;
 import com.sobep.data.local.entity.Recipe;
+import com.sobep.R;
 import com.sobep.data.local.entity.Step;
+import com.sobep.data.repository.CommunityRepository;
 import com.sobep.data.repository.RecipeRepository;
+import com.sobep.util.FirestoreErrors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * ViewModel màn Chi tiết món (CN02): đọc món theo mã, giữ số người đang chọn
  * và tính lại số lượng nguyên liệu theo số người (quy đổi khẩu phần).
+ * CN15: đăng món lên Cộng đồng (chỉ khi đã đăng nhập). Trạng thái "đang đăng" giữ trong ViewModel
+ * → xoay màn hình khi đang đăng vẫn khoá nút, không gửi 2 lần.
  */
 public class RecipeDetailViewModel extends AndroidViewModel {
 
@@ -27,6 +34,11 @@ public class RecipeDetailViewModel extends AndroidViewModel {
     public static final int MAX_SERVINGS = 20;
 
     private final RecipeRepository repository;
+    private final CommunityRepository communityRepository;
+
+    private final MutableLiveData<Boolean> publishing = new MutableLiveData<>(false);
+    // Câu báo một lần (mã chuỗi) sau khi đăng: thành công / lỗi
+    private final MutableLiveData<Integer> publishMessage = new MutableLiveData<>(null);
 
     // Mã món do Activity truyền vào (lấy từ Intent). Đổi mã → các LiveData bên dưới tự đọc lại
     private final MutableLiveData<Long> recipeId = new MutableLiveData<>();
@@ -44,6 +56,7 @@ public class RecipeDetailViewModel extends AndroidViewModel {
     public RecipeDetailViewModel(@NonNull Application application) {
         super(application);
         repository = new RecipeRepository(application);
+        communityRepository = new CommunityRepository(application);
 
         recipe = Transformations.switchMap(recipeId, repository::getRecipe);
         baseIngredients = Transformations.switchMap(recipeId, repository::getIngredients);
@@ -150,5 +163,60 @@ public class RecipeDetailViewModel extends AndroidViewModel {
         if (r != null) {
             repository.deleteRecipe(r);
         }
+    }
+
+    // ---------- Đăng lên cộng đồng (CN15) ----------
+
+    /** Đã đăng nhập chưa: chưa đăng nhập thì Activity ẩn nút "Đăng lên cộng đồng". */
+    public boolean isSignedIn() {
+        return communityRepository.getCurrentUid() != null;
+    }
+
+    /** Tên sẽ hiện dưới bài đăng, để hộp xác nhận cho người dùng xem trước. */
+    public String getAuthorName() {
+        return communityRepository.getAuthorName();
+    }
+
+    public LiveData<Boolean> isPublishing() {
+        return publishing;
+    }
+
+    public LiveData<Integer> getPublishMessage() {
+        return publishMessage;
+    }
+
+    public void consumePublishMessage() {
+        publishMessage.setValue(null);
+    }
+
+    /**
+     * Gửi món đang xem lên community_recipes. Dùng nguyên liệu GỐC trong CSDL (không phải số đã nhân theo
+     * số người đang chọn) để bài đăng đúng công thức.
+     */
+    public void publishToCommunity() {
+        Recipe r = recipe.getValue();
+        List<Ingredient> ingredients = baseIngredients.getValue();
+        List<Step> stepList = steps.getValue();
+        if (r == null || ingredients == null || stepList == null || Boolean.TRUE.equals(publishing.getValue())) {
+            return;
+        }
+        publishing.setValue(true);
+        communityRepository.publish(r, ingredients, stepList, new CommunityRepository.Callback<Void>() {
+            // Firebase gọi trên main thread → setValue được
+            @Override
+            public void onSuccess(@Nullable Void result) {
+                publishing.setValue(false);
+                publishMessage.setValue(R.string.msg_community_published);
+            }
+
+            @Override
+            public void onError(@NonNull Exception error) {
+                publishing.setValue(false);
+                // Hết giờ chờ = mạng chậm: Firestore giữ lệnh ghi trong máy và tự gửi khi có mạng
+                publishMessage.setValue(error instanceof TimeoutException
+                        ? R.string.msg_community_queued
+                        : FirestoreErrors.messageFor(error, R.string.error_community_unknown));
+            }
+        });
     }
 }

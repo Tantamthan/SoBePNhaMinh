@@ -313,4 +313,36 @@
     <string name="dialog_sign_out_title">Đăng xuất?</string>
     <string name="dialog_sign_out_message">Món ăn trong máy vẫn giữ nguyên. Bạn có thể đăng nhập lại bất cứ lúc nào.</string>
     <string name="msg_signed_out">Đã đăng xuất</string>
+
+    <!-- ===== 13. Cộng đồng (CN15) – tab ở màn Khám phá, nút Đăng ở Chi tiết món ===== -->
+    <string name="discover_tab_samples">Món mẫu</string>
+    <string name="discover_tab_community">Cộng đồng</string>
+    <string name="community_heading">Món mới từ cộng đồng</string>
+    <string name="community_empty">Chưa có món nào trên cộng đồng. Hãy là người đăng đầu tiên!</string>
+    <string name="cd_reload_community">Tải lại bài cộng đồng</string>
+    <!-- "Canh · 15 phút · Lan" -->
+    <string name="format_community_meta">%1$s · %2$d phút · %3$s</string>
+    <string name="format_posted_by">Đăng bởi %1$s</string>
+    <string name="community_unknown_author">Người dùng Sổ Bếp</string>
+    <string name="badge_mine">Của bạn</string>
+    <string name="action_report_post">Báo cáo bài này</string>
+    <string name="action_remove_post">Gỡ bài khỏi cộng đồng</string>
+    <string name="dialog_report_title">Báo cáo bài đăng</string>
+    <string name="report_reason_inappropriate">Nội dung không phù hợp</string>
+    <string name="report_reason_spam">Spam, quảng cáo</string>
+    <string name="report_reason_other">Lý do khác</string>
+    <string name="action_send_report">Gửi báo cáo</string>
+    <string name="msg_community_reported">Đã gửi báo cáo. Bài này sẽ không hiện trên máy bạn nữa</string>
+    <string name="dialog_remove_post_title">Gỡ bài?</string>
+    <string name="dialog_remove_post_message">Bài sẽ biến mất khỏi Cộng đồng. Món trong sổ của bạn vẫn giữ nguyên.</string>
+    <string name="action_remove_post_confirm">Gỡ bài</string>
+    <string name="msg_community_deleted">Đã gỡ bài khỏi cộng đồng</string>
+    <string name="action_publish_community">Đăng lên cộng đồng</string>
+    <string name="publish_in_progress">Đang đăng…</string>
+    <string name="dialog_publish_title">Đăng món lên cộng đồng?</string>
+    <string name="format_dialog_publish_message">“%1$s” sẽ công khai cho mọi người dùng đã đăng nhập Sổ Bếp.\n\nChỉ đăng chữ (nguyên liệu, các bước, ghi chú), không kèm ảnh.\nTên hiển thị: %2$s\n\nNếu đã đăng món này trước đó, bài cũ sẽ được cập nhật.</string>
+    <string name="action_publish">Đăng</string>
+    <string name="msg_community_published">Đã đăng món lên cộng đồng</string>
+    <string name="msg_community_queued">Mạng chậm: app sẽ tự gửi khi có mạng lại</string>
+    <string name="error_community_unknown">Chưa kết nối được Cộng đồng, hãy thử lại</string>
 </resources>

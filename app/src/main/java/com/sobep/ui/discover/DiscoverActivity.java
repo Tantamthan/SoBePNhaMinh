@@ -12,8 +12,11 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sobep.R;
+import com.sobep.data.community.CommunityRecipe;
 import com.sobep.data.local.entity.Ingredient;
+import com.sobep.data.repository.CommunityRepository;
 import com.sobep.data.sample.SampleRecipe;
 import com.sobep.databinding.ActivityDiscoverBinding;
 import com.sobep.databinding.BottomSheetRecipePreviewBinding;
@@ -29,9 +32,20 @@ import java.util.List;
  * Màn 9 · Khám phá món (CN06): món mẫu đọc từ assets/mon_mau.json (không cần mạng, không cần đăng nhập).
  * Tìm theo tên món / nguyên liệu (bỏ dấu), lọc theo 8 ô gợi ý; bấm món → bảng xem trước (BottomSheetDialog);
  * bấm "Lưu vào sổ" hoặc nút + → chép thành món thật trong CSDL. Món đã lưu → "Mở món trong sổ" (Intent tường minh).
+ *
+ * CN15: khi đã đăng nhập có thêm tab Cộng đồng (bài đọc từ Firestore). Dùng chung danh sách, bảng xem trước và
+ * "Lưu vào sổ"; bài người khác có nút Báo cáo, bài của mình có nút Gỡ bài. Chưa đăng nhập thì ẩn hẳn thanh tab.
  */
 public class DiscoverActivity extends BaseActivity
         implements DiscoverRecipeAdapter.OnSampleClickListener {
+
+    // Lý do báo cáo: chữ hiển thị và mã gửi lên Firestore (cùng thứ tự)
+    private static final int[] REPORT_REASON_LABELS = {
+            R.string.report_reason_inappropriate, R.string.report_reason_spam, R.string.report_reason_other
+    };
+    private static final String[] REPORT_REASON_CODES = {
+            CommunityRepository.REASON_INAPPROPRIATE, CommunityRepository.REASON_SPAM, CommunityRepository.REASON_OTHER
+    };
 
     private ActivityDiscoverBinding binding;
     private DiscoverViewModel viewModel;
@@ -55,7 +69,16 @@ public class DiscoverActivity extends BaseActivity
         binding.buttonBack.setOnClickListener(v -> finish());
         setupLists();
         setupSearch();
+        setupTabs();
         observeViewModel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Có thể vừa đăng nhập / đăng xuất ở màn Tài khoản → ẩn/hiện tab Cộng đồng cho đúng
+        viewModel.refreshSignIn();
+        recipeAdapter.setCurrentUid(viewModel.getCurrentUid());
     }
 
     private void setupLists() {
@@ -90,6 +113,22 @@ public class DiscoverActivity extends BaseActivity
         });
     }
 
+    /** Thanh 2 tab (MaterialButtonToggleGroup): bấm nút nào thì báo ViewModel đổi tab. */
+    private void setupTabs() {
+        binding.toggleTabs.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked) {
+                return;
+            }
+            // R.id không phải hằng số (AGP 8+) → dùng if/else
+            if (checkedId == R.id.buttonTabCommunity) {
+                viewModel.selectTab(DiscoverViewModel.TAB_COMMUNITY);
+            } else {
+                viewModel.selectTab(DiscoverViewModel.TAB_SAMPLES);
+            }
+        });
+        binding.buttonReload.setOnClickListener(v -> viewModel.loadCommunity());
+    }
+
     private void observeViewModel() {
         viewModel.getResults().observe(this, this::showResults);
         viewModel.getTileCounts().observe(this, tileAdapter::setCounts);
@@ -116,26 +155,76 @@ public class DiscoverActivity extends BaseActivity
                 showToast(R.string.msg_sample_load_error);
             }
         });
+
+        // ---- Tab Cộng đồng ----
+        viewModel.isSignedIn().observe(this, signedIn ->
+                binding.toggleTabs.setVisibility(Boolean.TRUE.equals(signedIn) ? View.VISIBLE : View.GONE));
+        viewModel.getTab().observe(this, this::showTab);
+        viewModel.isCommunityLoading().observe(this, loading -> {
+            boolean isLoading = Boolean.TRUE.equals(loading);
+            binding.progressCommunity.setVisibility(isLoading && isCommunityTab() ? View.VISIBLE : View.GONE);
+            binding.buttonReload.setEnabled(!isLoading);
+            updateEmptyState();
+        });
+        viewModel.getMessage().observe(this, messageRes -> {
+            if (messageRes != null) {
+                showToast(messageRes);
+                viewModel.consumeMessage();
+            }
+        });
     }
 
     private void showResults(List<SampleRecipe> results) {
         recipeAdapter.setItems(results);
         int count = results == null ? 0 : results.size();
         binding.textResultCount.setText(getString(R.string.format_recipe_count, count));
-        binding.textEmpty.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
+        updateEmptyState();
+    }
+
+    private boolean isCommunityTab() {
+        return Integer.valueOf(DiscoverViewModel.TAB_COMMUNITY).equals(viewModel.getTab().getValue());
+    }
+
+    /** Đổi tab: ô gợi ý chỉ có ở Món mẫu, nút tải lại + vòng xoay chỉ có ở Cộng đồng. */
+    private void showTab(Integer tab) {
+        boolean community = Integer.valueOf(DiscoverViewModel.TAB_COMMUNITY).equals(tab);
+        binding.toggleTabs.check(community ? R.id.buttonTabCommunity : R.id.buttonTabSamples);
+        binding.layoutSuggest.setVisibility(community ? View.GONE : View.VISIBLE);
+        binding.buttonReload.setVisibility(community ? View.VISIBLE : View.GONE);
+        boolean loading = Boolean.TRUE.equals(viewModel.isCommunityLoading().getValue());
+        binding.progressCommunity.setVisibility(community && loading ? View.VISIBLE : View.GONE);
+        showHeading();
+        updateEmptyState();
+    }
+
+    /** Dòng "không có món": ẩn khi đang tải; tab Cộng đồng chưa có bài nào thì mời đăng bài đầu tiên. */
+    private void updateEmptyState() {
+        boolean community = isCommunityTab();
+        boolean loading = community && Boolean.TRUE.equals(viewModel.isCommunityLoading().getValue());
+        boolean empty = recipeAdapter.getItemCount() == 0;
+        String keyword = viewModel.getKeyword().getValue();
+        boolean hasKeyword = keyword != null && !keyword.isEmpty();
+        binding.textEmpty.setText(community && !hasKeyword ? R.string.community_empty : R.string.discover_empty);
+        binding.textEmpty.setVisibility(empty && !loading ? View.VISIBLE : View.GONE);
     }
 
     /**
      * Tiêu đề kết quả, khớp đúng điều kiện đang lọc (ViewModel lọc theo CẢ chữ tìm VÀ ô đang chọn):
      * có chữ + có ô → "Kết quả cho “trung” trong Gà"; chỉ có chữ → "Kết quả cho …";
-     * chỉ có ô → tên ô; không có gì → "Tất cả món".
+     * chỉ có ô → tên ô; không có gì → "Tất cả món". Tab Cộng đồng không có ô → "Món mới từ cộng đồng".
      */
     private void showHeading() {
         String keyword = viewModel.getKeyword().getValue();
         KeywordTile tile = viewModel.getSelectedTile().getValue() == null
                 ? null : KeywordTile.find(viewModel.getSelectedTile().getValue());
         boolean hasKeyword = keyword != null && !keyword.isEmpty();
-        if (hasKeyword && tile != null) {
+        if (isCommunityTab()) {
+            if (hasKeyword) {
+                binding.textResultHeading.setText(getString(R.string.format_search_heading, keyword));
+            } else {
+                binding.textResultHeading.setText(R.string.community_heading);
+            }
+        } else if (hasKeyword && tile != null) {
             binding.textResultHeading.setText(
                     getString(R.string.format_search_heading_in_tile, keyword, getString(tile.labelRes)));
         } else if (hasKeyword) {
@@ -147,7 +236,7 @@ public class DiscoverActivity extends BaseActivity
         }
     }
 
-    // ---------- Bấm trên món mẫu ----------
+    // ---------- Bấm trên món ----------
 
     @Override
     public void onSampleClick(SampleRecipe sample) {
@@ -172,6 +261,16 @@ public class DiscoverActivity extends BaseActivity
                 CategoryNames.of(this, sample.category), sample.cookTimeMinutes));
         previewBinding.textIngredients.setText(buildIngredientLines(sample));
         previewBinding.textStepsCount.setText(getString(R.string.format_steps_count, sample.steps.size()));
+
+        // Bài cộng đồng: "Đăng bởi …", nút Báo cáo / Gỡ bài (ẩn hiện trong updatePreviewSavedState)
+        if (sample instanceof CommunityRecipe) {
+            CommunityRecipe post = (CommunityRecipe) sample;
+            previewBinding.textAuthor.setText(getString(R.string.format_posted_by,
+                    DiscoverRecipeAdapter.authorOf(this, post)));
+            previewBinding.textAuthor.setVisibility(View.VISIBLE);
+            previewBinding.buttonReport.setOnClickListener(v -> confirmReport(post));
+            previewBinding.buttonRemovePost.setOnClickListener(v -> confirmRemove(post));
+        }
 
         previewBinding.buttonClose.setOnClickListener(v -> dismissPreview());
         previewBinding.buttonSaveToBook.setOnClickListener(v -> viewModel.saveToBook(sample));
@@ -199,14 +298,22 @@ public class DiscoverActivity extends BaseActivity
         return lines.toString();
     }
 
-    /** Chưa lưu → nút "Lưu vào sổ"; đã lưu → "Món này đã có trong sổ" + nút "Mở món trong sổ". */
+    /**
+     * Chưa lưu → nút "Lưu vào sổ"; đã lưu → "Món này đã có trong sổ" + nút "Mở món trong sổ".
+     * Bài cộng đồng của mình → không có phần lưu (món vốn ở trong sổ), chỉ có nút "Gỡ bài";
+     * bài của người khác → thêm nút "Báo cáo".
+     */
     private void updatePreviewSavedState() {
         if (previewBinding == null || previewSample == null) {
             return;
         }
+        boolean isPost = previewSample instanceof CommunityRecipe;
+        boolean isMine = isPost && ((CommunityRecipe) previewSample).isMine(viewModel.getCurrentUid());
         boolean saved = viewModel.isSaved(previewSample);
-        previewBinding.buttonSaveToBook.setVisibility(saved ? View.GONE : View.VISIBLE);
-        previewBinding.layoutSaved.setVisibility(saved ? View.VISIBLE : View.GONE);
+        previewBinding.buttonSaveToBook.setVisibility(!isMine && !saved ? View.VISIBLE : View.GONE);
+        previewBinding.layoutSaved.setVisibility(!isMine && saved ? View.VISIBLE : View.GONE);
+        previewBinding.buttonReport.setVisibility(isPost && !isMine ? View.VISIBLE : View.GONE);
+        previewBinding.buttonRemovePost.setVisibility(isMine ? View.VISIBLE : View.GONE);
     }
 
     /** Intent tường minh: mở món đã lưu ở màn Chi tiết món, gửi kèm mã món trong sổ. */
@@ -219,6 +326,40 @@ public class DiscoverActivity extends BaseActivity
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra(IntentKeys.EXTRA_RECIPE_ID, recipeId);
         startActivity(intent);
+    }
+
+    // ---------- Báo cáo / gỡ bài cộng đồng ----------
+
+    /** Hộp thoại chọn 1 lý do rồi gửi báo cáo. Gửi xong bài bị ẩn trên máy này. */
+    private void confirmReport(CommunityRecipe post) {
+        CharSequence[] labels = new CharSequence[REPORT_REASON_LABELS.length];
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = getString(REPORT_REASON_LABELS[i]);
+        }
+        // Mảng 1 phần tử để lambda bên dưới ghi lại được lựa chọn
+        final int[] chosen = {0};
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_report_title)
+                .setSingleChoiceItems(labels, 0, (dialog, which) -> chosen[0] = which)
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_send_report, (dialog, which) -> {
+                    dismissPreview();
+                    viewModel.reportPost(post, REPORT_REASON_CODES[chosen[0]]);
+                })
+                .show();
+    }
+
+    /** Hỏi lại trước khi gỡ bài của mình. */
+    private void confirmRemove(CommunityRecipe post) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_remove_post_title)
+                .setMessage(R.string.dialog_remove_post_message)
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_remove_post_confirm, (dialog, which) -> {
+                    dismissPreview();
+                    viewModel.deletePost(post);
+                })
+                .show();
     }
 
     private void dismissPreview() {

@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sobep.R;
+import com.sobep.data.community.CommunityRecipe;
 import com.sobep.data.sample.SampleRecipe;
 import com.sobep.databinding.ItemDiscoverRecipeBinding;
 import com.sobep.util.CategoryNames;
@@ -22,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Adapter danh sách món mẫu ở màn Khám phá (item_discover_recipe.xml):
- * ảnh giữ chỗ, tên, "loại · thời gian", bên phải là nhãn "Đã lưu" hoặc nút +.
+ * Adapter danh sách món ở màn Khám phá (item_discover_recipe.xml), dùng cho cả 2 tab:
+ * ảnh giữ chỗ, tên, "loại · thời gian" (bài cộng đồng thêm "· tên người đăng"),
+ * bên phải là nhãn "Đã lưu" / "Của bạn" (bài mình đăng) hoặc nút +.
  */
 public class DiscoverRecipeAdapter extends RecyclerView.Adapter<DiscoverRecipeAdapter.DiscoverViewHolder> {
 
@@ -49,6 +52,9 @@ public class DiscoverRecipeAdapter extends RecyclerView.Adapter<DiscoverRecipeAd
     private List<SampleRecipe> items = new ArrayList<>();
     // Mã món mẫu đã lưu → mã món trong sổ
     private Map<String, Long> saved = new HashMap<>();
+    // uid người đang đăng nhập, để nhận ra bài cộng đồng của chính mình
+    @Nullable
+    private String currentUid;
 
     public DiscoverRecipeAdapter(OnSampleClickListener listener) {
         this.listener = listener;
@@ -61,6 +67,11 @@ public class DiscoverRecipeAdapter extends RecyclerView.Adapter<DiscoverRecipeAd
 
     public void setSaved(Map<String, Long> newSaved) {
         saved = newSaved != null ? newSaved : new HashMap<>();
+        notifyDataSetChanged();
+    }
+
+    public void setCurrentUid(@Nullable String uid) {
+        currentUid = uid;
         notifyDataSetChanged();
     }
 
@@ -94,18 +105,29 @@ public class DiscoverRecipeAdapter extends RecyclerView.Adapter<DiscoverRecipeAd
         void bind(SampleRecipe sample, int position) {
             Context context = binding.getRoot().getContext();
             binding.textTitle.setText(sample.name);
-            binding.textMeta.setText(context.getString(R.string.format_discover_meta,
-                    CategoryNames.of(context, sample.category), sample.cookTimeMinutes));
+            boolean isMine = false;
+            if (sample instanceof CommunityRecipe) {
+                CommunityRecipe post = (CommunityRecipe) sample;
+                isMine = post.isMine(currentUid);
+                binding.textMeta.setText(context.getString(R.string.format_community_meta,
+                        CategoryNames.of(context, sample.category), sample.cookTimeMinutes,
+                        authorOf(context, post)));
+            } else {
+                binding.textMeta.setText(context.getString(R.string.format_discover_meta,
+                        CategoryNames.of(context, sample.category), sample.cookTimeMinutes));
+            }
 
             int index = position % TINT_COLORS.length;
             ViewCompat.setBackgroundTintList(binding.layoutThumb,
                     ColorStateList.valueOf(ContextCompat.getColor(context, TINT_COLORS[index])));
             binding.imageThumb.setColorFilter(ContextCompat.getColor(context, INK_COLORS[index]));
 
-            // Đã lưu → nhãn "Đã lưu"; chưa lưu → nút +
+            // Bài mình đăng → nhãn "Của bạn"; đã lưu → nhãn "Đã lưu"; chưa lưu → nút +
             boolean isSaved = saved.containsKey(sample.id);
-            binding.textSaved.setVisibility(isSaved ? View.VISIBLE : View.GONE);
-            binding.imageAdd.setVisibility(isSaved ? View.GONE : View.VISIBLE);
+            boolean showBadge = isMine || isSaved;
+            binding.textSaved.setText(isMine ? R.string.badge_mine : R.string.badge_saved);
+            binding.textSaved.setVisibility(showBadge ? View.VISIBLE : View.GONE);
+            binding.imageAdd.setVisibility(showBadge ? View.GONE : View.VISIBLE);
 
             binding.cardRecipe.setOnClickListener(v -> listener.onSampleClick(sample));
             binding.imageAdd.setOnClickListener(v -> listener.onAddClick(sample));
@@ -113,5 +135,11 @@ public class DiscoverRecipeAdapter extends RecyclerView.Adapter<DiscoverRecipeAd
             binding.imageAdd.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
             binding.imageAdd.setContentDescription(context.getString(R.string.action_save_to_book));
         }
+    }
+
+    /** Tên người đăng; bài thiếu tên thì ghi "Người dùng Sổ Bếp". Activity dùng chung cho bảng xem trước. */
+    static String authorOf(Context context, CommunityRecipe post) {
+        return post.authorName == null || post.authorName.isEmpty()
+                ? context.getString(R.string.community_unknown_author) : post.authorName;
     }
 }

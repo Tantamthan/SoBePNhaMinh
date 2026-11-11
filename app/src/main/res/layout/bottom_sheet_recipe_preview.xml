@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Bottom sheet xem trước món ở màn Khám phá (dùng với BottomSheetDialog).
      Món chưa lưu: hiện nút "Lưu vào sổ của tôi".
-     Món đã lưu: ẩn nút đó, hiện layoutSaved ("Món này đã có trong sổ" + nút "Mở món trong sổ"). -->
+     Món đã lưu: ẩn nút đó, hiện layoutSaved ("Món này đã có trong sổ" + nút "Mở món trong sổ").
+     Bài cộng đồng (CN15): hiện thêm "Đăng bởi …"; bài người khác có nút Báo cáo,
+     bài của mình thì ẩn phần lưu, hiện nút Gỡ bài. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -47,6 +49,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 tools:text="Canh · 15 phút" />
+
+            <!-- Chỉ bài cộng đồng -->
+            <TextView
+                android:id="@+id/textAuthor"
+                style="@style/Text.SoBep.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"
+                tools:text="Đăng bởi Lan"
+                tools:visibility="visible" />
         </LinearLayout>
 
         <ImageButton
@@ -130,4 +143,26 @@
             android:textSize="17sp"
             app:cornerRadius="16dp" />
     </LinearLayout>
+
+    <!-- Bài cộng đồng của người khác -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonReport"
+        style="@style/Widget.SoBep.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="6dp"
+        android:text="@string/action_report_post"
+        android:visibility="gone" />
+
+    <!-- Bài cộng đồng của mình -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonRemovePost"
+        style="@style/Widget.SoBep.Button.Outlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/action_remove_post"
+        android:visibility="gone"
+        app:icon="@drawable/ic_delete" />
 </LinearLayout>

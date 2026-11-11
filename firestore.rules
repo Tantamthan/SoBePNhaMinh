@@ -1,0 +1,50 @@
+// Security Rules của Cloud Firestore – project sotaynauan-78901 (Sổ Bếp Nhà Mình).
+// File này chỉ để lưu bản gốc trong Git / thuyết trình. Muốn áp dụng phải dán vào
+// Firebase Console → Firestore Database → tab Rules → Publish.
+// Mọi đường dẫn KHÔNG có trong file đều bị chặn mặc định.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // CN14 – Đồng bộ: mỗi người chỉ đọc/ghi được món của chính mình
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // CN15 – Cộng đồng: community_recipes/{uid}_{cloudId}
+    match /community_recipes/{postId} {
+      // Ai đã đăng nhập cũng xem được bài
+      allow read: if request.auth != null;
+
+      // Tạo / cập nhật: chỉ bài của chính mình (authorUid = mình, mã bài bắt đầu bằng uid của mình),
+      // chỉ đúng các field app gửi, tên món 1–100 ký tự, tối đa 100 nguyên liệu / 100 bước.
+      // Cập nhật thì bài cũ cũng phải là của mình (không ghi đè bài người khác).
+      allow create, update: if request.auth != null
+        && request.resource.data.authorUid == request.auth.uid
+        && postId.matches(request.auth.uid + '_.+')
+        && (resource == null || resource.data.authorUid == request.auth.uid)
+        && request.resource.data.keys().hasOnly(['authorUid', 'authorName', 'name', 'category',
+             'cookTimeMinutes', 'servings', 'note', 'postedAt', 'ingredients', 'steps'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.ingredients is list
+        && request.resource.data.ingredients.size() <= 100
+        && request.resource.data.steps is list
+        && request.resource.data.steps.size() <= 100;
+
+      // Gỡ bài: chỉ tác giả
+      allow delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
+
+      // Báo cáo: reports/{uid người báo cáo}. Chỉ được ghi báo cáo mang uid của mình
+      // (mỗi người một báo cáo cho mỗi bài), lý do phải nằm trong danh sách.
+      // Không có quyền đọc → chỉ chủ project xem báo cáo trên Firebase Console.
+      match /reports/{reporterUid} {
+        allow create, update: if request.auth != null
+          && request.auth.uid == reporterUid
+          && request.resource.data.keys().hasOnly(['reason', 'reportedAt'])
+          && request.resource.data.reason in ['inappropriate', 'spam', 'other'];
+      }
+    }
+  }
+}

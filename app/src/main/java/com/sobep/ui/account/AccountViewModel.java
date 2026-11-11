@@ -9,14 +9,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.sobep.R;
 import com.sobep.data.repository.AuthRepository;
 import com.sobep.data.repository.SyncRepository;
-
-import java.util.concurrent.TimeoutException;
+import com.sobep.util.FirestoreErrors;
 
 /**
  * ViewModel màn Tài khoản: email người đang đăng nhập, đồng bộ Firestore (CN14) và đăng xuất.
@@ -97,28 +94,9 @@ public class AccountViewModel extends AndroidViewModel {
         authRepository.signOut(getApplication());
     }
 
-    /** Lỗi Firestore → câu báo tiếng Việt. */
+    /** Lỗi Firestore → câu báo tiếng Việt (dùng chung với Cộng đồng qua FirestoreErrors). */
     @StringRes
     static int messageForSyncError(Exception error) {
-        if (error instanceof TimeoutException || error instanceof FirebaseNetworkException) {
-            return R.string.error_sync_network;
-        }
-        if (error instanceof FirebaseFirestoreException) {
-            FirebaseFirestoreException.Code code = ((FirebaseFirestoreException) error).getCode();
-            if (code == FirebaseFirestoreException.Code.UNAVAILABLE
-                    || code == FirebaseFirestoreException.Code.DEADLINE_EXCEEDED) {
-                return R.string.error_sync_network;
-            }
-            if (code == FirebaseFirestoreException.Code.PERMISSION_DENIED
-                    || code == FirebaseFirestoreException.Code.UNAUTHENTICATED) {
-                return R.string.error_sync_permission;
-            }
-            if (code == FirebaseFirestoreException.Code.NOT_FOUND
-                    || code == FirebaseFirestoreException.Code.FAILED_PRECONDITION) {
-                // Thường gặp khi chưa bấm "Create database" trên Console
-                return R.string.error_sync_not_ready;
-            }
-        }
-        return R.string.error_sync_unknown;
+        return FirestoreErrors.messageFor(error, R.string.error_sync_unknown);
     }
 }

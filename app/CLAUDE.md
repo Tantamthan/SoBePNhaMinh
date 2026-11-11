@@ -50,16 +50,20 @@ com.sobep
 │   ├── auth/       LoginActivity, RegisterActivity
 │   └── account/    AccountActivity
 ├── data/local/     AppDatabase, SampleData, entity/ (5 bảng), dao/ (3 DAO), model/
-├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository, AuthRepository, SyncRepository
+├── data/repository/ RecipeRepository, MealPlanRepository, ShoppingRepository, AuthRepository, SyncRepository,
+│                    CommunityRepository
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
-└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText, SyncMerge
+├── data/community/ CommunityRecipe (bài cộng đồng, kế thừa SampleRecipe)
+└── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText,
+                    SyncMerge, CommunityMapper, FirestoreErrors
 ```
 ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/, auth/, account/
 (mỗi màn trừ splash).
 Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/StepAdapter`,
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
-Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest`, `SyncMergeTest` (`./gradlew testDebugUnitTest`).
+Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest`, `SyncMergeTest`,
+`CommunityMapperTest` (`./gradlew testDebugUnitTest`, 30 test).
 
 ## 12 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -115,7 +119,13 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   trong document, không gửi `id`/`imagePath`. Món tạo sẵn `cloudId` = `seed-canh-chua`/`seed-thit-kho`, `updatedAt = 1`;
   món mẫu `cloudId` = `"sample-" + sourceSampleId`. Rules: chỉ `request.auth.uid == userId`. Màn Tài khoản có thanh chạy,
   kết quả, lần đồng bộ gần nhất. Đã test máy ảo (máy mới, xoá lan sang máy khác, migration từ v2, mất mạng).
-- Chưa làm: CN15 tab Cộng đồng (8c) – sẽ thêm khối `match /community/...` vào Firestore Rules.
+- 10/11: CN15 (bước 8c) tab Cộng đồng – chỉ hiện khi đã đăng nhập (tab ở Khám phá + nút "Đăng lên cộng đồng" ở Chi tiết món,
+  `onResume` kiểm tra lại). Firestore `community_recipes/{uid}_{cloudId}` (chỉ chữ, 10 field, xem `util/CommunityMapper`),
+  báo cáo `community_recipes/{postId}/reports/{uid}`; bài đã báo cáo ẩn trên máy (SharedPreferences `community`).
+  `CommunityRecipe extends SampleRecipe`, `id = "c-" + postId` → dùng lại Adapter / bảng xem trước / `saveToBook`.
+  `CommunityRepository` dùng `Tasks.withTimeout` 15 s, callback trên main thread. Rules ở `firestore.rules` (thư mục gốc,
+  phải dán tay lên Console). `util/FirestoreErrors` dùng chung với `AccountViewModel`. Không đổi CSDL, vẫn 12 Activity.
+  Build + unit test OK; đã test máy ảo 10/11 (2 tài khoản, mất mạng, xoay); Rules trên Console đã kiểm bằng REST (403 đúng chỗ).
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi
