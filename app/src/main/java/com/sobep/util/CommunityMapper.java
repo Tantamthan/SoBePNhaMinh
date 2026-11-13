@@ -19,8 +19,11 @@ import java.util.Map;
  * Document community_recipes/{postId}:
  * { authorUid, authorName, name, category, cookTimeMinutes, servings, note, postedAt,
  *   ingredients: [ {name, quantity, unit} ], steps: [ {content, timerMinutes} ] }
- * Chỉ có CHỮ: không gửi ảnh, link video, yêu thích, mã món trong máy.
+ * Không gửi link video, yêu thích, mã món trong máy.
  * Danh sách field phải khớp với keys().hasOnly([...]) trong firestore.rules.
+ *
+ * Bước 8d – ảnh: field tuỳ chọn "thumb" (Blob, ảnh nhỏ ≤ 30 KB) và document con photo/main { data: Blob ≤ 300 KB }.
+ * Blob là kiểu của Firebase nên CommunityRepository tự ghi / đọc 2 phần này; lớp này chỉ giữ tên field.
  */
 public final class CommunityMapper {
 
@@ -38,6 +41,9 @@ public final class CommunityMapper {
     public static final String F_UNIT = "unit";
     public static final String F_CONTENT = "content";
     public static final String F_TIMER = "timerMinutes";
+    // Bước 8d: ảnh nhỏ trong document bài; ảnh lớn ở document con photo/main, field "data"
+    public static final String F_THUMB = "thumb";
+    public static final String F_PHOTO_DATA = "data";
 
     // Giới hạn giống firestore.rules (máy chủ kiểm tra lại lần nữa)
     public static final int MAX_NAME_LENGTH = 100;

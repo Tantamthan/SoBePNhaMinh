@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
  * - Tạo file ảnh tạm cho app Camera ghi vào (qua FileProvider), dùng ở màn Quét công thức và màn Thêm món.
  * - Đọc ảnh thu nhỏ để hiển thị (ảnh camera 12 MP mà đọc nguyên kích thước dễ hết bộ nhớ).
  * - Lưu ảnh món ăn lâu dài vào bộ nhớ riêng của app (files/recipe_photos), xoá ảnh món khi không dùng nữa.
+ * - CN15 (8d): nén ảnh món thành byte JPEG nhỏ để đăng lên Cộng đồng, và ngược lại (byte → Bitmap / file).
  */
 public final class ImageStorage {
 
@@ -96,23 +98,13 @@ public final class ImageStorage {
             return null;
         }
         // decodePreview chỉ thu nhỏ theo bậc 1/2, 1/4... → ảnh có thể còn lớn hơn 1280 px, thu nhỏ nốt cho đúng
-        int longSide = Math.max(bitmap.getWidth(), bitmap.getHeight());
-        if (longSide > RECIPE_PHOTO_MAX_SIZE) {
-            float scale = (float) RECIPE_PHOTO_MAX_SIZE / longSide;
-            Bitmap scaled = Bitmap.createScaledBitmap(bitmap,
-                    Math.round(bitmap.getWidth() * scale), Math.round(bitmap.getHeight() * scale), true);
-            if (scaled != bitmap) {
-                bitmap.recycle();
-            }
-            bitmap = scaled;
-        }
+        bitmap = scaleDown(bitmap, RECIPE_PHOTO_MAX_SIZE);
 
-        File dir = new File(context.getFilesDir(), RECIPE_PHOTO_DIR);
-        if (!dir.exists() && !dir.mkdirs()) {
+        File file = newRecipePhotoFile(context);
+        if (file == null) {
             bitmap.recycle();
             return null;
         }
-        File file = new File(dir, "recipe_" + System.currentTimeMillis() + ".jpg");
         try (OutputStream out = new FileOutputStream(file)) {
             if (!bitmap.compress(Bitmap.CompressFormat.JPEG, RECIPE_PHOTO_QUALITY, out)) {
                 throw new IOException("Không nén được ảnh");
@@ -125,6 +117,115 @@ public final class ImageStorage {
             bitmap.recycle();
         }
         return file.getAbsolutePath();
+    }
+
+    // ---------- Ảnh lên mây (CN15, bước 8d) ----------
+
+    /**
+     * "Phân giải" ảnh món trong máy thành mảng byte JPEG nhỏ để gửi lên Firestore:
+     * 1. Đọc ảnh thu nhỏ bằng inSampleSize (decodePreview), không nạp nguyên ảnh lớn vào RAM.
+     * 2. Thu nhỏ nốt để cạnh dài = maxSize (CloudPhoto.fitInside).
+     * 3. Nén JPEG ở chất lượng startQuality; còn lớn hơn maxBytes thì giảm 10 rồi nén lại (thấp nhất 40).
+     * Chạy ở luồng nền. Không có file / đọc lỗi / vẫn quá lớn → null (bài sẽ đăng không kèm ảnh).
+     */
+    @Nullable
+    public static byte[] compressForUpload(Context context, @Nullable String path, int maxSize,
+                                           int startQuality, int maxBytes) {
+        if (path == null || path.isEmpty() || !new File(path).exists()) {
+            return null;
+        }
+        Bitmap bitmap = decodePreview(context, Uri.fromFile(new File(path)), maxSize);
+        if (bitmap == null) {
+            return null;
+        }
+        bitmap = scaleDown(bitmap, maxSize);
+        try {
+            for (int quality : CloudPhoto.qualitySteps(startQuality)) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                if (bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out) && out.size() <= maxBytes) {
+                    return out.toByteArray();
+                }
+            }
+            return null;
+        } finally {
+            bitmap.recycle();
+        }
+    }
+
+    /**
+     * Ghi ảnh tải từ Cộng đồng (byte JPEG) thành file ảnh món trong files/recipe_photos, dùng khi lưu bài vào sổ.
+     * Kiểm tra trước là ảnh đọc được (dữ liệu từ mạng có thể hỏng). Chạy ở luồng nền. Lỗi → null.
+     */
+    @Nullable
+    public static String saveRecipePhotoBytes(Context context, @Nullable byte[] data) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        if (options.outWidth <= 0 || options.outHeight <= 0) {
+            return null;
+        }
+        File file = newRecipePhotoFile(context);
+        if (file == null) {
+            return null;
+        }
+        try (OutputStream out = new FileOutputStream(file)) {
+            out.write(data);
+        } catch (IOException e) {
+            //noinspection ResultOfMethodCallIgnored
+            file.delete();
+            return null;
+        }
+        return file.getAbsolutePath();
+    }
+
+    /**
+     * Giải mã byte JPEG (ảnh tải từ Firestore) thành Bitmap để hiện lên ImageView,
+     * cạnh dài không quá maxSize (đọc thu nhỏ bằng inSampleSize). Dữ liệu hỏng → null.
+     */
+    @Nullable
+    public static Bitmap decodeBytes(@Nullable byte[] data, int maxSize) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        if (options.outWidth <= 0 || options.outHeight <= 0) {
+            return null;
+        }
+        int sample = 1;
+        while (Math.max(options.outWidth, options.outHeight) / (sample * 2) >= maxSize) {
+            sample *= 2;
+        }
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = sample;
+        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+    }
+
+    /** Thu nhỏ để cạnh dài không quá maxSize (ảnh nhỏ hơn thì giữ nguyên). Ảnh cũ bị thay thì recycle. */
+    private static Bitmap scaleDown(Bitmap bitmap, int maxSize) {
+        int[] size = CloudPhoto.fitInside(bitmap.getWidth(), bitmap.getHeight(), maxSize);
+        if (size[0] == bitmap.getWidth() && size[1] == bitmap.getHeight()) {
+            return bitmap;
+        }
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size[0], size[1], true);
+        if (scaled != bitmap) {
+            bitmap.recycle();
+        }
+        return scaled;
+    }
+
+    /** File mới (chưa tạo) trong files/recipe_photos, tên theo thời gian. Không tạo được thư mục → null. */
+    @Nullable
+    private static File newRecipePhotoFile(Context context) {
+        File dir = new File(context.getFilesDir(), RECIPE_PHOTO_DIR);
+        if (!dir.exists() && !dir.mkdirs()) {
+            return null;
+        }
+        return new File(dir, "recipe_" + System.currentTimeMillis() + ".jpg");
     }
 
     /**

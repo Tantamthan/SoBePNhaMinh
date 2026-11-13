@@ -190,7 +190,10 @@ public class RecipeDetailActivity extends BaseActivity {
         });
     }
 
-    /** CN15: hộp xác nhận nói rõ món sẽ công khai, chỉ đăng chữ, tên hiển thị là gì → bấm Đăng mới gửi. */
+    /**
+     * CN15: hộp xác nhận nói rõ món sẽ công khai, có kèm ảnh hay không (bước 8d), tên hiển thị là gì
+     * → bấm Đăng mới gửi.
+     */
     private void confirmPublish() {
         if (currentRecipe == null) {
             return;
@@ -199,9 +202,11 @@ public class RecipeDetailActivity extends BaseActivity {
         if (author.isEmpty()) {
             author = getString(R.string.community_unknown_author);
         }
+        boolean hasPhoto = currentRecipe.imagePath != null && new File(currentRecipe.imagePath).exists();
+        String content = getString(hasPhoto ? R.string.publish_content_with_photo : R.string.publish_content_text_only);
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.dialog_publish_title)
-                .setMessage(getString(R.string.format_dialog_publish_message, currentRecipe.name, author))
+                .setMessage(getString(R.string.format_dialog_publish_message, currentRecipe.name, content, author))
                 .setNegativeButton(R.string.action_cancel, null)
                 .setPositiveButton(R.string.action_publish, (dialog, which) -> viewModel.publishToCommunity())
                 .show();

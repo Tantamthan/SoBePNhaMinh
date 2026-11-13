@@ -1,6 +1,7 @@
 package com.sobep.ui.discover;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,6 +36,7 @@ import java.util.List;
  *
  * CN15: khi đã đăng nhập có thêm tab Cộng đồng (bài đọc từ Firestore). Dùng chung danh sách, bảng xem trước và
  * "Lưu vào sổ"; bài người khác có nút Báo cáo, bài của mình có nút Gỡ bài. Chưa đăng nhập thì ẩn hẳn thanh tab.
+ * Bước 8d: bài có ảnh → ảnh nhỏ trong danh sách, ảnh lớn trong bảng xem trước, lưu vào sổ thì lưu cả ảnh.
  */
 public class DiscoverActivity extends BaseActivity
         implements DiscoverRecipeAdapter.OnSampleClickListener {
@@ -172,6 +174,17 @@ public class DiscoverActivity extends BaseActivity
                 viewModel.consumeMessage();
             }
         });
+        // Bước 8d: tải xong ảnh lớn → thay ảnh nhỏ trong bảng xem trước (nếu bảng vẫn đang mở đúng bài đó)
+        viewModel.getPreviewPhoto().observe(this, this::showPreviewPhoto);
+    }
+
+    private void showPreviewPhoto(DiscoverViewModel.PreviewPhoto photo) {
+        if (photo == null || previewBinding == null || !(previewSample instanceof CommunityRecipe)) {
+            return;
+        }
+        if (photo.photoKey.equals(((CommunityRecipe) previewSample).photoKey())) {
+            previewBinding.imagePhoto.setImageBitmap(photo.bitmap);
+        }
     }
 
     private void showResults(List<SampleRecipe> results) {
@@ -270,6 +283,16 @@ public class DiscoverActivity extends BaseActivity
             previewBinding.textAuthor.setVisibility(View.VISIBLE);
             previewBinding.buttonReport.setOnClickListener(v -> confirmReport(post));
             previewBinding.buttonRemovePost.setOnClickListener(v -> confirmRemove(post));
+
+            // Bước 8d: có ảnh → hiện ngay ảnh nhỏ (đã có sẵn trong danh sách), rồi tải ảnh lớn thay vào
+            Bitmap thumb = recipeAdapter.thumbOf(post);
+            if (thumb != null) {
+                previewBinding.imagePhoto.setClipToOutline(true);
+                previewBinding.imagePhoto.setImageBitmap(thumb);
+                previewBinding.imagePhoto.setVisibility(View.VISIBLE);
+                showPreviewPhoto(viewModel.getPreviewPhoto().getValue());
+                viewModel.loadPreviewPhoto(post);
+            }
         }
 
         previewBinding.buttonClose.setOnClickListener(v -> dismissPreview());

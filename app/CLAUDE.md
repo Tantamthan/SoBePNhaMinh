@@ -55,7 +55,7 @@ com.sobep
 ├── data/sample/    SampleRecipe, SampleRecipeLoader (món mẫu từ assets/mon_mau.json)
 ├── data/community/ CommunityRecipe (bài cộng đồng, kế thừa SampleRecipe)
 └── util/           IntentKeys, DateUtils, CategoryNames, QuantityFormat, ImageStorage, RecipeTextParser, VietnameseText,
-                    SyncMerge, CommunityMapper, FirestoreErrors
+                    SyncMerge, CommunityMapper, FirestoreErrors, CloudPhoto
 ```
 ViewModel đã có ở main/, detail/, addedit/, cooking/, discover/, mealplan/, shopping/, scan/, auth/, account/
 (mỗi màn trừ splash).
@@ -63,7 +63,7 @@ Adapter đã có: `main/RecipeAdapter`, `detail/IngredientAdapter`, `detail/Step
 `addedit/IngredientEditAdapter`, `addedit/StepEditAdapter`, `discover/KeywordTileAdapter`, `discover/DiscoverRecipeAdapter`,
 `mealplan/DayPlanAdapter`, `mealplan/MealEntryAdapter`, `shopping/ShoppingDayAdapter`, `shopping/ShoppingItemAdapter`.
 Unit test: `app/src/test/java/com/sobep/util/` – `RecipeTextParserTest`, `VietnameseTextTest`, `SyncMergeTest`,
-`CommunityMapperTest` (`./gradlew testDebugUnitTest`, 30 test).
+`CommunityMapperTest`, `CloudPhotoTest` (`./gradlew testDebugUnitTest`, 37 test).
 
 ## 12 màn hình (Activity)
 Splash, Main (danh sách món), RecipeDetail, AddEditRecipe, CookingMode,
@@ -126,6 +126,13 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   `CommunityRepository` dùng `Tasks.withTimeout` 15 s, callback trên main thread. Rules ở `firestore.rules` (thư mục gốc,
   phải dán tay lên Console). `util/FirestoreErrors` dùng chung với `AccountViewModel`. Không đổi CSDL, vẫn 12 Activity.
   Build + unit test OK; đã test máy ảo 10/11 (2 tài khoản, mất mạng, xoay); Rules trên Console đã kiểm bằng REST (403 đúng chỗ).
+- 11/11: bước 8d ảnh trên Cộng đồng – KHÔNG dùng Firebase Storage (cần gói Blaze); `ImageStorage.compressForUpload` nén
+  ảnh món thành JPEG lưu kiểu `Blob` trong Firestore (`util/CloudPhoto`: lớn 800 px/70/≤300 KB ở
+  `community_recipes/{postId}/photo/main {data}`, nhỏ 240 px/60/≤30 KB ở field `thumb` của bài). Đăng / gỡ bài dùng
+  `WriteBatch` (bài + ảnh cùng lúc); món không ảnh → xoá `photo/main` cũ. Khám phá hiện ảnh nhỏ (`LruCache`), bảng xem
+  trước tải ảnh lớn, "Lưu vào sổ" ghi ảnh thành file `recipe_photos` (`saveRecipePhotoBytes`). Rules thêm `thumb` +
+  `match /photo/{photoId}` (đã Publish trên Console 12/11). Đồng bộ CN14 vẫn chỉ chữ. Build + 37 test OK; đã test máy ảo
+  12/11 (Google + tài khoản thử `sobep.test1111@example.com`) và kiểm Rules bằng REST (403 đúng chỗ).
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

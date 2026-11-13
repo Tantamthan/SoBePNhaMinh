@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Một món trong kết quả Khám phá: ảnh nhỏ, tên, "loại · thời gian",
+<!-- Một món trong kết quả Khám phá: ảnh nhỏ (ảnh thật nếu bài cộng đồng có ảnh), tên, "loại · thời gian",
      bên phải là nhãn "Đã lưu" (nếu đã có trong sổ) hoặc dấu + (nếu chưa lưu). -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -38,6 +38,15 @@
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_dish"
                 app:tint="@color/dish_ink_1" />
+
+            <!-- Bài cộng đồng có ảnh (bước 8d): ảnh nhỏ đè lên ảnh giữ chỗ; góc bo nhờ clipToOutline trong adapter -->
+            <ImageView
+                android:id="@+id/imagePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
         </FrameLayout>
 
         <LinearLayout

@@ -141,7 +141,7 @@
     <string name="action_remove_photo">Xoá ảnh</string>
     <string name="msg_photo_error">Không đọc được ảnh này, hãy thử ảnh khác</string>
     <string name="msg_photo_processing">Đang lưu ảnh, đợi một chút rồi bấm Lưu</string>
-    <string name="permission_camera_rationale_photo">Sổ Bếp cần camera để chụp ảnh món ăn. Ảnh chỉ lưu trong máy, không gửi đi đâu.</string>
+    <string name="permission_camera_rationale_photo">Sổ Bếp cần camera để chụp ảnh món ăn. Ảnh lưu trong máy, chỉ gửi đi khi bạn tự đăng món lên Cộng đồng.</string>
     <string name="msg_scan_filled">Đã điền từ ảnh: %1$d nguyên liệu, %2$d bước. Kiểm tra lại trước khi lưu</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
@@ -340,7 +340,11 @@
     <string name="action_publish_community">Đăng lên cộng đồng</string>
     <string name="publish_in_progress">Đang đăng…</string>
     <string name="dialog_publish_title">Đăng món lên cộng đồng?</string>
-    <string name="format_dialog_publish_message">“%1$s” sẽ công khai cho mọi người dùng đã đăng nhập Sổ Bếp.\n\nChỉ đăng chữ (nguyên liệu, các bước, ghi chú), không kèm ảnh.\nTên hiển thị: %2$s\n\nNếu đã đăng món này trước đó, bài cũ sẽ được cập nhật.</string>
+    <!-- %2$s = publish_content_with_photo hoặc publish_content_text_only -->
+    <string name="format_dialog_publish_message">“%1$s” sẽ công khai cho mọi người dùng đã đăng nhập Sổ Bếp.\n\n%2$s\nTên hiển thị: %3$s\n\nNếu đã đăng món này trước đó, bài cũ sẽ được cập nhật.</string>
+    <string name="publish_content_with_photo">Đăng nguyên liệu, các bước, ghi chú và ảnh món (đã thu nhỏ, khoảng 100 KB).</string>
+    <string name="publish_content_text_only">Đăng nguyên liệu, các bước, ghi chú. Món chưa có ảnh nên bài chỉ có chữ.</string>
+    <string name="cd_community_photo">Ảnh món ăn của bài đăng</string>
     <string name="action_publish">Đăng</string>
     <string name="msg_community_published">Đã đăng món lên cộng đồng</string>
     <string name="msg_community_queued">Mạng chậm: app sẽ tự gửi khi có mạng lại</string>

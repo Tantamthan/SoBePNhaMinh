@@ -24,17 +24,34 @@ service cloud.firestore {
         && postId.matches(request.auth.uid + '_.+')
         && (resource == null || resource.data.authorUid == request.auth.uid)
         && request.resource.data.keys().hasOnly(['authorUid', 'authorName', 'name', 'category',
-             'cookTimeMinutes', 'servings', 'note', 'postedAt', 'ingredients', 'steps'])
+             'cookTimeMinutes', 'servings', 'note', 'postedAt', 'ingredients', 'steps', 'thumb'])
         && request.resource.data.name is string
         && request.resource.data.name.size() > 0
         && request.resource.data.name.size() <= 100
         && request.resource.data.ingredients is list
         && request.resource.data.ingredients.size() <= 100
         && request.resource.data.steps is list
-        && request.resource.data.steps.size() <= 100;
+        && request.resource.data.steps.size() <= 100
+        // Bước 8d: ảnh nhỏ (tuỳ chọn) phải là byte thô (Blob) và ≤ 30 KB – khớp CloudPhoto.THUMB_MAX_BYTES
+        && (!('thumb' in request.resource.data)
+            || (request.resource.data.thumb is bytes && request.resource.data.thumb.size() <= 30 * 1024));
 
       // Gỡ bài: chỉ tác giả
       allow delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
+
+      // Bước 8d – ảnh lớn: photo/main { data: Blob ≤ 300 KB } (khớp CloudPhoto.PHOTO_MAX_BYTES).
+      // Không dùng Firebase Storage (cần gói trả phí) mà để ảnh đã nén ngay trong Firestore.
+      // Chỉ chủ bài được ghi / xoá: mã bài bắt đầu bằng uid của mình (giống luật tạo bài ở trên).
+      match /photo/{photoId} {
+        allow read: if request.auth != null;
+        allow create, update: if request.auth != null
+          && postId.matches(request.auth.uid + '_.+')
+          && photoId == 'main'
+          && request.resource.data.keys().hasOnly(['data'])
+          && request.resource.data.data is bytes
+          && request.resource.data.data.size() <= 300 * 1024;
+        allow delete: if request.auth != null && postId.matches(request.auth.uid + '_.+');
+      }
 
       // Báo cáo: reports/{uid người báo cáo}. Chỉ được ghi báo cáo mang uid của mình
       // (mỗi người một báo cáo cho mỗi bài), lý do phải nằm trong danh sách.

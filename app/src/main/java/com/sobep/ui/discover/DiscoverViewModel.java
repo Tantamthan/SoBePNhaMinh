@@ -1,6 +1,7 @@
 package com.sobep.ui.discover;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,10 @@ import com.sobep.data.repository.CommunityRepository;
 import com.sobep.data.repository.RecipeRepository;
 import com.sobep.data.sample.SampleRecipe;
 import com.sobep.data.sample.SampleRecipeLoader;
+import com.sobep.data.local.entity.Recipe;
+import com.sobep.util.CloudPhoto;
 import com.sobep.util.FirestoreErrors;
+import com.sobep.util.ImageStorage;
 import com.sobep.util.VietnameseText;
 
 import java.util.ArrayList;
@@ -30,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -50,6 +55,22 @@ public class DiscoverViewModel extends AndroidViewModel {
         SavedEvent(String sampleName) {
             this.sampleName = sampleName;
         }
+    }
+
+    /** Bước 8d: ảnh lớn đã tải + giải mã cho bảng xem trước; photoKey để Activity biết là ảnh của bài nào. */
+    public static final class PreviewPhoto {
+        public final String photoKey;
+        public final Bitmap bitmap;
+
+        PreviewPhoto(String photoKey, Bitmap bitmap) {
+            this.photoKey = photoKey;
+            this.bitmap = bitmap;
+        }
+    }
+
+    /** Nhận ảnh lớn (byte JPEG) của một bài; null = bài không có ảnh hoặc tải lỗi. */
+    private interface PhotoBytesListener {
+        void onPhoto(@Nullable byte[] bytes);
     }
 
     private final RecipeRepository repository;
@@ -74,6 +95,11 @@ public class DiscoverViewModel extends AndroidViewModel {
     private String loadedForUid;
     // Câu báo một lần (mã chuỗi): lỗi mạng, đã báo cáo, đã gỡ bài…
     private final MutableLiveData<Integer> message = new MutableLiveData<>(null);
+    // Bước 8d: ảnh lớn của bài đang xem trước
+    private final MutableLiveData<PreviewPhoto> previewPhoto = new MutableLiveData<>(null);
+    // Ảnh lớn vừa tải gần nhất (byte JPEG): xem trước rồi bấm "Lưu vào sổ" thì không phải tải lại
+    private String lastPhotoKey;
+    private byte[] lastPhotoBytes;
 
     // Món sau khi lọc — kết hợp các nguồn: tab, danh sách mẫu / bài cộng đồng, từ khoá, ô đang chọn
     private final MediatorLiveData<List<SampleRecipe>> results = new MediatorLiveData<>();
@@ -294,6 +320,70 @@ public class DiscoverViewModel extends AndroidViewModel {
         communityPosts.setValue(updated);
     }
 
+    // ---------- Ảnh bài cộng đồng (bước 8d) ----------
+
+    public LiveData<PreviewPhoto> getPreviewPhoto() {
+        return previewPhoto;
+    }
+
+    /**
+     * Mở bảng xem trước bài có ảnh → tải ảnh lớn (photo/main), giải mã ở luồng nền rồi báo Activity.
+     * Trong lúc chờ, Activity hiện tạm ảnh nhỏ. Tải lỗi thì giữ ảnh nhỏ, không báo lỗi.
+     */
+    public void loadPreviewPhoto(CommunityRecipe post) {
+        if (!post.hasPhoto()) {
+            return;
+        }
+        PreviewPhoto current = previewPhoto.getValue();
+        if (current != null && current.photoKey.equals(post.photoKey())) {
+            return;
+        }
+        fetchPhoto(post, bytes -> {
+            if (bytes == null) {
+                return;
+            }
+            runInBackground(() -> {
+                Bitmap bitmap = ImageStorage.decodeBytes(bytes, CloudPhoto.PHOTO_MAX_SIZE);
+                if (bitmap != null) {
+                    previewPhoto.postValue(new PreviewPhoto(post.photoKey(), bitmap));
+                }
+            });
+        });
+    }
+
+    /** Lấy byte ảnh lớn: dùng lại ảnh vừa tải nếu đúng bài đó, không thì hỏi Firestore. Gọi listener trên main thread. */
+    private void fetchPhoto(CommunityRecipe post, PhotoBytesListener listener) {
+        String key = post.photoKey();
+        if (key.equals(lastPhotoKey) && lastPhotoBytes != null) {
+            listener.onPhoto(lastPhotoBytes);
+            return;
+        }
+        communityRepository.loadPhoto(post.postId, new CommunityRepository.Callback<byte[]>() {
+            @Override
+            public void onSuccess(@Nullable byte[] result) {
+                if (result != null) {
+                    lastPhotoKey = key;
+                    lastPhotoBytes = result;
+                }
+                listener.onPhoto(result);
+            }
+
+            @Override
+            public void onError(@NonNull Exception error) {
+                listener.onPhoto(null);
+            }
+        });
+    }
+
+    /** Chạy việc nặng (giải mã ảnh, ghi file) ở luồng nền; ViewModel đã huỷ thì bỏ qua. */
+    private void runInBackground(Runnable task) {
+        try {
+            fileExecutor.execute(task);
+        } catch (RejectedExecutionException e) {
+            // onCleared đã tắt luồng nền (người dùng rời màn Khám phá) → không cần làm nữa
+        }
+    }
+
     /** Lệnh ghi hết giờ chờ = mạng chậm / mất mạng; Firestore sẽ tự gửi khi có mạng lại. */
     @StringRes
     private static int errorMessageForWrite(Exception error) {
@@ -387,13 +477,27 @@ public class DiscoverViewModel extends AndroidViewModel {
     /**
      * CN06 / CN15: chép món mẫu hoặc bài cộng đồng vào bảng recipes (kèm nguyên liệu, các bước),
      * ghi sourceSampleId (món mẫu: "m01"; bài cộng đồng: "c-" + mã bài).
+     * Bước 8d: bài có ảnh → tải ảnh lớn, ghi thành file trong recipe_photos rồi gắn vào món (recipes.imagePath).
+     * Tải ảnh lỗi (mất mạng…) → vẫn lưu món, chỉ không có ảnh.
      */
     public void saveToBook(SampleRecipe sample) {
         if (isSaved(sample) || savingIds.contains(sample.id)) {
             return;
         }
         savingIds.add(sample.id);
-        repository.saveRecipe(sample.toRecipe(), sample.copyIngredients(), sample.copySteps(),
+        Recipe recipe = sample.toRecipe();
+        if (sample instanceof CommunityRecipe && ((CommunityRecipe) sample).hasPhoto()) {
+            fetchPhoto((CommunityRecipe) sample, bytes -> runInBackground(() -> {
+                recipe.imagePath = ImageStorage.saveRecipePhotoBytes(getApplication(), bytes);
+                insertRecipe(sample, recipe);
+            }));
+        } else {
+            insertRecipe(sample, recipe);
+        }
+    }
+
+    private void insertRecipe(SampleRecipe sample, Recipe recipe) {
+        repository.saveRecipe(recipe, sample.copyIngredients(), sample.copySteps(),
                 // Gọi ở luồng nền → postValue
                 recipeId -> savedEvent.postValue(new SavedEvent(sample.name)));
     }

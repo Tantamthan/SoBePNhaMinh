@@ -2,7 +2,7 @@
 <!-- Bottom sheet xem trước món ở màn Khám phá (dùng với BottomSheetDialog).
      Món chưa lưu: hiện nút "Lưu vào sổ của tôi".
      Món đã lưu: ẩn nút đó, hiện layoutSaved ("Món này đã có trong sổ" + nút "Mở món trong sổ").
-     Bài cộng đồng (CN15): hiện thêm "Đăng bởi …"; bài người khác có nút Báo cáo,
+     Bài cộng đồng (CN15): hiện thêm ảnh (nếu có, bước 8d) và "Đăng bởi …"; bài người khác có nút Báo cáo,
      bài của mình thì ẩn phần lưu, hiện nút Gỡ bài. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,6 +22,19 @@
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/bg_sheet_handle" />
+
+    <!-- Bước 8d: ảnh bài cộng đồng. Hiện ảnh nhỏ trước (mờ), tải xong ảnh lớn thì thay vào.
+         Góc bo nhờ nền bg_rounded_light + clipToOutline đặt trong DiscoverActivity. -->
+    <ImageView
+        android:id="@+id/imagePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_rounded_light"
+        android:contentDescription="@string/cd_community_photo"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
