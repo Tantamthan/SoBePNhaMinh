@@ -1,8 +1,11 @@
 package com.sobep.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.sobep.util.SyncMerge.Action;
+import com.sobep.util.SyncMerge.PhotoAction;
 
 import org.junit.Test;
 
@@ -62,5 +65,45 @@ public class SyncMergeTest {
     @Test
     public void nothingAnywhere_doesNothing() {
         assertEquals(Action.NONE, SyncMerge.decide(null, null, false));
+    }
+
+    // ---------- Ảnh món (14/11/2026) ----------
+
+    @Test
+    public void photo_oldCloudDocWithoutField_keepsLocal() {
+        // Bản gửi lên trước khi có đồng bộ ảnh: không biết gì về ảnh → giữ ảnh trong máy
+        assertEquals(PhotoAction.KEEP, SyncMerge.decidePhoto("recipe_1.jpg", false, null));
+    }
+
+    @Test
+    public void photo_samePhotoId_keeps() {
+        // Chỉ sửa chữ ở máy khác → không tải lại ảnh
+        assertEquals(PhotoAction.KEEP, SyncMerge.decidePhoto("recipe_1.jpg", true, "recipe_1.jpg"));
+    }
+
+    @Test
+    public void photo_changedOnOtherPhone_downloads() {
+        assertEquals(PhotoAction.DOWNLOAD, SyncMerge.decidePhoto("recipe_1.jpg", true, "recipe_2.jpg"));
+        assertEquals(PhotoAction.DOWNLOAD, SyncMerge.decidePhoto(null, true, "recipe_2.jpg"));
+    }
+
+    @Test
+    public void photo_removedOnOtherPhone_removes() {
+        assertEquals(PhotoAction.REMOVE, SyncMerge.decidePhoto("recipe_1.jpg", true, null));
+        assertEquals(PhotoAction.KEEP, SyncMerge.decidePhoto(null, true, null));
+    }
+
+    @Test
+    public void photo_unsafeId_ignored() {
+        // Mã ảnh lạ (có thể ghi file ra ngoài thư mục ảnh) → không tải
+        assertEquals(PhotoAction.KEEP, SyncMerge.decidePhoto(null, true, "../databases/sobep.db"));
+    }
+
+    @Test
+    public void photoUpload_onlyWhenCloudLacksThisPhoto() {
+        assertTrue(SyncMerge.needsPhotoUpload("recipe_2.jpg", "recipe_1.jpg"));
+        assertTrue(SyncMerge.needsPhotoUpload("recipe_2.jpg", null));
+        assertFalse(SyncMerge.needsPhotoUpload("recipe_2.jpg", "recipe_2.jpg"));
+        assertFalse(SyncMerge.needsPhotoUpload(null, "recipe_1.jpg"));
     }
 }

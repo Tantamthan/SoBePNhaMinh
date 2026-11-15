@@ -27,8 +27,49 @@ public final class SyncMerge {
         DELETE_LOCAL
     }
 
+    /** Làm gì với ẢNH của món khi tải bản trên mây về máy. */
+    public enum PhotoAction {
+        /** Giữ ảnh đang có trong máy (đã cùng ảnh, hoặc bản trên mây chưa có thông tin ảnh). */
+        KEEP,
+        /** Tải ảnh trên mây về (món chưa có ảnh trong máy, hoặc ảnh đã được đổi ở máy khác). */
+        DOWNLOAD,
+        /** Ảnh đã bị xoá ở máy khác → bỏ ảnh trong máy. */
+        REMOVE
+    }
+
     private SyncMerge() {
         // Chỉ chứa hàm tĩnh
+    }
+
+    /**
+     * Ảnh của món đang được tải về (đã quyết định DOWNLOAD phần chữ).
+     *
+     * @param localPhotoId        mã ảnh trong máy (tên file, xem CloudPhoto.photoIdOf); null = món không có ảnh
+     * @param remoteHasPhotoField document trên mây có field photoId không (bản gửi lên trước khi có đồng bộ ảnh
+     *                            thì không có → không biết gì về ảnh → giữ nguyên)
+     * @param remotePhotoId       giá trị field photoId; null = món trên mây không có ảnh
+     */
+    @NonNull
+    public static PhotoAction decidePhoto(@Nullable String localPhotoId, boolean remoteHasPhotoField,
+                                          @Nullable String remotePhotoId) {
+        if (!remoteHasPhotoField) {
+            return PhotoAction.KEEP;
+        }
+        if (remotePhotoId == null) {
+            return localPhotoId == null ? PhotoAction.KEEP : PhotoAction.REMOVE;
+        }
+        if (remotePhotoId.equals(localPhotoId) || !CloudPhoto.isSafePhotoId(remotePhotoId)) {
+            return PhotoAction.KEEP;
+        }
+        return PhotoAction.DOWNLOAD;
+    }
+
+    /**
+     * Gửi món lên mây: có phải gửi kèm ảnh không. Trên mây đã có đúng ảnh này (cùng mã) thì thôi,
+     * nhờ vậy sửa chữ / bấm yêu thích không phải gửi lại ảnh vài trăm KB.
+     */
+    public static boolean needsPhotoUpload(@Nullable String localPhotoId, @Nullable String remotePhotoId) {
+        return localPhotoId != null && !localPhotoId.equals(remotePhotoId);
     }
 
     /**

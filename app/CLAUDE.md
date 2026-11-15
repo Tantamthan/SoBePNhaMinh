@@ -133,6 +133,12 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   trước tải ảnh lớn, "Lưu vào sổ" ghi ảnh thành file `recipe_photos` (`saveRecipePhotoBytes`). Rules thêm `thumb` +
   `match /photo/{photoId}` (đã Publish trên Console 12/11). Đồng bộ CN14 vẫn chỉ chữ. Build + 37 test OK; đã test máy ảo
   12/11 (Google + tài khoản thử `sobep.test1111@example.com`) và kiểm Rules bằng REST (403 đúng chỗ).
+- 14/11: CN14 đồng bộ cả ảnh món: `users/{uid}/recipes/{cloudId}/photo/main {data: Blob ≤300 KB}` + field `photoId`
+  (= tên file ảnh; máy tải về lưu đúng tên → cùng photoId thì không gửi/tải lại). Ảnh ghi trước document món;
+  món cũ chưa có field `photoId` thì tự gửi lại kèm ảnh. Quyết định ở `SyncMerge.decidePhoto` / `needsPhotoUpload`,
+  `CloudPhoto.photoIdOf` / `isSafePhotoId` (chặn tên file lạ). Rules không đổi (`users/{userId}/{document=**}` đủ).
+  Tab Cộng đồng: câu báo trống theo lý do (tải lỗi / mọi bài đã ẩn / chưa có bài) – `LatestPosts.hiddenCount`,
+  `DiscoverViewModel.communityEmptyTextFor`. Build + 49 test OK; đã test máy ảo (tài khoản thử + Firestore REST).
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

@@ -91,6 +91,17 @@ public class CommunityRepository {
         void onError(@NonNull Exception error);
     }
 
+    /** Kết quả tải danh sách: các bài được hiện + số bài bị bỏ qua vì người dùng đã báo cáo (để chọn câu báo trống). */
+    public static final class LatestPosts {
+        public final List<CommunityRecipe> posts;
+        public final int hiddenCount;
+
+        public LatestPosts(List<CommunityRecipe> posts, int hiddenCount) {
+            this.posts = posts;
+            this.hiddenCount = hiddenCount;
+        }
+    }
+
     private final Application application;
     private final FirebaseAuth auth;
     private final FirebaseFirestore firestore;
@@ -119,7 +130,7 @@ public class CommunityRepository {
     // ---------- Đọc ----------
 
     /** 50 bài mới nhất (kèm ảnh nhỏ nếu có), đã bỏ các bài người dùng từng báo cáo. */
-    public void loadLatest(@NonNull Callback<List<CommunityRecipe>> callback) {
+    public void loadLatest(@NonNull Callback<LatestPosts> callback) {
         String uid = getCurrentUid();
         if (uid == null) {
             callback.onError(new IllegalStateException("Chưa đăng nhập"));
@@ -137,8 +148,10 @@ public class CommunityRepository {
                 return;
             }
             List<CommunityRecipe> posts = new ArrayList<>();
+            int hiddenCount = 0;
             for (DocumentSnapshot doc : result.getResult().getDocuments()) {
                 if (hidden.contains(doc.getId())) {
+                    hiddenCount++;
                     continue;
                 }
                 CommunityRecipe post = CommunityMapper.fromDocument(doc.getId(), doc.getData());
@@ -149,7 +162,7 @@ public class CommunityRepository {
                 }
                 posts.add(post);
             }
-            callback.onSuccess(posts);
+            callback.onSuccess(new LatestPosts(posts, hiddenCount));
         });
     }
 

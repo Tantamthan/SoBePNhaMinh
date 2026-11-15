@@ -168,6 +168,7 @@ public class DiscoverActivity extends BaseActivity
             binding.buttonReload.setEnabled(!isLoading);
             updateEmptyState();
         });
+        viewModel.getCommunityEmptyText().observe(this, textRes -> updateEmptyState());
         viewModel.getMessage().observe(this, messageRes -> {
             if (messageRes != null) {
                 showToast(messageRes);
@@ -210,14 +211,19 @@ public class DiscoverActivity extends BaseActivity
         updateEmptyState();
     }
 
-    /** Dòng "không có món": ẩn khi đang tải; tab Cộng đồng chưa có bài nào thì mời đăng bài đầu tiên. */
+    /**
+     * Dòng "không có món": ẩn khi đang tải. Tab Cộng đồng (không gõ tìm) lấy câu từ ViewModel:
+     * tải lỗi / mọi bài đã bị ẩn vì đã báo cáo / chưa có bài nào (mời đăng bài đầu tiên).
+     */
     private void updateEmptyState() {
         boolean community = isCommunityTab();
         boolean loading = community && Boolean.TRUE.equals(viewModel.isCommunityLoading().getValue());
         boolean empty = recipeAdapter.getItemCount() == 0;
         String keyword = viewModel.getKeyword().getValue();
         boolean hasKeyword = keyword != null && !keyword.isEmpty();
-        binding.textEmpty.setText(community && !hasKeyword ? R.string.community_empty : R.string.discover_empty);
+        Integer communityText = viewModel.getCommunityEmptyText().getValue();
+        binding.textEmpty.setText(community && !hasKeyword && communityText != null
+                ? communityText : R.string.discover_empty);
         binding.textEmpty.setVisibility(empty && !loading ? View.VISIBLE : View.GONE);
     }
 

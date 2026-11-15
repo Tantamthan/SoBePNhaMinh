@@ -141,7 +141,7 @@
     <string name="action_remove_photo">Xoá ảnh</string>
     <string name="msg_photo_error">Không đọc được ảnh này, hãy thử ảnh khác</string>
     <string name="msg_photo_processing">Đang lưu ảnh, đợi một chút rồi bấm Lưu</string>
-    <string name="permission_camera_rationale_photo">Sổ Bếp cần camera để chụp ảnh món ăn. Ảnh lưu trong máy, chỉ gửi đi khi bạn tự đăng món lên Cộng đồng.</string>
+    <string name="permission_camera_rationale_photo">Sổ Bếp cần camera để chụp ảnh món ăn. Ảnh lưu trong máy, chỉ gửi đi khi bạn đồng bộ hoặc tự đăng món lên Cộng đồng.</string>
     <string name="msg_scan_filled">Đã điền từ ảnh: %1$d nguyên liệu, %2$d bước. Kiểm tra lại trước khi lưu</string>
 
     <!-- ===== 6. ScanRecipe – Quét công thức ===== -->
@@ -297,7 +297,7 @@
     <string name="account_title">Tài khoản</string>
     <string name="account_signed_in_as">Đang đăng nhập</string>
     <string name="account_sync_title">Sao lưu &amp; đồng bộ</string>
-    <string name="account_sync_desc">Đưa món trong sổ lên mây để lấy lại khi đổi máy. Chỉ đồng bộ chữ, ảnh món vẫn lưu trong máy.</string>
+    <string name="account_sync_desc">Đưa món trong sổ lên mây (kèm ảnh món đã thu nhỏ) để lấy lại khi đổi máy hoặc dùng trên máy khác.</string>
     <string name="action_sync_now">Đồng bộ ngay</string>
     <string name="sync_in_progress">Đang đồng bộ…</string>
     <string name="sync_never">Chưa đồng bộ lần nào</string>
@@ -319,6 +319,8 @@
     <string name="discover_tab_community">Cộng đồng</string>
     <string name="community_heading">Món mới từ cộng đồng</string>
     <string name="community_empty">Chưa có món nào trên cộng đồng. Hãy là người đăng đầu tiên!</string>
+    <string name="community_empty_load_failed">Chưa tải được bài cộng đồng. Kiểm tra mạng rồi bấm nút tải lại ở trên.</string>
+    <string name="community_empty_all_hidden">Không còn bài nào để xem: các bài mới nhất đều là bài bạn đã báo cáo nên đã bị ẩn.</string>
     <string name="cd_reload_community">Tải lại bài cộng đồng</string>
     <!-- "Canh · 15 phút · Lan" -->
     <string name="format_community_meta">%1$s · %2$d phút · %3$s</string>

@@ -1,5 +1,7 @@
 package com.sobep.util;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,29 @@ public final class CloudPhoto {
                 Math.max(1, Math.round(width * scale)),
                 Math.max(1, Math.round(height * scale))
         };
+    }
+
+    /**
+     * CN14 (đồng bộ ảnh món): mã ảnh = tên file ảnh trong máy, vd "recipe_1731400000000.jpg".
+     * Máy khác tải ảnh về sẽ lưu đúng tên đó → hai máy cùng mã = cùng một ảnh, không tải / gửi lại.
+     * Không có ảnh, hoặc tên file lạ → null.
+     */
+    @Nullable
+    public static String photoIdOf(@Nullable String path) {
+        if (path == null) {
+            return null;
+        }
+        int slash = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
+        String name = path.substring(slash + 1);
+        return isSafePhotoId(name) ? name : null;
+    }
+
+    /**
+     * Mã ảnh đọc từ Firestore sẽ được dùng làm tên file → chỉ nhận chữ, số, "_", "-" và đuôi ".jpg"
+     * (chặn kiểu "../../databases/x" ghi ra ngoài thư mục ảnh).
+     */
+    public static boolean isSafePhotoId(@Nullable String photoId) {
+        return photoId != null && photoId.matches("[A-Za-z0-9_-]{1,64}\\.jpg");
     }
 
     /**

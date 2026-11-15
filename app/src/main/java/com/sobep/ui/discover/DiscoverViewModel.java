@@ -93,6 +93,12 @@ public class DiscoverViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> communityLoading = new MutableLiveData<>(false);
     // uid đã tải danh sách Cộng đồng (đổi tài khoản → tải lại)
     private String loadedForUid;
+    // Câu hiện khi tab Cộng đồng trống (mã chuỗi): tải lỗi / mọi bài đã bị ẩn / thật sự chưa có bài
+    private final MutableLiveData<Integer> communityEmptyText = new MutableLiveData<>(R.string.community_empty);
+    // Lần tải gần nhất lỗi khi chưa có bài nào để hiện
+    private boolean communityLoadFailed;
+    // Số bài trong lần tải gần nhất bị ẩn vì người dùng đã báo cáo (cộng thêm khi báo cáo tiếp)
+    private int communityHiddenCount;
     // Câu báo một lần (mã chuỗi): lỗi mạng, đã báo cáo, đã gỡ bài…
     private final MutableLiveData<Integer> message = new MutableLiveData<>(null);
     // Bước 8d: ảnh lớn của bài đang xem trước
@@ -197,6 +203,10 @@ public class DiscoverViewModel extends AndroidViewModel {
         return message;
     }
 
+    public LiveData<Integer> getCommunityEmptyText() {
+        return communityEmptyText;
+    }
+
     public void consumeMessage() {
         message.setValue(null);
     }
@@ -218,6 +228,9 @@ public class DiscoverViewModel extends AndroidViewModel {
         signedIn.setValue(uid != null);
         if (uid == null) {
             loadedForUid = null;
+            communityLoadFailed = false;
+            communityHiddenCount = 0;
+            updateCommunityEmptyText();
             communityPosts.setValue(null);
             if (Integer.valueOf(TAB_COMMUNITY).equals(tab.getValue())) {
                 tab.setValue(TAB_SAMPLES);
@@ -252,17 +265,26 @@ public class DiscoverViewModel extends AndroidViewModel {
         }
         communityLoading.setValue(true);
         String uid = communityRepository.getCurrentUid();
-        communityRepository.loadLatest(new CommunityRepository.Callback<List<CommunityRecipe>>() {
+        communityRepository.loadLatest(new CommunityRepository.Callback<CommunityRepository.LatestPosts>() {
             @Override
-            public void onSuccess(List<CommunityRecipe> result) {
+            public void onSuccess(CommunityRepository.LatestPosts result) {
                 loadedForUid = uid;
-                communityPosts.setValue(new ArrayList<>(result));
+                communityLoadFailed = false;
+                communityHiddenCount = result.hiddenCount;
+                updateCommunityEmptyText();
+                communityPosts.setValue(new ArrayList<>(result.posts));
                 communityLoading.setValue(false);
             }
 
             @Override
             public void onError(@NonNull Exception error) {
-                if (communityPosts.getValue() == null) {
+                List<SampleRecipe> current = communityPosts.getValue();
+                // Còn danh sách cũ thì vẫn giữ để xem; chỉ khi không có bài nào mới báo "chưa tải được"
+                if (current == null || current.isEmpty()) {
+                    communityLoadFailed = true;
+                    updateCommunityEmptyText();
+                }
+                if (current == null) {
                     communityPosts.setValue(new ArrayList<>());
                 }
                 communityLoading.setValue(false);
@@ -273,6 +295,8 @@ public class DiscoverViewModel extends AndroidViewModel {
 
     /** Báo cáo bài của người khác; bài bị ẩn trên máy này ngay. */
     public void reportPost(CommunityRecipe post, String reason) {
+        communityHiddenCount++;
+        updateCommunityEmptyText();
         removeFromList(post);
         communityRepository.report(post, reason, new CommunityRepository.Callback<Void>() {
             @Override
@@ -304,6 +328,25 @@ public class DiscoverViewModel extends AndroidViewModel {
                 message.setValue(errorMessageForWrite(error));
             }
         });
+    }
+
+    /** Chọn câu báo trống cho tab Cộng đồng (xem {@link #communityEmptyTextFor}). */
+    private void updateCommunityEmptyText() {
+        communityEmptyText.setValue(communityEmptyTextFor(communityLoadFailed, communityHiddenCount));
+    }
+
+    /**
+     * Tab Cộng đồng trống vì đâu: tải lỗi → mời bấm tải lại; có bài nhưng mình đã báo cáo hết → nói rõ đã ẩn;
+     * còn lại → thật sự chưa có bài, mời đăng bài đầu tiên.
+     */
+    static int communityEmptyTextFor(boolean loadFailed, int hiddenCount) {
+        if (loadFailed) {
+            return R.string.community_empty_load_failed;
+        }
+        if (hiddenCount > 0) {
+            return R.string.community_empty_all_hidden;
+        }
+        return R.string.community_empty;
     }
 
     private void removeFromList(CommunityRecipe post) {

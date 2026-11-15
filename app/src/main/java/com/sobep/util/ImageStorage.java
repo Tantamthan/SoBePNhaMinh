@@ -24,6 +24,7 @@ import java.io.OutputStream;
  * - Đọc ảnh thu nhỏ để hiển thị (ảnh camera 12 MP mà đọc nguyên kích thước dễ hết bộ nhớ).
  * - Lưu ảnh món ăn lâu dài vào bộ nhớ riêng của app (files/recipe_photos), xoá ảnh món khi không dùng nữa.
  * - CN15 (8d): nén ảnh món thành byte JPEG nhỏ để đăng lên Cộng đồng, và ngược lại (byte → Bitmap / file).
+ *   CN14 dùng lại đúng cách này để đồng bộ ảnh món cá nhân giữa các máy.
  */
 public final class ImageStorage {
 
@@ -158,6 +159,15 @@ public final class ImageStorage {
      */
     @Nullable
     public static String saveRecipePhotoBytes(Context context, @Nullable byte[] data) {
+        return saveRecipePhotoBytes(context, data, null);
+    }
+
+    /**
+     * CN14 (đồng bộ ảnh món): như trên nhưng lưu đúng tên file = mã ảnh trên mây (CloudPhoto.photoIdOf),
+     * để lần đồng bộ sau hai máy nhận ra cùng một ảnh. fileName = null hoặc tên lạ → đặt tên mới theo thời gian.
+     */
+    @Nullable
+    public static String saveRecipePhotoBytes(Context context, @Nullable byte[] data, @Nullable String fileName) {
         if (data == null || data.length == 0) {
             return null;
         }
@@ -168,6 +178,9 @@ public final class ImageStorage {
             return null;
         }
         File file = newRecipePhotoFile(context);
+        if (file != null && CloudPhoto.isSafePhotoId(fileName)) {
+            file = new File(file.getParentFile(), fileName);
+        }
         if (file == null) {
             return null;
         }

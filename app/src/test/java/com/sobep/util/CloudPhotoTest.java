@@ -2,6 +2,8 @@ package com.sobep.util;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -52,5 +54,23 @@ public class CloudPhotoTest {
         assertTrue(CloudPhoto.PHOTO_MAX_BYTES < 1024 * 1024);
         // Ảnh nhỏ nhẹ hơn ảnh lớn ít nhất 10 lần → tải danh sách 50 bài vẫn nhẹ
         assertTrue(CloudPhoto.THUMB_MAX_BYTES * 10 <= CloudPhoto.PHOTO_MAX_BYTES);
+    }
+
+    // ---------- Mã ảnh khi đồng bộ ảnh món (CN14) ----------
+
+    @Test
+    public void photoIdOf_takesFileName() {
+        assertEquals("recipe_1731400000000.jpg",
+                CloudPhoto.photoIdOf("/data/user/0/com.sobep/files/recipe_photos/recipe_1731400000000.jpg"));
+        assertNull(CloudPhoto.photoIdOf(null));
+    }
+
+    @Test
+    public void isSafePhotoId_rejectsPaths() {
+        assertTrue(CloudPhoto.isSafePhotoId("recipe_1.jpg"));
+        assertFalse(CloudPhoto.isSafePhotoId("../recipe_1.jpg"));
+        assertFalse(CloudPhoto.isSafePhotoId("recipe_1.png"));
+        assertFalse(CloudPhoto.isSafePhotoId(""));
+        assertFalse(CloudPhoto.isSafePhotoId(null));
     }
 }
