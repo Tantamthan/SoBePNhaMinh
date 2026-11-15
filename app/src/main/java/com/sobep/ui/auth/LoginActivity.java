@@ -39,6 +39,8 @@ import com.sobep.util.IntentKeys;
  * 2. Người dùng chọn tài khoản → nhận về GoogleIdTokenCredential chứa ID token.
  * 3. ID token đưa cho LoginViewModel → AuthRepository → Firebase (signInWithCredential).
  *
+ * Quên mật khẩu: bấm "Quên mật khẩu?" → Firebase gửi thư đặt lại mật khẩu tới email ở ô Email (không mở màn mới).
+ *
  * Intent:
  * - Bấm "Chưa có tài khoản? Đăng ký" → mở RegisterActivity, chờ kết quả, gửi kèm email đang gõ (EXTRA_EMAIL).
  * - Đăng ký xong (Firebase tự đăng nhập) hoặc đăng nhập xong → trả RESULT_OK + EXTRA_EMAIL về màn chính.
@@ -85,6 +87,8 @@ public class LoginActivity extends BaseActivity {
             return false;
         });
         binding.buttonGoogle.setOnClickListener(v -> startGoogleSignIn());
+        binding.buttonForgotPassword.setOnClickListener(v ->
+                viewModel.sendPasswordReset(binding.editEmail.getText().toString()));
         binding.buttonGoRegister.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegisterActivity.class);
             intent.putExtra(IntentKeys.EXTRA_EMAIL, binding.editEmail.getText().toString().trim());
@@ -155,6 +159,7 @@ public class LoginActivity extends BaseActivity {
             binding.buttonSignIn.setEnabled(!busy);
             binding.buttonGoogle.setEnabled(!busy);
             binding.buttonGoRegister.setEnabled(!busy);
+            binding.buttonForgotPassword.setEnabled(!busy);
             binding.editEmail.setEnabled(!busy);
             binding.editPassword.setEnabled(!busy);
         });
@@ -164,6 +169,13 @@ public class LoginActivity extends BaseActivity {
             binding.textError.setVisibility(res == null ? View.GONE : View.VISIBLE);
             if (res != null) {
                 binding.textError.setText(res);
+            }
+        });
+        // Đã gửi thư quên mật khẩu → khung xanh ghi rõ email nhận thư
+        viewModel.getResetSentEmail().observe(this, email -> {
+            binding.textInfo.setVisibility(email == null ? View.GONE : View.VISIBLE);
+            if (email != null) {
+                binding.textInfo.setText(getString(R.string.reset_password_sent, email));
             }
         });
         viewModel.getSignedInEmail().observe(this, email -> {

@@ -139,6 +139,10 @@ MealPlan, ShoppingList, ScanRecipe, Discover, Login, Register, Account.
   `CloudPhoto.photoIdOf` / `isSafePhotoId` (chặn tên file lạ). Rules không đổi (`users/{userId}/{document=**}` đủ).
   Tab Cộng đồng: câu báo trống theo lý do (tải lỗi / mọi bài đã ẩn / chưa có bài) – `LatestPosts.hiddenCount`,
   `DiscoverViewModel.communityEmptyTextFor`. Build + 49 test OK; đã test máy ảo (tài khoản thử + Firestore REST).
+- 16/11: Quên mật khẩu ở màn Đăng nhập: nút `buttonForgotPassword` → `LoginViewModel.sendPasswordReset` (chỉ kiểm ô Email)
+  → `AuthRepository.sendPasswordReset` (`setLanguageCode("vi")` + `sendPasswordResetEmail`). Thành công → LiveData
+  `resetSentEmail` → khung xanh `textInfo` ("Nếu … đã có tài khoản…" vì Firebase chống dò email); lỗi →
+  `AuthFormHelper.messageForPasswordReset`. Không thêm Activity, không sửa Console. Build + 49 test OK.
 - Các nút chưa có chức năng gọi `showComingSoon()` trong `BaseActivity`.
 
 ## Cách làm việc với tôi

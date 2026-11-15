@@ -39,6 +39,13 @@ public class AuthRepository {
         void onError(@NonNull Exception error);
     }
 
+    /** Kết quả gửi thư đặt lại mật khẩu (không có người dùng trả về vì chưa đăng nhập). */
+    public interface ResetCallback {
+        void onSent();
+
+        void onError(@NonNull Exception error);
+    }
+
     private final FirebaseAuth auth;
 
     public AuthRepository() {
@@ -63,6 +70,26 @@ public class AuthRepository {
 
     public void signIn(String email, String password, Callback callback) {
         handle(auth.signInWithEmailAndPassword(email, password), callback);
+    }
+
+    /**
+     * Quên mật khẩu: Firebase gửi thư có link tới trang đặt mật khẩu mới (trang do Firebase làm sẵn,
+     * app không cần màn đổi mật khẩu). Đặt xong người dùng quay lại app đăng nhập bằng mật khẩu mới.
+     *
+     * Firebase mặc định bật "chống dò email": email chưa đăng ký vẫn báo thành công (không gửi thư),
+     * để người lạ không dò được email nào có tài khoản → câu báo trong app phải ghi "Nếu email này đã có tài khoản…".
+     */
+    public void sendPasswordReset(String email, ResetCallback callback) {
+        // Thư viết bằng tiếng Việt (mẫu thư có sẵn của Firebase)
+        auth.setLanguageCode("vi");
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onSent();
+            } else {
+                Exception error = task.getException();
+                callback.onError(error != null ? error : new IllegalStateException("Không gửi được thư"));
+            }
+        });
     }
 
     /**

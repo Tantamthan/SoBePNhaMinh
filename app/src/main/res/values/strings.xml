@@ -271,6 +271,11 @@
     <string name="login_no_account">Chưa có tài khoản? Đăng ký</string>
     <string name="login_or">hoặc</string>
     <string name="action_sign_in_google">Tiếp tục với Google</string>
+    <!-- Quên mật khẩu (Firebase gửi thư đặt lại mật khẩu) -->
+    <string name="action_forgot_password">Quên mật khẩu?</string>
+    <string name="reset_password_sent">Nếu %1$s đã có tài khoản, thư đặt lại mật khẩu đã được gửi tới email này. Mở hộp thư (xem cả mục Thư rác), bấm link để đặt mật khẩu mới rồi quay lại đăng nhập.</string>
+    <string name="error_email_required_for_reset">Nhập email để nhận thư đặt lại mật khẩu</string>
+    <string name="error_reset_no_account">Email này chưa có tài khoản. Hãy đăng ký</string>
     <string name="register_title">Tạo tài khoản</string>
     <string name="register_heading">Tài khoản mới</string>
     <string name="register_subtitle">Dùng email của bạn và mật khẩu ít nhất 6 ký tự. Tạo xong là đăng nhập luôn.</string>

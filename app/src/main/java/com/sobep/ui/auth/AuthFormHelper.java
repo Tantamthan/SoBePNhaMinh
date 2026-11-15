@@ -90,6 +90,22 @@ public final class AuthFormHelper {
     }
 
     /**
+     * Lỗi khi gửi thư quên mật khẩu → câu báo. Khác đăng nhập ở chỗ không có mật khẩu,
+     * nên không được báo "Email hoặc mật khẩu không đúng".
+     * (Chỉ gặp "chưa có tài khoản" khi tắt chống dò email trên Console; mặc định Firebase báo thành công.)
+     */
+    @StringRes
+    public static int messageForPasswordReset(Exception error) {
+        if (error instanceof FirebaseAuthInvalidUserException) {
+            String code = ((FirebaseAuthInvalidUserException) error).getErrorCode();
+            return "ERROR_USER_DISABLED".equals(code)
+                    ? R.string.error_auth_user_disabled : R.string.error_reset_no_account;
+        }
+        int res = messageFor(error);
+        return res == R.string.error_auth_wrong_credentials ? R.string.error_auth_unknown : res;
+    }
+
+    /**
      * Lỗi khi lấy tài khoản Google từ Credential Manager (TRƯỚC khi gửi lên Firebase) → câu báo.
      * Trường hợp người dùng tự đóng bảng chọn (GetCredentialCancellationException) không coi là lỗi,
      * LoginActivity xử lý riêng nên không có ở đây.

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Màn 10 · LoginActivity – Đăng nhập (CN13):
-     thanh tiêu đề, lời giới thiệu, ô Email + Mật khẩu, dòng báo lỗi, nút Đăng nhập,
+     thanh tiêu đề, lời giới thiệu, ô Email + Mật khẩu, nút "Quên mật khẩu?" + khung xanh báo đã gửi thư,
+     dòng báo lỗi, nút Đăng nhập,
      vòng xoay chờ và nút chuyển sang màn Đăng ký. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -122,6 +123,35 @@
                 android:fontFamily="@font/be_vietnam_pro_semibold"
                 android:textColor="@color/accent_orange_dark"
                 android:visibility="gone" />
+
+            <!-- Quên mật khẩu: gửi thư đặt lại mật khẩu tới email ở ô trên -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonForgotPassword"
+                style="@style/Widget.SoBep.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:text="@string/action_forgot_password"
+                android:textColor="@color/green_primary" />
+
+            <!-- Đã gửi thư quên mật khẩu (nền xanh). Ẩn khi chưa gửi -->
+            <TextView
+                android:id="@+id/textInfo"
+                style="@style/Text.SoBep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_status_success"
+                android:fontFamily="@font/be_vietnam_pro_semibold"
+                android:lineSpacingMultiplier="1.15"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/green_dark"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="@string/reset_password_sent"
+                tools:visibility="visible" />
 
             <!-- Lỗi Firebase trả về (sai mật khẩu, mất mạng…). Ẩn khi không có lỗi -->
             <TextView
